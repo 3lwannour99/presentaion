@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inventory & Sales Dashboard – Presentation</title>
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+
     <style>
       :root {
         --primary: #6366f1;
@@ -23,17 +25,25 @@
         --hero: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
       }
+
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
+
       body {
         font-family: "Inter", sans-serif;
         background: var(--dark);
         color: var(--text);
         overflow: hidden;
       }
+
+      /* Arabic mode */
+      html[lang="ar"] body {
+        font-family: "Cairo", sans-serif;
+      }
+
       .bg {
         position: fixed;
         inset: 0;
@@ -186,6 +196,18 @@
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
+
+      /* RTL alignment tweaks */
+      html[dir="rtl"] .item {
+        flex-direction: row-reverse;
+      }
+      html[dir="rtl"] .top {
+        flex-direction: row-reverse;
+      }
+      html[dir="rtl"] .tag {
+        justify-content: flex-start;
+      }
+
       .dot {
         width: 34px;
         height: 34px;
@@ -230,10 +252,6 @@
         background: rgba(16, 185, 129, 0.12);
         border-color: rgba(16, 185, 129, 0.35);
       }
-      .p-red {
-        background: rgba(239, 68, 68, 0.12);
-        border-color: rgba(239, 68, 68, 0.35);
-      }
 
       .kpi {
         display: grid;
@@ -270,6 +288,10 @@
         gap: 0.6rem;
         align-items: center;
       }
+      html[dir="rtl"] .barRow {
+        grid-template-columns: 60px 1fr 150px;
+      }
+
       .bar {
         height: 12px;
         border-radius: 999px;
@@ -279,13 +301,13 @@
       }
       .bar > div {
         height: 100%;
-        width: 0;
         background: linear-gradient(
           90deg,
           rgba(99, 102, 241, 0.9),
           rgba(6, 182, 212, 0.9)
         );
       }
+
       .small {
         font-size: 0.92rem;
         color: var(--muted);
@@ -342,6 +364,34 @@
         white-space: nowrap;
       }
 
+      /* Language toggle */
+      .langToggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        display: flex;
+        gap: 8px;
+        z-index: 5;
+      }
+      html[dir="rtl"] .langToggle {
+        right: auto;
+        left: 14px;
+      }
+      .langBtn {
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(15, 23, 42, 0.55);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+      }
+      .langBtn.active {
+        border-color: rgba(6, 182, 212, 0.9);
+        box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+      }
+
       @media (max-width: 980px) {
         .grid {
           grid-template-columns: 1fr;
@@ -353,10 +403,81 @@
           font-size: 1rem;
         }
       }
+      /* Make slide content fit 16:9 without overflow */
+.slide {
+  height: 100%;
+}
+
+.glass {
+  height: 100%;
+  overflow: hidden; /* important */
+}
+
+/* Let grid take the remaining height */
+.grid {
+  min-height: 0;         /* critical for overflow in flex/grid */
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Cards become scrollable containers */
+.card {
+  min-height: 0;         /* critical */
+  overflow: hidden;      /* keep card edges clean */
+  display: flex;
+  flex-direction: column;
+}
+
+/* The content area inside card should scroll if long */
+.card .list,
+.card .barWrap,
+.card p,
+.card .pills {
+  min-height: 0;
+}
+
+.card .list {
+  overflow: auto;        /* scroll inside card */
+  padding-right: 6px;    /* space for scrollbar */
+}
+
+/* RTL scrollbar padding */
+html[dir="rtl"] .card .list {
+  padding-right: 0;
+  padding-left: 6px;
+}
+
+/* Optional: nicer scrollbar */
+.card .list::-webkit-scrollbar {
+  width: 8px;
+}
+.card .list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+}
+.card .list::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+}
+
+/* Reduce spacing a bit on smaller screens to avoid overflow */
+@media (max-width: 1300px) {
+  .glass { padding: 1.6rem; }
+  .slide { padding: 1.6rem; }
+  .sub { line-height: 1.7; }
+}
+
     </style>
   </head>
+
   <body>
     <div class="bg"></div>
+
+    <!-- Language Switch -->
+    <div class="langToggle">
+      <button class="langBtn" id="btnEn">EN</button>
+      <button class="langBtn" id="btnAr">AR</button>
+    </div>
 
     <div class="wrap">
       <div class="stage">
@@ -365,79 +486,171 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Car Inventory & Sales Management Dashboard</h1>
-                <div class="sub">
+                <h1
+                  data-en="Car Inventory & Sales Management Dashboard"
+                  data-ar="لوحة إدارة مخزون السيارات والمبيعات"
+                >
+                  Car Inventory & Sales Management Dashboard
+                </h1>
+                <div
+                  class="sub"
+                  data-en="A dashboard that shows everything about our cars: vehicle data and numbers, status (in stock/sold/reserved), color & model distribution, customer types, and sales team performance reports with top seller rankings."
+                  data-ar="لوحة تعرض كل ما يتعلق بالسيارات: بيانات السيارة وأرقامها، الحالة (متاح/مباع/محجوز)، توزيع الألوان والموديلات، أنواع العملاء، وتقارير أداء فريق المبيعات مع ترتيب أفضل البائعين."
+                >
                   A dashboard that shows everything about our cars: vehicle data
                   and numbers, status (in stock/sold/reserved), color & model
                   distribution, customer types, and sales team performance
                   reports with top seller rankings.
                 </div>
+
                 <div class="pills">
-                  <span class="pill p-primary">🚗 Inventory</span>
-                  <span class="pill p-cyan">📊 Analytics</span>
-                  <span class="pill p-amber">👥 Customers</span>
-                  <span class="pill p-green">🏆 Sales Team</span>
+                  <span
+                    class="pill p-primary"
+                    data-en="🚗 Inventory"
+                    data-ar="🚗 المخزون"
+                    >🚗 Inventory</span
+                  >
+                  <span
+                    class="pill p-cyan"
+                    data-en="📊 Analytics"
+                    data-ar="📊 التحليلات"
+                    >📊 Analytics</span
+                  >
+                  <span
+                    class="pill p-amber"
+                    data-en="👥 Customers"
+                    data-ar="👥 العملاء"
+                    >👥 Customers</span
+                  >
+                  <span
+                    class="pill p-green"
+                    data-en="🏆 Sales Team"
+                    data-ar="🏆 فريق المبيعات"
+                    >🏆 Sales Team</span
+                  >
                 </div>
               </div>
-              <div class="tag">SLIDE 1 • Overview</div>
+
+              <div
+                class="tag"
+                data-en="SLIDE 1 • Overview"
+                data-ar="الشريحة 1 • نظرة عامة"
+              >
+                SLIDE 1 • Overview
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>🎯 Main Objective</h2>
+                <h2 data-en="🎯 Main Objective" data-ar="🎯 الهدف الرئيسي">
+                  🎯 Main Objective
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">1</div>
                     <div>
-                      <strong>Clear Overview</strong>
-                      <div class="muted">
+                      <strong data-en="Clear Overview" data-ar="نظرة واضحة"
+                        >Clear Overview</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Know the status of cars and sales at a glance."
+                        data-ar="اعرف حالة السيارات والمبيعات بسرعة وبنظرة واحدة."
+                      >
                         Know the status of cars and sales at a glance.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">2</div>
                     <div>
-                      <strong>Faster Decisions</strong>
-                      <div class="muted">
+                      <strong data-en="Faster Decisions" data-ar="قرارات أسرع"
+                        >Faster Decisions</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Reports that help management with planning, financing, and pricing."
+                        data-ar="تقارير تساعد الإدارة في التخطيط والتمويل والتسعير."
+                      >
                         Reports that help management with planning, financing,
                         and pricing.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">3</div>
                     <div>
-                      <strong>Performance Tracking</strong>
-                      <div class="muted">
+                      <strong
+                        data-en="Performance Tracking"
+                        data-ar="متابعة الأداء"
+                        >Performance Tracking</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Evaluate agents and improve results."
+                        data-ar="تقييم موظفي المبيعات وتحسين النتائج."
+                      >
                         Evaluate agents and improve results.
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
               <div class="card">
-                <h2>✅ What does the dashboard offer?</h2>
+                <h2
+                  data-en="✅ What does the dashboard offer?"
+                  data-ar="✅ ماذا تقدم لوحة التحكم؟"
+                >
+                  ✅ What does the dashboard offer?
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">📦</div>
-                    <div>In-Stock / Sold / Reserved Statistics</div>
+                    <div
+                      data-en="In-Stock / Sold / Reserved Statistics"
+                      data-ar="إحصائيات (متاح / مباع / محجوز)"
+                    >
+                      In-Stock / Sold / Reserved Statistics
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">🧾</div>
-                    <div>Details for each car (numbers, data, status)</div>
+                    <div
+                      data-en="Details for each car (numbers, data, status)"
+                      data-ar="تفاصيل لكل سيارة (أرقام، بيانات، حالة)"
+                    >
+                      Details for each car (numbers, data, status)
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">🎨</div>
-                    <div>Color & Type Report</div>
+                    <div
+                      data-en="Color & Type Report"
+                      data-ar="تقرير الألوان والأنواع"
+                    >
+                      Color & Type Report
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">👥</div>
-                    <div>Customer Types & Segmentation</div>
+                    <div
+                      data-en="Customer Types & Segmentation"
+                      data-ar="أنواع العملاء وتقسيمهم"
+                    >
+                      Customer Types & Segmentation
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">🏆</div>
-                    <div>Top Sellers & Ranking</div>
+                    <div
+                      data-en="Top Sellers & Ranking"
+                      data-ar="أفضل البائعين والترتيب"
+                    >
+                      Top Sellers & Ranking
+                    </div>
                   </div>
                 </div>
               </div>
@@ -450,51 +663,112 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Core Key Performance Indicators (KPIs)</h1>
-                <div class="sub">
+                <h1
+                  data-en="Core Key Performance Indicators (KPIs)"
+                  data-ar="مؤشرات الأداء الرئيسية (KPIs)"
+                >
+                  Core Key Performance Indicators (KPIs)
+                </h1>
+                <div
+                  class="sub"
+                  data-en="A quick summary that instantly shows the overall situation: how many cars are available, sold, and reserved."
+                  data-ar="ملخص سريع يوضح الوضع العام فوراً: عدد السيارات المتاحة والمباعة والمحجوزة."
+                >
                   A quick summary that instantly shows the overall situation:
                   how many cars are available, sold, and reserved.
                 </div>
               </div>
-              <div class="tag">SLIDE 2 • KPIs</div>
+              <div
+                class="tag"
+                data-en="SLIDE 2 • KPIs"
+                data-ar="الشريحة 2 • المؤشرات"
+              >
+                SLIDE 2 • KPIs
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>📌 Status Statistics</h2>
+                <h2 data-en="📌 Status Statistics" data-ar="📌 إحصائيات الحالة">
+                  📌 Status Statistics
+                </h2>
                 <div class="kpi">
                   <div class="kpiBox">
                     <div class="val">128</div>
-                    <div class="lab">Cars in Stock</div>
+                    <div
+                      class="lab"
+                      data-en="Cars in Stock"
+                      data-ar="سيارات متاحة"
+                    >
+                      Cars in Stock
+                    </div>
                   </div>
                   <div class="kpiBox">
                     <div class="val">64</div>
-                    <div class="lab">Cars Sold</div>
+                    <div class="lab" data-en="Cars Sold" data-ar="سيارات مباعة">
+                      Cars Sold
+                    </div>
                   </div>
                   <div class="kpiBox">
                     <div class="val">21</div>
-                    <div class="lab">Cars Reserved</div>
+                    <div
+                      class="lab"
+                      data-en="Cars Reserved"
+                      data-ar="سيارات محجوزة"
+                    >
+                      Cars Reserved
+                    </div>
                   </div>
                   <div class="kpiBox">
                     <div class="val">213</div>
-                    <div class="lab">Total Cars</div>
+                    <div
+                      class="lab"
+                      data-en="Total Cars"
+                      data-ar="إجمالي السيارات"
+                    >
+                      Total Cars
+                    </div>
                   </div>
                 </div>
+
                 <div class="pills" style="margin-top: 0.75rem">
-                  <span class="pill p-primary">📦 Stock</span>
-                  <span class="pill p-green">✅ Sold</span>
-                  <span class="pill p-amber">⏳ Reserved</span>
+                  <span
+                    class="pill p-primary"
+                    data-en="📦 Stock"
+                    data-ar="📦 متاح"
+                    >📦 Stock</span
+                  >
+                  <span class="pill p-green" data-en="✅ Sold" data-ar="✅ مباع"
+                    >✅ Sold</span
+                  >
+                  <span
+                    class="pill p-amber"
+                    data-en="⏳ Reserved"
+                    data-ar="⏳ محجوز"
+                    >⏳ Reserved</span
+                  >
                 </div>
               </div>
 
               <div class="card">
-                <h2>🎯 Why is it important?</h2>
+                <h2
+                  data-en="🎯 Why is it important?"
+                  data-ar="🎯 لماذا هذا مهم؟"
+                >
+                  🎯 Why is it important?
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">⚡</div>
                     <div>
-                      <strong>Quick Decisions</strong>
-                      <div class="muted">
+                      <strong data-en="Quick Decisions" data-ar="قرارات سريعة"
+                        >Quick Decisions</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="e.g., Do we need financing or new shipments?"
+                        data-ar="مثلاً: هل نحتاج تمويل أو شحنات جديدة؟"
+                      >
                         e.g., Do we need financing or new shipments?
                       </div>
                     </div>
@@ -502,8 +776,16 @@
                   <div class="item">
                     <div class="dot">📌</div>
                     <div>
-                      <strong>Inventory Distribution</strong>
-                      <div class="muted">
+                      <strong
+                        data-en="Inventory Distribution"
+                        data-ar="توزيع المخزون"
+                        >Inventory Distribution</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Ensure availability of requested models."
+                        data-ar="ضمان توفر الموديلات المطلوبة."
+                      >
                         Ensure availability of requested models.
                       </div>
                     </div>
@@ -511,8 +793,18 @@
                   <div class="item">
                     <div class="dot">📈</div>
                     <div>
-                      <strong>Sales Measurement</strong>
-                      <div class="muted">Track changes daily/weekly.</div>
+                      <strong
+                        data-en="Sales Measurement"
+                        data-ar="قياس المبيعات"
+                        >Sales Measurement</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Track changes daily/weekly."
+                        data-ar="متابعة التغيرات يومياً/أسبوعياً."
+                      >
+                        Track changes daily/weekly.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -526,79 +818,175 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Car Data & Numbers</h1>
-                <div class="sub">
+                <h1
+                  data-en="Car Data & Numbers"
+                  data-ar="بيانات وأرقام السيارات"
+                >
+                  Car Data & Numbers
+                </h1>
+                <div
+                  class="sub"
+                  data-en="Each car has clear data to facilitate tracking, delivery, and after-sales service."
+                  data-ar="كل سيارة لها بيانات واضحة لتسهيل التتبع والتسليم وخدمة ما بعد البيع."
+                >
                   Each car has clear data to facilitate tracking, delivery, and
                   after-sales service.
                 </div>
               </div>
-              <div class="tag">SLIDE 3 • Car Data</div>
+              <div
+                class="tag"
+                data-en="SLIDE 3 • Car Data"
+                data-ar="الشريحة 3 • بيانات السيارات"
+              >
+                SLIDE 3 • Car Data
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>🧾 Core Fields</h2>
+                <h2 data-en="🧾 Core Fields" data-ar="🧾 الحقول الأساسية">
+                  🧾 Core Fields
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">🔢</div>
                     <div>
-                      <strong>VIN / Chassis Number</strong>
-                      <div class="muted">Unique identifier for each car.</div>
+                      <strong
+                        data-en="VIN / Chassis Number"
+                        data-ar="رقم الهيكل / VIN"
+                        >VIN / Chassis Number</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Unique identifier for each car."
+                        data-ar="معرّف فريد لكل سيارة."
+                      >
+                        Unique identifier for each car.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🏷️</div>
                     <div>
-                      <strong>Model / Trim</strong>
-                      <div class="muted">Car name + trim/version.</div>
+                      <strong data-en="Model / Trim" data-ar="الموديل / الفئة"
+                        >Model / Trim</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Car name + trim/version."
+                        data-ar="اسم السيارة + الفئة/النسخة."
+                      >
+                        Car name + trim/version.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">📅</div>
                     <div>
-                      <strong>Manufacturing Year</strong>
-                      <div class="muted">Important for pricing & warranty.</div>
+                      <strong data-en="Manufacturing Year" data-ar="سنة الصنع"
+                        >Manufacturing Year</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Important for pricing & warranty."
+                        data-ar="مهم للتسعير والضمان."
+                      >
+                        Important for pricing & warranty.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🧾</div>
                     <div>
-                      <strong>Internal Stock/Storage Number</strong>
-                      <div class="muted">For internal storage & tracking.</div>
+                      <strong
+                        data-en="Internal Stock/Storage Number"
+                        data-ar="رقم المخزون/التخزين الداخلي"
+                      >
+                        Internal Stock/Storage Number
+                      </strong>
+                      <div
+                        class="muted"
+                        data-en="For internal storage & tracking."
+                        data-ar="للتخزين الداخلي والتتبع."
+                      >
+                        For internal storage & tracking.
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="card">
-                <h2>🔎 Search & Filtering</h2>
+                <h2 data-en="🔎 Search & Filtering" data-ar="🔎 البحث والتصفية">
+                  🔎 Search & Filtering
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">🔍</div>
                     <div>
-                      <strong>Search by VIN</strong>
-                      <div class="muted">Quick access to a specific car.</div>
+                      <strong data-en="Search by VIN" data-ar="بحث برقم VIN"
+                        >Search by VIN</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Quick access to a specific car."
+                        data-ar="وصول سريع لسيارة محددة."
+                      >
+                        Quick access to a specific car.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🧰</div>
                     <div>
-                      <strong>Filter by Status</strong>
-                      <div class="muted">In Stock / Reserved / Sold.</div>
+                      <strong
+                        data-en="Filter by Status"
+                        data-ar="تصفية حسب الحالة"
+                        >Filter by Status</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="In Stock / Reserved / Sold."
+                        data-ar="متاح / محجوز / مباع."
+                      >
+                        In Stock / Reserved / Sold.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🎨</div>
                     <div>
-                      <strong>Filter by Color</strong>
-                      <div class="muted">To track color demand.</div>
+                      <strong
+                        data-en="Filter by Color"
+                        data-ar="تصفية حسب اللون"
+                        >Filter by Color</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="To track color demand."
+                        data-ar="لمتابعة الطلب على الألوان."
+                      >
+                        To track color demand.
+                      </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="pills">
-                  <span class="pill p-cyan">Filters</span>
-                  <span class="pill p-primary">Search</span>
-                  <span class="pill p-amber">Segments</span>
+                  <span class="pill p-cyan" data-en="Filters" data-ar="فلاتر"
+                    >Filters</span
+                  >
+                  <span class="pill p-primary" data-en="Search" data-ar="بحث"
+                    >Search</span
+                  >
+                  <span class="pill p-amber" data-en="Segments" data-ar="شرائح"
+                    >Segments</span
+                  >
                 </div>
               </div>
             </div>
@@ -610,18 +998,28 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Car Status</h1>
-                <div class="sub">
+                <h1 data-en="Car Status" data-ar="حالة السيارة">Car Status</h1>
+                <div
+                  class="sub"
+                  data-en="Clear classification of each car's status helps identify what's available for sale and what needs delivery."
+                  data-ar="تصنيف واضح لحالة كل سيارة يساعد في معرفة المتاح للبيع وما يحتاج للتسليم."
+                >
                   Clear classification of each car's status helps identify
                   what's available for sale and what needs delivery.
                 </div>
               </div>
-              <div class="tag">SLIDE 4 • Status</div>
+              <div
+                class="tag"
+                data-en="SLIDE 4 • Status"
+                data-ar="الشريحة 4 • الحالة"
+              >
+                SLIDE 4 • Status
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>📌 Statuses</h2>
+                <h2 data-en="📌 Statuses" data-ar="📌 الحالات">📌 Statuses</h2>
                 <div class="list">
                   <div class="item">
                     <div
@@ -634,10 +1032,19 @@
                       📦
                     </div>
                     <div>
-                      <strong>In Stock</strong>
-                      <div class="muted">Available for immediate sale.</div>
+                      <strong data-en="In Stock" data-ar="متاح"
+                        >In Stock</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Available for immediate sale."
+                        data-ar="متاح للبيع فوراً."
+                      >
+                        Available for immediate sale.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div
                       class="dot"
@@ -649,12 +1056,19 @@
                       ⏳
                     </div>
                     <div>
-                      <strong>Reserved</strong>
-                      <div class="muted">
+                      <strong data-en="Reserved" data-ar="محجوز"
+                        >Reserved</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Linked to a customer pending confirmation/payment."
+                        data-ar="مرتبطة بعميل بانتظار التأكيد/الدفع."
+                      >
                         Linked to a customer pending confirmation/payment.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div
                       class="dot"
@@ -666,46 +1080,95 @@
                       ✅
                     </div>
                     <div>
-                      <strong>Sold</strong>
-                      <div class="muted">
+                      <strong data-en="Sold" data-ar="مباع">Sold</strong>
+                      <div
+                        class="muted"
+                        data-en="Sale completed and delivered or pending delivery."
+                        data-ar="تمت عملية البيع وتم التسليم أو بانتظار التسليم."
+                      >
                         Sale completed and delivered or pending delivery.
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="pills" style="margin-top: 0.7rem">
-                  <span class="pill p-primary">Real-time Update</span>
-                  <span class="pill p-amber">Prevent Double Booking</span>
-                  <span class="pill p-green">Delivery Confirmation</span>
+                  <span
+                    class="pill p-primary"
+                    data-en="Real-time Update"
+                    data-ar="تحديث لحظي"
+                    >Real-time Update</span
+                  >
+                  <span
+                    class="pill p-amber"
+                    data-en="Prevent Double Booking"
+                    data-ar="منع الحجز المكرر"
+                    >Prevent Double Booking</span
+                  >
+                  <span
+                    class="pill p-green"
+                    data-en="Delivery Confirmation"
+                    data-ar="تأكيد التسليم"
+                    >Delivery Confirmation</span
+                  >
                 </div>
               </div>
 
               <div class="card">
-                <h2>🎯 Why is it important?</h2>
+                <h2
+                  data-en="🎯 Why is it important?"
+                  data-ar="🎯 لماذا هذا مهم؟"
+                >
+                  🎯 Why is it important?
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">🧠</div>
                     <div>
-                      <strong>Demand Management</strong>
-                      <div class="muted">
+                      <strong data-en="Demand Management" data-ar="إدارة الطلب"
+                        >Demand Management</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Know what can be shown directly to customers."
+                        data-ar="معرفة ما يمكن عرضه مباشرة للعملاء."
+                      >
                         Know what can be shown directly to customers.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">📦</div>
                     <div>
-                      <strong>Inventory Planning</strong>
-                      <div class="muted">
+                      <strong
+                        data-en="Inventory Planning"
+                        data-ar="تخطيط المخزون"
+                        >Inventory Planning</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Identify shortages in specific models/colors."
+                        data-ar="تحديد النقص في موديلات/ألوان معينة."
+                      >
                         Identify shortages in specific models/colors.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">📈</div>
                     <div>
-                      <strong>Accurate Reports</strong>
-                      <div class="muted">Compare sales with availability.</div>
+                      <strong data-en="Accurate Reports" data-ar="تقارير دقيقة"
+                        >Accurate Reports</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Compare sales with availability."
+                        data-ar="مقارنة المبيعات مع التوفر."
+                      >
+                        Compare sales with availability.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -719,72 +1182,135 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Color & Model Report</h1>
-                <div class="sub">
+                <h1
+                  data-en="Color & Model Report"
+                  data-ar="تقرير الألوان والموديلات"
+                >
+                  Color & Model Report
+                </h1>
+                <div
+                  class="sub"
+                  data-en="Shows car distribution by color and model/type to identify the most in-demand options."
+                  data-ar="يوضح توزيع السيارات حسب اللون والموديل/النوع لمعرفة الخيارات الأكثر طلباً."
+                >
                   Shows car distribution by color and model/type to identify the
                   most in-demand options.
                 </div>
               </div>
-              <div class="tag">SLIDE 5 • Colors & Types</div>
+              <div
+                class="tag"
+                data-en="SLIDE 5 • Colors & Types"
+                data-ar="الشريحة 5 • الألوان والأنواع"
+              >
+                SLIDE 5 • Colors & Types
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>🎨 Color Distribution (Example)</h2>
+                <h2
+                  data-en="🎨 Color Distribution (Example)"
+                  data-ar="🎨 توزيع الألوان (مثال)"
+                >
+                  🎨 Color Distribution (Example)
+                </h2>
                 <div class="barWrap">
                   <div class="barRow">
-                    <div class="small">White</div>
+                    <div class="small" data-en="White" data-ar="أبيض">
+                      White
+                    </div>
                     <div class="bar"><div style="width: 72%"></div></div>
                     <div class="small">72%</div>
                   </div>
                   <div class="barRow">
-                    <div class="small">Black</div>
+                    <div class="small" data-en="Black" data-ar="أسود">
+                      Black
+                    </div>
                     <div class="bar"><div style="width: 56%"></div></div>
                     <div class="small">56%</div>
                   </div>
                   <div class="barRow">
-                    <div class="small">Gray</div>
+                    <div class="small" data-en="Gray" data-ar="رمادي">Gray</div>
                     <div class="bar"><div style="width: 41%"></div></div>
                     <div class="small">41%</div>
                   </div>
                   <div class="barRow">
-                    <div class="small">Blue</div>
+                    <div class="small" data-en="Blue" data-ar="أزرق">Blue</div>
                     <div class="bar"><div style="width: 26%"></div></div>
                     <div class="small">26%</div>
                   </div>
                 </div>
+
                 <div class="pills" style="margin-top: 0.75rem">
-                  <span class="pill p-cyan">Color Insights</span>
-                  <span class="pill p-primary">Demand</span>
+                  <span
+                    class="pill p-cyan"
+                    data-en="Color Insights"
+                    data-ar="تحليل الألوان"
+                    >Color Insights</span
+                  >
+                  <span class="pill p-primary" data-en="Demand" data-ar="الطلب"
+                    >Demand</span
+                  >
                 </div>
               </div>
 
               <div class="card">
-                <h2>🚗 Model Distribution (Example)</h2>
+                <h2
+                  data-en="🚗 Model Distribution (Example)"
+                  data-ar="🚗 توزيع الموديلات (مثال)"
+                >
+                  🚗 Model Distribution (Example)
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">SUV</div>
                     <div>
-                      <strong>SUV</strong>
-                      <div class="muted">Highest demand for family use.</div>
+                      <strong data-en="SUV" data-ar="SUV">SUV</strong>
+                      <div
+                        class="muted"
+                        data-en="Highest demand for family use."
+                        data-ar="الأعلى طلباً للاستخدام العائلي."
+                      >
+                        Highest demand for family use.
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">SED</div>
                     <div>
-                      <strong>Sedan</strong>
-                      <div class="muted">Suitable for city & economy.</div>
+                      <strong data-en="Sedan" data-ar="سيدان">Sedan</strong>
+                      <div
+                        class="muted"
+                        data-en="Suitable for city & economy."
+                        data-ar="مناسبة للمدينة والاقتصاد."
+                      >
+                        Suitable for city & economy.
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">EV</div>
                     <div>
-                      <strong>Electric</strong>
-                      <div class="muted">Steady growth in interest.</div>
+                      <strong data-en="Electric" data-ar="كهربائية"
+                        >Electric</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Steady growth in interest."
+                        data-ar="نمو مستمر في الاهتمام."
+                      >
+                        Steady growth in interest.
+                      </div>
                     </div>
                   </div>
                 </div>
-                <p class="muted" style="margin-top: 0.6rem">
+
+                <p
+                  class="muted"
+                  style="margin-top: 0.6rem"
+                  data-en="This report helps in selecting colors/types for upcoming shipments or advertising campaigns."
+                  data-ar="يساعد هذا التقرير في اختيار الألوان/الأنواع للشحنات القادمة أو الحملات الإعلانية."
+                >
                   This report helps in selecting colors/types for upcoming
                   shipments or advertising campaigns.
                 </p>
@@ -798,47 +1324,90 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Customer Types</h1>
-                <div class="sub">
+                <h1 data-en="Customer Types" data-ar="أنواع العملاء">
+                  Customer Types
+                </h1>
+                <div
+                  class="sub"
+                  data-en="Segmenting customers helps understand the market and build suitable offers and marketing for each category."
+                  data-ar="تقسيم العملاء يساعد على فهم السوق وبناء عروض وتسويق مناسب لكل فئة."
+                >
                   Segmenting customers helps understand the market and build
                   suitable offers and marketing for each category.
                 </div>
               </div>
-              <div class="tag">SLIDE 6 • Customers</div>
+              <div
+                class="tag"
+                data-en="SLIDE 6 • Customers"
+                data-ar="الشريحة 6 • العملاء"
+              >
+                SLIDE 6 • Customers
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>👥 Segmentation</h2>
+                <h2 data-en="👥 Segmentation" data-ar="👥 التقسيم">
+                  👥 Segmentation
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">👤</div>
                     <div>
-                      <strong>Individuals</strong>
-                      <div class="muted">Purchase for personal use.</div>
+                      <strong data-en="Individuals" data-ar="أفراد"
+                        >Individuals</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Purchase for personal use."
+                        data-ar="شراء للاستخدام الشخصي."
+                      >
+                        Purchase for personal use.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🏢</div>
                     <div>
-                      <strong>Companies</strong>
-                      <div class="muted">
+                      <strong data-en="Companies" data-ar="شركات"
+                        >Companies</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Purchase for fleet or business needs."
+                        data-ar="شراء لأسطول أو احتياجات العمل."
+                      >
                         Purchase for fleet or business needs.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🚚</div>
                     <div>
-                      <strong>Fleets</strong>
-                      <div class="muted">Large orders & contracts.</div>
+                      <strong data-en="Fleets" data-ar="أساطيل">Fleets</strong>
+                      <div
+                        class="muted"
+                        data-en="Large orders & contracts."
+                        data-ar="طلبات كبيرة وعقود."
+                      >
+                        Large orders & contracts.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🤝</div>
                     <div>
-                      <strong>Partners</strong>
-                      <div class="muted">
+                      <strong data-en="Partners" data-ar="شركاء"
+                        >Partners</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Distributors/agents/collaboration."
+                        data-ar="موزعين/وكلاء/تعاون."
+                      >
                         Distributors/agents/collaboration.
                       </div>
                     </div>
@@ -847,38 +1416,80 @@
               </div>
 
               <div class="card">
-                <h2>📈 What does the report show?</h2>
+                <h2
+                  data-en="📈 What does the report show?"
+                  data-ar="📈 ماذا يوضح التقرير؟"
+                >
+                  📈 What does the report show?
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">%</div>
                     <div>
-                      <strong>Percentage of each category</strong>
-                      <div class="muted">
+                      <strong
+                        data-en="Percentage of each category"
+                        data-ar="نسبة كل فئة"
+                        >Percentage of each category</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="How many companies vs. individuals."
+                        data-ar="كم شركة مقابل الأفراد."
+                      >
                         How many companies vs. individuals.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">📍</div>
                     <div>
-                      <strong>Regions</strong>
-                      <div class="muted">
+                      <strong data-en="Regions" data-ar="المناطق"
+                        >Regions</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Customer distribution by city/region."
+                        data-ar="توزيع العملاء حسب المدينة/المنطقة."
+                      >
                         Customer distribution by city/region.
                       </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">🧾</div>
                     <div>
-                      <strong>Interests</strong>
-                      <div class="muted">Most requested models/categories.</div>
+                      <strong data-en="Interests" data-ar="الاهتمامات"
+                        >Interests</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Most requested models/categories."
+                        data-ar="أكثر الموديلات/الفئات طلباً."
+                      >
+                        Most requested models/categories.
+                      </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="pills" style="margin-top: 0.75rem">
-                  <span class="pill p-amber">Segmentation</span>
-                  <span class="pill p-cyan">Targeting</span>
-                  <span class="pill p-primary">Offers</span>
+                  <span
+                    class="pill p-amber"
+                    data-en="Segmentation"
+                    data-ar="تقسيم"
+                    >Segmentation</span
+                  >
+                  <span
+                    class="pill p-cyan"
+                    data-en="Targeting"
+                    data-ar="استهداف"
+                    >Targeting</span
+                  >
+                  <span class="pill p-primary" data-en="Offers" data-ar="عروض"
+                    >Offers</span
+                  >
                 </div>
               </div>
             </div>
@@ -890,45 +1501,94 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Top Sellers & Ranking Report</h1>
-                <div class="sub">
+                <h1
+                  data-en="Top Sellers & Ranking Report"
+                  data-ar="تقرير أفضل البائعين والترتيب"
+                >
+                  Top Sellers & Ranking Report
+                </h1>
+                <div
+                  class="sub"
+                  data-en="Displays agent performance by number of sales, value, and conversion rate (if applicable)."
+                  data-ar="يعرض أداء الموظفين حسب عدد المبيعات وقيمتها ومعدل التحويل (إن وجد)."
+                >
                   Displays agent performance by number of sales, value, and
                   conversion rate (if applicable).
                 </div>
               </div>
-              <div class="tag">SLIDE 7 • Top Sellers</div>
+              <div
+                class="tag"
+                data-en="SLIDE 7 • Top Sellers"
+                data-ar="الشريحة 7 • أفضل البائعين"
+              >
+                SLIDE 7 • Top Sellers
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>🏆 Ranking Metrics</h2>
+                <h2 data-en="🏆 Ranking Metrics" data-ar="🏆 معايير الترتيب">
+                  🏆 Ranking Metrics
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">🥇</div>
                     <div>
-                      <strong>Number of Cars Sold</strong>
-                      <div class="muted">Direct productivity measure.</div>
+                      <strong
+                        data-en="Number of Cars Sold"
+                        data-ar="عدد السيارات المباعة"
+                        >Number of Cars Sold</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Direct productivity measure."
+                        data-ar="مقياس مباشر للإنتاجية."
+                      >
+                        Direct productivity measure.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">💰</div>
                     <div>
-                      <strong>Sales Value</strong>
-                      <div class="muted">Total financial value of sales.</div>
+                      <strong data-en="Sales Value" data-ar="قيمة المبيعات"
+                        >Sales Value</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Total financial value of sales."
+                        data-ar="إجمالي القيمة المالية للمبيعات."
+                      >
+                        Total financial value of sales.
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div class="dot">📞</div>
                     <div>
-                      <strong>Follow-up Activity</strong>
-                      <div class="muted">Number of calls/tasks (optional).</div>
+                      <strong
+                        data-en="Follow-up Activity"
+                        data-ar="نشاط المتابعة"
+                        >Follow-up Activity</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Number of calls/tasks (optional)."
+                        data-ar="عدد المكالمات/المهام (اختياري)."
+                      >
+                        Number of calls/tasks (optional).
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="card">
-                <h2>📊 Example Ranking</h2>
+                <h2 data-en="📊 Example Ranking" data-ar="📊 مثال على الترتيب">
+                  📊 Example Ranking
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div
@@ -942,9 +1602,16 @@
                     </div>
                     <div>
                       <strong>Sara</strong>
-                      <div class="muted">12 sales • 180K</div>
+                      <div
+                        class="muted"
+                        data-en="12 sales • 180K"
+                        data-ar="12 مبيعة • 180K"
+                      >
+                        12 sales • 180K
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div
                       class="dot"
@@ -957,9 +1624,16 @@
                     </div>
                     <div>
                       <strong>Raed</strong>
-                      <div class="muted">9 sales • 135K</div>
+                      <div
+                        class="muted"
+                        data-en="9 sales • 135K"
+                        data-ar="9 مبيعات • 135K"
+                      >
+                        9 sales • 135K
+                      </div>
                     </div>
                   </div>
+
                   <div class="item">
                     <div
                       class="dot"
@@ -972,11 +1646,23 @@
                     </div>
                     <div>
                       <strong>Omar</strong>
-                      <div class="muted">7 sales • 98K</div>
+                      <div
+                        class="muted"
+                        data-en="7 sales • 98K"
+                        data-ar="7 مبيعات • 98K"
+                      >
+                        7 sales • 98K
+                      </div>
                     </div>
                   </div>
                 </div>
-                <p class="muted" style="margin-top: 0.6rem">
+
+                <p
+                  class="muted"
+                  style="margin-top: 0.6rem"
+                  data-en="This report helps with motivation, rewards, and identifying improvement points."
+                  data-ar="يساعد هذا التقرير في التحفيز والمكافآت وتحديد نقاط التحسين."
+                >
                   This report helps with motivation, rewards, and identifying
                   improvement points.
                 </p>
@@ -990,31 +1676,61 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Important Additional Reports</h1>
-                <div class="sub">
+                <h1
+                  data-en="Important Additional Reports"
+                  data-ar="تقارير إضافية مهمة"
+                >
+                  Important Additional Reports
+                </h1>
+                <div
+                  class="sub"
+                  data-en="Reports that help read the situation from multiple angles and improve planning."
+                  data-ar="تقارير تساعد على قراءة الوضع من عدة زوايا وتحسين التخطيط."
+                >
                   Reports that help read the situation from multiple angles and
                   improve planning.
                 </div>
               </div>
-              <div class="tag">SLIDE 8 • Reports</div>
+              <div
+                class="tag"
+                data-en="SLIDE 8 • Reports"
+                data-ar="الشريحة 8 • التقارير"
+              >
+                SLIDE 8 • Reports
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>📅 Time-based Reports</h2>
+                <h2
+                  data-en="📅 Time-based Reports"
+                  data-ar="📅 تقارير حسب الوقت"
+                >
+                  📅 Time-based Reports
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">W</div>
                     <div>
-                      <strong>Weekly</strong>
-                      <div class="muted">Track performance weekly.</div>
+                      <strong data-en="Weekly" data-ar="أسبوعي">Weekly</strong>
+                      <div
+                        class="muted"
+                        data-en="Track performance weekly."
+                        data-ar="متابعة الأداء أسبوعياً."
+                      >
+                        Track performance weekly.
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">M</div>
                     <div>
-                      <strong>Monthly</strong>
-                      <div class="muted">
+                      <strong data-en="Monthly" data-ar="شهري">Monthly</strong>
+                      <div
+                        class="muted"
+                        data-en="Compare months and identify seasons."
+                        data-ar="مقارنة الأشهر وتحديد المواسم."
+                      >
                         Compare months and identify seasons.
                       </div>
                     </div>
@@ -1022,44 +1738,90 @@
                   <div class="item">
                     <div class="dot">Y</div>
                     <div>
-                      <strong>Yearly</strong>
-                      <div class="muted">Analyze sales growth.</div>
+                      <strong data-en="Yearly" data-ar="سنوي">Yearly</strong>
+                      <div
+                        class="muted"
+                        data-en="Analyze sales growth."
+                        data-ar="تحليل نمو المبيعات."
+                      >
+                        Analyze sales growth.
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="card">
-                <h2>🧩 Comparison Reports</h2>
+                <h2
+                  data-en="🧩 Comparison Reports"
+                  data-ar="🧩 تقارير المقارنة"
+                >
+                  🧩 Comparison Reports
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">🎨</div>
                     <div>
-                      <strong>Colors vs. Sales</strong>
-                      <div class="muted">Does a specific color sell more?</div>
+                      <strong
+                        data-en="Colors vs. Sales"
+                        data-ar="الألوان مقابل المبيعات"
+                        >Colors vs. Sales</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Does a specific color sell more?"
+                        data-ar="هل لون معين يبيع أكثر؟"
+                      >
+                        Does a specific color sell more?
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">🚗</div>
                     <div>
-                      <strong>Models vs. Demand</strong>
-                      <div class="muted">Identify most requested models.</div>
+                      <strong
+                        data-en="Models vs. Demand"
+                        data-ar="الموديلات مقابل الطلب"
+                        >Models vs. Demand</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Identify most requested models."
+                        data-ar="تحديد أكثر الموديلات طلباً."
+                      >
+                        Identify most requested models.
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">👥</div>
                     <div>
-                      <strong>Customers vs. Car Type</strong>
-                      <div class="muted">
+                      <strong
+                        data-en="Customers vs. Car Type"
+                        data-ar="العملاء مقابل نوع السيارة"
+                        >Customers vs. Car Type</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Company vs. individual preferences."
+                        data-ar="تفضيلات الشركات مقابل الأفراد."
+                      >
                         Company vs. individual preferences.
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="pills">
-                  <span class="pill p-cyan">Compare</span>
-                  <span class="pill p-primary">Insights</span>
-                  <span class="pill p-amber">Actions</span>
+                  <span class="pill p-cyan" data-en="Compare" data-ar="مقارنة"
+                    >Compare</span
+                  >
+                  <span class="pill p-primary" data-en="Insights" data-ar="رؤى"
+                    >Insights</span
+                  >
+                  <span class="pill p-amber" data-en="Actions" data-ar="إجراءات"
+                    >Actions</span
+                  >
                 </div>
               </div>
             </div>
@@ -1071,38 +1833,77 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>User Interface & Navigation</h1>
-                <div class="sub">
+                <h1
+                  data-en="User Interface & Navigation"
+                  data-ar="واجهة المستخدم والتنقل"
+                >
+                  User Interface & Navigation
+                </h1>
+                <div
+                  class="sub"
+                  data-en="The dashboard is designed to be clear and fast: summary at the top + reports + details table."
+                  data-ar="تم تصميم اللوحة لتكون واضحة وسريعة: ملخص بالأعلى + تقارير + جدول تفاصيل."
+                >
                   The dashboard is designed to be clear and fast: summary at the
                   top + reports + details table.
                 </div>
               </div>
-              <div class="tag">SLIDE 9 • UX</div>
+              <div
+                class="tag"
+                data-en="SLIDE 9 • UX"
+                data-ar="الشريحة 9 • تجربة المستخدم"
+              >
+                SLIDE 9 • UX
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>🧭 Page Components</h2>
+                <h2 data-en="🧭 Page Components" data-ar="🧭 مكونات الصفحة">
+                  🧭 Page Components
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">1</div>
                     <div>
-                      <strong>KPI Summary</strong>
-                      <div class="muted">In-Stock/Sold/Reserved.</div>
+                      <strong data-en="KPI Summary" data-ar="ملخص المؤشرات"
+                        >KPI Summary</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="In-Stock/Sold/Reserved."
+                        data-ar="متاح/مباع/محجوز."
+                      >
+                        In-Stock/Sold/Reserved.
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">2</div>
                     <div>
-                      <strong>Filters</strong>
-                      <div class="muted">Status, Model, Color, Date.</div>
+                      <strong data-en="Filters" data-ar="الفلاتر"
+                        >Filters</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Status, Model, Color, Date."
+                        data-ar="الحالة، الموديل، اللون، التاريخ."
+                      >
+                        Status, Model, Color, Date.
+                      </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">3</div>
                     <div>
-                      <strong>Reports</strong>
-                      <div class="muted">
+                      <strong data-en="Reports" data-ar="التقارير"
+                        >Reports</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Colors, Models, Customers, Sellers."
+                        data-ar="الألوان، الموديلات، العملاء، البائعون."
+                      >
                         Colors, Models, Customers, Sellers.
                       </div>
                     </div>
@@ -1110,23 +1911,55 @@
                   <div class="item">
                     <div class="dot">4</div>
                     <div>
-                      <strong>Details Table</strong>
-                      <div class="muted">Each car + its data.</div>
+                      <strong data-en="Details Table" data-ar="جدول التفاصيل"
+                        >Details Table</strong
+                      >
+                      <div
+                        class="muted"
+                        data-en="Each car + its data."
+                        data-ar="كل سيارة + بياناتها."
+                      >
+                        Each car + its data.
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="card">
-                <h2>🧰 Suggested Filters</h2>
+                <h2 data-en="🧰 Suggested Filters" data-ar="🧰 فلاتر مقترحة">
+                  🧰 Suggested Filters
+                </h2>
                 <div class="pills">
-                  <span class="pill p-primary">Status</span>
-                  <span class="pill p-cyan">Model</span>
-                  <span class="pill p-amber">Color</span>
-                  <span class="pill p-green">Customer Type</span>
-                  <span class="pill p-primary">Time Period</span>
+                  <span class="pill p-primary" data-en="Status" data-ar="الحالة"
+                    >Status</span
+                  >
+                  <span class="pill p-cyan" data-en="Model" data-ar="الموديل"
+                    >Model</span
+                  >
+                  <span class="pill p-amber" data-en="Color" data-ar="اللون"
+                    >Color</span
+                  >
+                  <span
+                    class="pill p-green"
+                    data-en="Customer Type"
+                    data-ar="نوع العميل"
+                    >Customer Type</span
+                  >
+                  <span
+                    class="pill p-primary"
+                    data-en="Time Period"
+                    data-ar="الفترة الزمنية"
+                    >Time Period</span
+                  >
                 </div>
-                <p class="muted" style="margin-top: 0.7rem">
+
+                <p
+                  class="muted"
+                  style="margin-top: 0.7rem"
+                  data-en="Filters make extracting reports easier (e.g., Reserved White SUVs from the last week)."
+                  data-ar="الفلاتر تسهّل استخراج التقارير (مثلاً: سيارات SUV بيضاء محجوزة خلال الأسبوع الماضي)."
+                >
                   Filters make extracting reports easier (e.g., Reserved White
                   SUVs from the last week).
                 </p>
@@ -1140,63 +1973,139 @@
           <div class="glass">
             <div class="top">
               <div>
-                <h1>Summary</h1>
-                <div class="sub">
+                <h1 data-en="Summary" data-ar="الخلاصة">Summary</h1>
+                <div
+                  class="sub"
+                  data-en="A single dashboard that gathers core and analytical data: managing cars and their status, color & model distribution, customer types, and top seller reports — to facilitate decision-making and improve performance."
+                  data-ar="لوحة واحدة تجمع البيانات الأساسية والتحليلية: إدارة السيارات وحالتها، توزيع الألوان والموديلات، أنواع العملاء، وتقارير أفضل البائعين — لتسهيل اتخاذ القرار وتحسين الأداء."
+                >
                   A single dashboard that gathers core and analytical data:
                   managing cars and their status, color & model distribution,
                   customer types, and top seller reports — to facilitate
                   decision-making and improve performance.
                 </div>
+
                 <div class="pills">
-                  <span class="pill p-primary">Inventory Management</span>
-                  <span class="pill p-cyan">Analytics</span>
-                  <span class="pill p-amber">Reports</span>
-                  <span class="pill p-green">Performance Improvement</span>
+                  <span
+                    class="pill p-primary"
+                    data-en="Inventory Management"
+                    data-ar="إدارة المخزون"
+                    >Inventory Management</span
+                  >
+                  <span
+                    class="pill p-cyan"
+                    data-en="Analytics"
+                    data-ar="تحليلات"
+                    >Analytics</span
+                  >
+                  <span class="pill p-amber" data-en="Reports" data-ar="تقارير"
+                    >Reports</span
+                  >
+                  <span
+                    class="pill p-green"
+                    data-en="Performance Improvement"
+                    data-ar="تحسين الأداء"
+                    >Performance Improvement</span
+                  >
                 </div>
               </div>
-              <div class="tag">SLIDE 10 • Summary</div>
+
+              <div
+                class="tag"
+                data-en="SLIDE 10 • Summary"
+                data-ar="الشريحة 10 • الخلاصة"
+              >
+                SLIDE 10 • Summary
+              </div>
             </div>
 
             <div class="grid">
               <div class="card">
-                <h2>✅ Key Takeaways</h2>
+                <h2 data-en="✅ Key Takeaways" data-ar="✅ أهم النقاط">
+                  ✅ Key Takeaways
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">✔</div>
-                    <div>Instant view of In-Stock/Sold/Reserved</div>
+                    <div
+                      data-en="Instant view of In-Stock/Sold/Reserved"
+                      data-ar="عرض فوري لمتاح/مباع/محجوز"
+                    >
+                      Instant view of In-Stock/Sold/Reserved
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">✔</div>
-                    <div>Color/Model reports aid planning</div>
+                    <div
+                      data-en="Color/Model reports aid planning"
+                      data-ar="تقارير الألوان/الموديلات تساعد بالتخطيط"
+                    >
+                      Color/Model reports aid planning
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">✔</div>
-                    <div>Customer segmentation improves marketing</div>
+                    <div
+                      data-en="Customer segmentation improves marketing"
+                      data-ar="تقسيم العملاء يحسن التسويق"
+                    >
+                      Customer segmentation improves marketing
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">✔</div>
-                    <div>Seller ranking to evaluate & motivate the team</div>
+                    <div
+                      data-en="Seller ranking to evaluate & motivate the team"
+                      data-ar="ترتيب البائعين لتقييم وتحفيز الفريق"
+                    >
+                      Seller ranking to evaluate & motivate the team
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="card">
-                <h2>🚀 Future Developments (Optional)</h2>
+                <h2
+                  data-en="🚀 Future Developments (Optional)"
+                  data-ar="🚀 تطويرات مستقبلية (اختياري)"
+                >
+                  🚀 Future Developments (Optional)
+                </h2>
                 <div class="list">
                   <div class="item">
                     <div class="dot">AI</div>
-                    <div>Predict demand for models/colors</div>
+                    <div
+                      data-en="Predict demand for models/colors"
+                      data-ar="توقع الطلب على الموديلات/الألوان"
+                    >
+                      Predict demand for models/colors
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">API</div>
-                    <div>Live update from inventory system</div>
+                    <div
+                      data-en="Live update from inventory system"
+                      data-ar="تحديث مباشر من نظام المخزون"
+                    >
+                      Live update from inventory system
+                    </div>
                   </div>
                   <div class="item">
                     <div class="dot">PDF</div>
-                    <div>Export reports as PDF/Excel</div>
+                    <div
+                      data-en="Export reports as PDF/Excel"
+                      data-ar="تصدير التقارير PDF/Excel"
+                    >
+                      Export reports as PDF/Excel
+                    </div>
                   </div>
                 </div>
-                <p class="muted" style="margin-top: 0.65rem">
+                <p
+                  class="muted"
+                  style="margin-top: 0.65rem"
+                  data-en='These points are excellent as "Future Work" in the presentation.'
+                  data-ar='هذه النقاط ممتازة كقسم "عمل مستقبلي" في العرض.'
+                >
                   These points are excellent as "Future Work" in the
                   presentation.
                 </p>
@@ -1215,6 +2124,8 @@
     </div>
 
     <script>
+      // Slides nav
+      // Slides nav
       const slides = Array.from(document.querySelectorAll(".slide"));
       const dotsWrap = document.getElementById("dots");
       const counter = document.getElementById("counter");
@@ -1232,12 +2143,14 @@
           dotsWrap.appendChild(d);
         });
       }
+
       function go(i) {
         idx = (i + slides.length) % slides.length;
         slides.forEach((s, k) => s.classList.toggle("active", k === idx));
         counter.textContent = `${idx + 1} / ${slides.length}`;
         renderDots();
       }
+
       function next() {
         go(idx + 1);
       }
@@ -1249,19 +2162,38 @@
       prevBtn.addEventListener("click", prev);
 
       window.addEventListener("keydown", (e) => {
-        const k = e.key;
-        if (k === "ArrowRight" || k === " " || k === "Enter") {
-          e.preventDefault();
-          next();
-        }
-        if (k === "ArrowLeft" || k === "Backspace") {
-          e.preventDefault();
-          prev();
-        }
+        if (e.key === "ArrowRight") next();
+        if (e.key === "ArrowLeft") prev();
       });
 
+      // Initialize
       renderDots();
-      go(0);
+      counter.textContent = `${idx + 1} / ${slides.length}`;
+
+      // Language switching
+      const btnEn = document.getElementById("btnEn");
+      const btnAr = document.getElementById("btnAr");
+      const html = document.documentElement;
+
+      function setLanguage(lang) {
+        html.lang = lang;
+        html.dir = lang === "ar" ? "rtl" : "ltr";
+
+        // Update active button
+        btnEn.classList.toggle("active", lang === "en");
+        btnAr.classList.toggle("active", lang === "ar");
+
+        // Update all text elements with data attributes
+        document.querySelectorAll("[data-en], [data-ar]").forEach((el) => {
+          el.textContent = el.getAttribute(`data-${lang}`);
+        });
+      }
+
+      btnEn.addEventListener("click", () => setLanguage("en"));
+      btnAr.addEventListener("click", () => setLanguage("ar"));
+
+      // Initialize with English
+      setLanguage("en");
     </script>
   </body>
 </html>
