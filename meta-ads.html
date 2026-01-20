@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meta Ads Library – Presentation</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #6366f1;
+        --secondary: #06b6d4;
+        --accent: #f59e0b;
+        --success: #10b981;
+        --danger: #ef4444;
+        --dark: #0f172a;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --hero: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        --g2: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Cairo", "Outfit", sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        overflow: hidden;
+      }
+
+      /* Animated background */
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: var(--hero);
+        overflow: hidden;
+      }
+      .bg::before,
+      .bg::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(110px);
+        animation: float 18s ease-in-out infinite;
+        opacity: 0.95;
+      }
+      .bg::before {
+        background: rgba(99, 102, 241, 0.3);
+        top: -250px;
+        right: -250px;
+      }
+      .bg::after {
+        background: rgba(6, 182, 212, 0.22);
+        bottom: -240px;
+        left: -240px;
+        animation-delay: -9s;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(70px, 45px) rotate(6deg);
+        }
+        50% {
+          transform: translate(0, 120px) rotate(0deg);
+        }
+        75% {
+          transform: translate(-70px, 45px) rotate(-6deg);
+        }
+      }
+
+      /* Presentation layout */
+      .wrap {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+      }
+
+      /* Slide area: fixed ratio to help screenshots */
+      .stage {
+        width: min(1300px, 96vw);
+        aspect-ratio: 16 / 9;
+        position: relative;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .slide {
+        height: 100%;
+        position: absolute;
+        padding: 2.2rem 2.2rem;
+        display: none;
+      }
+
+      .slide.active {
+        display: flex;
+        height: 100vh;
+      }
+
+      .glass {
+        width: 100%;
+        border-radius: 26px;
+        padding: 2.1rem;
+        backdrop-filter: blur(18px);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .title {
+        font-size: 2.1rem;
+        font-weight: 900;
+        line-height: 1.25;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #a5b4fc 45%,
+          #06b6d4 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 22px rgba(99, 102, 241, 0.35));
+      }
+      .subtitle {
+        color: var(--muted);
+        margin-top: 0.4rem;
+        font-size: 1.05rem;
+        max-width: 820px;
+        line-height: 1.8;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid rgba(6, 182, 212, 0.35);
+        background: rgba(6, 182, 212, 0.12);
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 1rem;
+        flex: 1;
+        align-items: stretch;
+      }
+
+      .card {
+        border-radius: 20px;
+        padding: 1.1rem;
+      }
+
+      .card h3 {
+        font-size: 1.15rem;
+        font-weight: 900;
+        margin-bottom: 0.55rem;
+      }
+
+      .list {
+        display: grid;
+        gap: 0.6rem;
+        margin-top: 0.2rem;
+        color: var(--text);
+      }
+      .item {
+        display: flex;
+        gap: 0.6rem;
+        align-items: flex-start;
+        padding: 0.75rem 0.85rem;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .dot {
+        min-width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        background: rgba(99, 102, 241, 0.14);
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        margin-top: 0.05rem;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-top: 0.4rem;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.28rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        font-weight: 900;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+      .pill.primary {
+        background: rgba(99, 102, 241, 0.14);
+        border-color: rgba(99, 102, 241, 0.35);
+      }
+      .pill.cyan {
+        background: rgba(6, 182, 212, 0.12);
+        border-color: rgba(6, 182, 212, 0.35);
+      }
+      .pill.amber {
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.35);
+      }
+      .pill.green {
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+
+      .big {
+        font-size: 1.25rem;
+        font-weight: 800;
+        line-height: 1.9;
+      }
+
+      /* Controls */
+      .controls {
+        position: fixed;
+        left: 50%;
+        bottom: 16px;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+        padding: 0.55rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+        user-select: none;
+      }
+      .btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.15s;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(6, 182, 212, 0.55);
+      }
+      .dots {
+        display: flex;
+        gap: 0.35rem;
+        padding: 0 0.2rem;
+      }
+      .dotnav {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        cursor: pointer;
+      }
+      .dotnav.active {
+        background: rgba(6, 182, 212, 0.85);
+        border-color: rgba(6, 182, 212, 0.9);
+        box-shadow: 0 0 14px rgba(6, 182, 212, 0.45);
+      }
+      .counter {
+        color: var(--muted);
+        font-weight: 900;
+        font-size: 0.95rem;
+        margin-inline-start: 0.3rem;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 980px) {
+        .glass {
+          padding: 1.5rem;
+        }
+        .content {
+          grid-template-columns: 1fr;
+        }
+        .title {
+          font-size: 1.8rem;
+        }
+        .subtitle {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg"></div>
+
+    <div class="wrap">
+      <div class="stage" id="stage">
+        <!-- Slide 1 -->
+        <section class="slide active">
+          <div class="glass">
+            <div class="topbar">
+              <div>
+                <div class="title">Meta Ads Library Tracking Project</div>
+                <div class="subtitle">
+                  A page/presentation explaining how I extracted my ad data from
+                  the Meta Ads Library, then organized and classified it by car
+                  brand, and finally saved it in Excel.
+                </div>
+                <div class="pills">
+                  <span class="pill cyan">📣 Meta Ads Library</span>
+                  <span class="pill primary">🧾 Funding Tracking</span>
+                  <span class="pill amber">📝 Ad Content</span>
+                  <span class="pill green">🚗 Brand Classification</span>
+                </div>
+              </div>
+              <div class="badge">SLIDE 1 • Overview</div>
+            </div>
+
+            <div class="content">
+              <div class="card">
+                <h3>🎯 Goal</h3>
+                <div class="big muted">
+                  Transform ad data from "in-platform display" into "organized
+                  reports" that help me with tracking, analysis, and comparing
+                  campaigns and pages.
+                </div>
+                <div class="pills" style="margin-top: 0.8rem">
+                  <span class="pill primary">📅 Funding Dates</span>
+                  <span class="pill cyan">🏷️ Pages</span>
+                  <span class="pill amber">📰 Content</span>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>✅ Project Outputs</h3>
+                <div class="list">
+                  <div class="item">
+                    <div class="dot">1</div>
+                    <div>
+                      <strong>Data Collection</strong>
+                      <div class="muted">Extract information about my ads.</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">2</div>
+                    <div>
+                      <strong>Brand Classification</strong>
+                      <div class="muted">Using Keywords.</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">3</div>
+                    <div>
+                      <strong>Excel Export</strong>
+                      <div class="muted">Save the final report.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="topbar">
+              <div>
+                <div class="title">
+                  What Do I Extract from Meta Ads Library?
+                </div>
+                <div class="subtitle">
+                  The script collects the most important fields I need to track
+                  and analyze ads.
+                </div>
+              </div>
+              <div class="badge">SLIDE 2 • Data</div>
+            </div>
+
+            <div class="content">
+              <div class="card">
+                <h3>📌 Key Fields</h3>
+                <div class="list">
+                  <div class="item">
+                    <div class="dot">📅</div>
+                    <div>
+                      <strong>Funding Dates/Period</strong>
+                      <div class="muted">
+                        When the ad started and when it was funded or updated.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">📝</div>
+                    <div>
+                      <strong>Ad Content</strong>
+                      <div class="muted">
+                        The visible texts or marketing messages.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">🏷️</div>
+                    <div>
+                      <strong>Publishing Page</strong>
+                      <div class="muted">Which page ran the ad.</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">🔗</div>
+                    <div>
+                      <strong>Ad Link/ID</strong>
+                      <div class="muted">
+                        To avoid duplication and link results later.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>🎯 Why Are These Fields Important?</h3>
+                <div class="pills">
+                  <span class="pill primary">Budget Tracking</span>
+                  <span class="pill cyan">Linking Ads to Pages</span>
+                  <span class="pill amber">Marketing Message Analysis</span>
+                  <span class="pill green">Brand Identification</span>
+                </div>
+                <div class="big muted" style="margin-top: 0.7rem">
+                  With this data I can know: which ad was funded and when, on
+                  which page, and what marketing message was used in the ad.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="topbar">
+              <div>
+                <div class="title">How Does the Script Work? (Pipeline)</div>
+                <div class="subtitle">
+                  Organized steps from data collection to preparation for
+                  classification and export.
+                </div>
+              </div>
+              <div class="badge">SLIDE 3 • Pipeline</div>
+            </div>
+
+            <div class="content">
+              <div class="card">
+                <h3>🧠 Steps</h3>
+                <div class="list">
+                  <div class="item">
+                    <div class="dot">1</div>
+                    <div>
+                      <strong>Data Collection</strong>
+                      <div class="muted">
+                        Extract my ad data from Meta Ads Library.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">2</div>
+                    <div>
+                      <strong>Cleaning & Standardization</strong>
+                      <div class="muted">
+                        Standardize date formats and organize fields.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">3</div>
+                    <div>
+                      <strong>Duplicate Removal</strong>
+                      <div class="muted">
+                        Identify duplicate ads via ID/Link.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">4</div>
+                    <div>
+                      <strong>Preparation for Classification</strong>
+                      <div class="muted">
+                        Prepare ad text for keyword processing.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>📌 Strengths</h3>
+                <div class="list">
+                  <div class="item">
+                    <div
+                      class="dot"
+                      style="
+                        background: rgba(16, 185, 129, 0.12);
+                        border-color: rgba(16, 185, 129, 0.35);
+                      "
+                    >
+                      ✔
+                    </div>
+                    <div>
+                      <strong>Organized & Scalable</strong>
+                      <div class="muted">Easy to add new fields.</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div
+                      class="dot"
+                      style="
+                        background: rgba(6, 182, 212, 0.12);
+                        border-color: rgba(6, 182, 212, 0.35);
+                      "
+                    >
+                      ⚡
+                    </div>
+                    <div>
+                      <strong>Fast Report Preparation</strong>
+                      <div class="muted">
+                        Suitable for filtering and analysis.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div
+                      class="dot"
+                      style="
+                        background: rgba(245, 158, 11, 0.12);
+                        border-color: rgba(245, 158, 11, 0.35);
+                      "
+                    >
+                      🔁
+                    </div>
+                    <div>
+                      <strong>Continuous Updates</strong>
+                      <div class="muted">Periodic runs to add new ads.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pills" style="margin-top: 0.75rem">
+                  <span class="pill cyan">Data → Clean</span>
+                  <span class="pill primary">Clean → Classify</span>
+                  <span class="pill green">Classify → Export</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="topbar">
+              <div>
+                <div class="title">Classifying Ads by Car Brand</div>
+                <div class="subtitle">
+                  An algorithm based on Keywords to determine the appropriate
+                  brand for each ad.
+                </div>
+                <div class="pills">
+                  <span class="pill green">🚗 Brand Classification</span>
+                  <span class="pill amber">🔎 Keywords</span>
+                  <span class="pill cyan">📚 Dictionary</span>
+                </div>
+              </div>
+              <div class="badge">SLIDE 4 • Classification</div>
+            </div>
+
+            <div class="content">
+              <div class="card">
+                <h3>📚 Algorithm Concept</h3>
+                <div class="list">
+                  <div class="item">
+                    <div class="dot">1</div>
+                    <div>
+                      <strong>Keyword Dictionary for Each Brand</strong>
+                      <div class="muted">
+                        Model names, categories, abbreviations, marketing words.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">2</div>
+                    <div>
+                      <strong>Check Ad Text</strong>
+                      <div class="muted">
+                        Search for keywords within ad content.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">3</div>
+                    <div>
+                      <strong>Select Best Match</strong>
+                      <div class="muted">
+                        Assign ad to the closest brand based on keywords.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">4</div>
+                    <div>
+                      <strong>Save Results</strong>
+                      <div class="muted">
+                        Add "Brand" column in final report.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>✅ Why Are Keywords a Suitable Solution?</h3>
+                <div class="list">
+                  <div class="item">
+                    <div
+                      class="dot"
+                      style="
+                        background: rgba(16, 185, 129, 0.12);
+                        border-color: rgba(16, 185, 129, 0.35);
+                      "
+                    >
+                      ✔
+                    </div>
+                    <div>
+                      <strong>Fast & Simple</strong>
+                      <div class="muted">Doesn't require model training.</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div
+                      class="dot"
+                      style="
+                        background: rgba(6, 182, 212, 0.12);
+                        border-color: rgba(6, 182, 212, 0.35);
+                      "
+                    >
+                      🛠
+                    </div>
+                    <div>
+                      <strong>Easy to Modify</strong>
+                      <div class="muted">
+                        Can add words for any brand as needed.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div
+                      class="dot"
+                      style="
+                        background: rgba(245, 158, 11, 0.12);
+                        border-color: rgba(245, 158, 11, 0.35);
+                      "
+                    >
+                      🎯
+                    </div>
+                    <div>
+                      <strong>Suitable for Cars</strong>
+                      <div class="muted">
+                        Because model names and categories appear frequently in
+                        text.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="big muted" style="margin-top: 0.65rem">
+                  Example: If a model name or category specific to a brand
+                  appears in the ad text, the ad is directly classified to that
+                  brand.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="topbar">
+              <div>
+                <div class="title">Export to Excel</div>
+                <div class="subtitle">
+                  After collection and classification, data is saved in an Excel
+                  file to facilitate analysis, filtering, and tracking.
+                </div>
+                <div class="pills">
+                  <span class="pill primary">📊 Reports</span>
+                  <span class="pill cyan">🗂️ Archive</span>
+                  <span class="pill green">🔎 Analysis</span>
+                </div>
+              </div>
+              <div class="badge">SLIDE 5 • Export</div>
+            </div>
+
+            <div class="content">
+              <div class="card">
+                <h3>📁 What Does the Excel File Contain?</h3>
+                <div class="list">
+                  <div class="item">
+                    <div class="dot">📅</div>
+                    <div>
+                      <strong>Funding Date/Period</strong>
+                      <div class="muted">
+                        For time-based filtering and monthly reports.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">🏷️</div>
+                    <div>
+                      <strong>Publishing Page</strong>
+                      <div class="muted">
+                        Compare activity of different pages.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">📝</div>
+                    <div>
+                      <strong>Ad Content</strong>
+                      <div class="muted">Review marketing messages.</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div class="dot">🚗</div>
+                    <div>
+                      <strong>Brand</strong>
+                      <div class="muted">Keyword classification result.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>🎯 How Do I Use It?</h3>
+                <div class="big muted">
+                  I can create: Pivot Tables, filter by brand/page/period, and
+                  generate reports about the most advertised brands, and when
+                  funding was strongest.
+                </div>
+                <div class="pills" style="margin-top: 0.8rem">
+                  <span class="pill amber">📌 Tracking</span>
+                  <span class="pill cyan">📈 Comparison</span>
+                  <span class="pill green">🧠 Analysis</span>
+                </div>
+
+                <div class="card" style="margin-top: 0.95rem">
+                  <h3>⚠️ Note</h3>
+                  <div class="muted">
+                    This presentation explains the project idea. In practical
+                    application, it's necessary to adhere to platform policies,
+                    terms of use, and use approved methods for data collection.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev" title="Previous">◀</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn" id="next" title="Next">▶</button>
+      <div class="counter" id="counter">1 / 5</div>
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsWrap = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+
+      let idx = 0;
+
+      function renderDots() {
+        dotsWrap.innerHTML = "";
+        slides.forEach((_, i) => {
+          const d = document.createElement("div");
+          d.className = "dotnav" + (i === idx ? " active" : "");
+          d.title = "Slide " + (i + 1);
+          d.addEventListener("click", () => go(i));
+          dotsWrap.appendChild(d);
+        });
+      }
+
+      function go(i) {
+        idx = (i + slides.length) % slides.length;
+        slides.forEach((s, k) => s.classList.toggle("active", k === idx));
+        counter.textContent = `${idx + 1} / ${slides.length}`;
+        renderDots();
+      }
+
+      function next() {
+        go(idx + 1);
+      }
+      function prev() {
+        go(idx - 1);
+      }
+
+      nextBtn.addEventListener("click", next);
+      prevBtn.addEventListener("click", prev);
+
+      window.addEventListener("keydown", (e) => {
+        const k = e.key;
+        if (k === "ArrowRight" || k === " " || k === "Enter") {
+          e.preventDefault();
+          next();
+        }
+        if (k === "ArrowLeft" || k === "Backspace") {
+          e.preventDefault();
+          prev();
+        }
+      });
+
+      renderDots();
+      go(0);
+    </script>
+  </body>
+</html>

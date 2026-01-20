@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integrated Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #6366f1;
+        --secondary: #06b6d4;
+        --accent: #f59e0b;
+        --success: #10b981;
+        --danger: #ef4444;
+        --dark: #0b1223;
+        --dark2: #0f172a;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass2: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.14);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
+        --hero: linear-gradient(135deg, #14162b 0%, #16213e 45%, #0f3460 100%);
+        --radius: 22px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        font-family:
+          Inter,
+          Cairo,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+        background: var(--dark2);
+        color: var(--text);
+        overflow: auto;
+      }
+
+      /* background */
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: var(--hero);
+        overflow: hidden;
+      }
+      .bg::before,
+      .bg::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(110px);
+        opacity: 0.95;
+        animation: float 18s ease-in-out infinite;
+      }
+      .bg::before {
+        width: 720px;
+        height: 720px;
+        background: rgba(99, 102, 241, 0.28);
+        top: -280px;
+        left: -280px;
+      }
+      .bg::after {
+        width: 650px;
+        height: 650px;
+        background: rgba(6, 182, 212, 0.22);
+        bottom: -280px;
+        right: -280px;
+        animation-delay: -9s;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0);
+        }
+        25% {
+          transform: translate(-70px, 45px) rotate(-6deg);
+        }
+        50% {
+          transform: translate(0, 120px) rotate(0);
+        }
+        75% {
+          transform: translate(70px, 45px) rotate(6deg);
+        }
+      }
+
+      /* layout */
+      :root {
+        --sidebar: clamp(240px, 22vw, 320px);
+      }
+
+      .app {
+        height: 100%;
+        display: grid;
+        grid-template-columns: var(--sidebar) 1fr;
+      }
+
+      /* sidebar */
+      .side {
+        padding: 18px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(16px);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 14px 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        margin-bottom: 14px;
+      }
+      .brand h1 {
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .brand .hint {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(6, 182, 212, 0.4);
+        background: rgba(6, 182, 212, 0.12);
+        color: var(--text);
+        font-weight: 900;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .nav {
+        display: grid;
+        gap: 10px;
+      }
+
+      .navbtn {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px 12px;
+        border-radius: 18px;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.035);
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease,
+          background 0.15s ease;
+        user-select: none;
+      }
+      .navbtn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(6, 182, 212, 0.55);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .navbtn.active {
+        border-color: rgba(99, 102, 241, 0.7);
+        background: rgba(99, 102, 241, 0.1);
+      }
+
+      .ic {
+        width: 42px;
+        height: 42px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 900;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        flex: 0 0 auto;
+      }
+
+      .ntitle {
+        font-weight: 900;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .ndesc {
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.6;
+        margin-top: 4px;
+      }
+      .kbd {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .kbd h3 {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(148, 163, 184, 0.95);
+        margin-bottom: 8px;
+      }
+      .krow {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 6px 0;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      code.key {
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 2px 8px;
+        border-radius: 8px;
+        font-weight: 800;
+      }
+
+      /* main */
+      .main {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(14px);
+      }
+      .titleWrap {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
+      .topTitle {
+        font-size: 15px;
+        font-weight: 900;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .topSub {
+        color: var(--muted);
+        font-size: 12.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex: 0 0 auto;
+      }
+
+      .abtn {
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        font-weight: 900;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .abtn:hover {
+        border-color: rgba(6, 182, 212, 0.55);
+      }
+
+      .stage {
+        flex: 1;
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: transparent;
+      }
+
+      /* home overlay */
+      .home {
+        position: absolute;
+        inset: 0;
+        display: none;
+        padding: 22px;
+        background: linear-gradient(
+          180deg,
+          rgba(15, 23, 42, 0.92),
+          rgba(15, 23, 42, 0.68)
+        );
+        backdrop-filter: blur(14px);
+      }
+      .home.show {
+        display: block;
+      }
+      .heroTitle {
+        font-size: 30px;
+        font-weight: 950;
+        line-height: 1.15;
+        background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 4px;
+      }
+      .heroSub {
+        color: var(--muted);
+        max-width: 950px;
+        margin-top: 10px;
+        line-height: 1.8;
+      }
+      .cards {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .card {
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 14px;
+        display: flex;
+        gap: 12px;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease,
+          background 0.15s ease;
+      }
+      .card:hover {
+        transform: translateY(-1px);
+        border-color: rgba(6, 182, 212, 0.55);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .card .cic {
+        width: 46px;
+        height: 46px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 20px;
+      }
+      .card .ct {
+        font-weight: 900;
+      }
+      .card .cs {
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.55;
+        margin-top: 4px;
+      }
+
+      @media (max-width: 980px) {
+        body {
+          overflow: auto;
+        }
+        .app {
+          grid-template-columns: 1fr;
+          overflow: auto;
+        }
+        .side {
+          position: sticky;
+          top: 0;
+        }
+        .main {
+          min-height: calc(100vh - 0px);
+        }
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .stage {
+          min-height: 70vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+
+    <div class="app">
+      <aside class="side">
+        <div class="brand">
+          <div>
+            <h1>Integrated Product Presentation</h1>
+            <div class="hint">All modules in one clean deck</div>
+          </div>
+          <div class="pill" title="Keyboard: 1-5 to switch">⌨️ 1–5</div>
+        </div>
+
+        <div class="nav" id="nav"></div>
+
+        <div class="kbd">
+          <h3>Shortcuts</h3>
+          <div class="krow">
+            <span>Open Home</span><code class="key">H</code>
+          </div>
+          <div class="krow">
+            <span>Switch Module</span><code class="key">1</code>–<code
+              class="key"
+              >5</code
+            >
+          </div>
+          <div class="krow">
+            <span>Prev / Next Module</span><code class="key">Ctrl</code>+<code
+              class="key"
+              >←</code
+            >
+            / <code class="key">→</code>
+          </div>
+          <div class="krow">
+            <span>Fullscreen</span><code class="key">F</code>
+          </div>
+          <div class="krow">
+            <span>Tip</span
+            ><span>Use arrows inside each module to change slides</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <div class="titleWrap">
+            <div class="topTitle" id="topTitle">Home</div>
+            <div class="topSub" id="topSub">Choose a module from the left</div>
+          </div>
+          <div class="actions">
+            <button class="abtn" id="btnHome" title="Home (H)">🏠 Home</button>
+            <button class="abtn" id="btnOpen" title="Open in new tab">
+              🔗 Open
+            </button>
+            <button class="abtn" id="btnFull" title="Fullscreen (F)">
+              ⛶ Fullscreen
+            </button>
+          </div>
+        </div>
+
+        <div class="stage" id="stage">
+          <iframe
+            id="frame"
+            src="about:blank"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          ></iframe>
+
+          <section class="home show" id="home">
+            <div class="pill">
+              ✨ Unified navigation • consistent look • clean demo flow
+            </div>
+            <div class="heroTitle">One presentation. Five modules.</div>
+            <div class="heroSub">
+              This file is a “presentation shell” that brings your existing HTML
+              presentations together. It keeps each module intact (so your slide
+              controls still work), while giving you a professional, consistent
+              wrapper.
+            </div>
+
+            <div class="cards" id="homeCards"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const modules = [
+        {
+          id: "crm",
+          title: "Automotive CRM System",
+          desc: "Arabic landing-style overview: features, pipeline, automation, ROI, and security roles.",
+          icon: "🚗",
+          file: "CRM_Presentation.html",
+        },
+        {
+          id: "dash",
+          title: "Inventory & Sales Dashboard",
+          desc: "10-slide dashboard presentation: KPIs, car data, status, colors/models, customer types, ranking, reports.",
+          icon: "📊",
+          file: "dashSAP.html",
+        },
+        {
+          id: "meta",
+          title: "Meta Ads Library Tracking",
+          desc: "5-slide workflow: extract fields, pipeline, classify by brand keywords, export to Excel.",
+          icon: "📣",
+          file: "meta-ads.html",
+        },
+        {
+          id: "tasks",
+          title: "CRM Tasks Manager",
+          desc: "5 slides: filtering, description verification, tracking tables, task details & Excel reports.",
+          icon: "✅",
+          file: "tasks.html",
+        },
+        {
+          id: "web",
+          title: "Website Lead Flow (AR+EN)",
+          desc: "5 slides: website purpose, structured specs, forms, data flow to Excel/CRM, call-center workflow.",
+          icon: "🌐",
+          file: "websites.html",
+        },
+      ];
+
+      const nav = document.getElementById("nav");
+      const home = document.getElementById("home");
+      const homeCards = document.getElementById("homeCards");
+      const frame = document.getElementById("frame");
+      const topTitle = document.getElementById("topTitle");
+      const topSub = document.getElementById("topSub");
+      const btnHome = document.getElementById("btnHome");
+      const btnFull = document.getElementById("btnFull");
+      const btnOpen = document.getElementById("btnOpen");
+
+      let current = -1; // -1 = home
+
+      function setActiveNav() {
+        [...nav.querySelectorAll(".navbtn")].forEach((b, i) =>
+          b.classList.toggle("active", i === current),
+        );
+      }
+
+      function showHome() {
+        current = -1;
+        home.classList.add("show");
+        frame.src = "about:blank";
+        topTitle.textContent = "Home";
+        topSub.textContent = "Choose a module from the left";
+        btnOpen.disabled = true;
+        setActiveNav();
+      }
+
+      function openModule(i) {
+        const m = modules[i];
+        if (!m) return;
+        current = i;
+        home.classList.remove("show");
+        frame.src = m.file;
+        topTitle.textContent = m.title;
+        topSub.textContent = m.desc;
+        btnOpen.disabled = false;
+        setActiveNav();
+      }
+
+      function openInNewTab() {
+        if (current < 0) return;
+        window.open(modules[current].file, "_blank");
+      }
+
+      function toggleFullscreen() {
+        const el = document.getElementById("stage");
+        if (!document.fullscreenElement) {
+          el.requestFullscreen?.();
+        } else {
+          document.exitFullscreen?.();
+        }
+      }
+
+      // build sidebar nav
+      modules.forEach((m, i) => {
+        const b = document.createElement("div");
+        b.className = "navbtn";
+        b.innerHTML = `
+        <div class="ic">${m.icon}</div>
+        <div style="min-width:0">
+          <div class="ntitle">${i + 1}. ${m.title}</div>
+          <div class="ndesc">${m.desc}</div>
+        </div>
+      `;
+        b.addEventListener("click", () => openModule(i));
+        nav.appendChild(b);
+
+        const c = document.createElement("div");
+        c.className = "card";
+        c.innerHTML = `
+        <div class="cic">${m.icon}</div>
+        <div style="min-width:0">
+          <div class="ct">${i + 1}. ${m.title}</div>
+          <div class="cs">${m.desc}</div>
+        </div>
+      `;
+        c.addEventListener("click", () => openModule(i));
+        homeCards.appendChild(c);
+      });
+
+      btnHome.addEventListener("click", showHome);
+      btnFull.addEventListener("click", toggleFullscreen);
+      btnOpen.addEventListener("click", openInNewTab);
+
+      // keyboard
+      window.addEventListener("keydown", (e) => {
+        const k = e.key;
+        if (k === "h" || k === "H") return showHome();
+        if (k === "f" || k === "F") return toggleFullscreen();
+        if (k >= "1" && k <= "5") return openModule(parseInt(k, 10) - 1);
+
+        if (e.ctrlKey && (k === "ArrowRight" || k === "ArrowLeft")) {
+          e.preventDefault();
+          if (current < 0) return openModule(0);
+          const step = k === "ArrowRight" ? 1 : -1;
+          openModule((current + step + modules.length) % modules.length);
+        }
+      });
+
+      // init
+      showHome();
+    </script>
+  </body>
+</html>

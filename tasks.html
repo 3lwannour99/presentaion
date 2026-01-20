@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM Tasks Manager – Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #6366f1;
+        --secondary: #06b6d4;
+        --accent: #f59e0b;
+        --success: #10b981;
+        --danger: #ef4444;
+        --dark: #0f172a;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --hero: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        overflow: hidden;
+      }
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: var(--hero);
+      }
+      .wrap {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .stage {
+        width: min(1300px, 96vw);
+        aspect-ratio: 16/9;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: rgba(255, 255, 255, 0.04);
+        position: relative;
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 2rem;
+        display: none;
+      }
+      .slide.active {
+        display: block;
+      }
+      .glass {
+        height: 100%;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 2rem;
+        backdrop-filter: blur(18px);
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      h1 {
+        font-size: 2.1rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .sub {
+        color: var(--muted);
+        line-height: 1.9;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        flex: 1;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 1rem;
+      }
+      .card h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.6rem;
+      }
+      .item {
+        padding: 0.7rem;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0.5rem;
+      }
+      .controls {
+        position: fixed;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+        background: rgba(15, 23, 42, 0.7);
+        padding: 0.6rem 0.9rem;
+        border-radius: 999px;
+      }
+      .btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .counter {
+        color: var(--muted);
+        font-weight: 900;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg"></div>
+
+    <div class="wrap">
+      <div class="stage">
+        <!-- Slide 1 -->
+        <section class="slide active">
+          <div class="glass">
+            <h1>CRM Tasks Manager</h1>
+            <div class="sub">
+              An intelligent system for managing and tracking CRM tasks for
+              sales representatives, focused on improving data quality, task
+              description accuracy, and supporting decision-making.
+            </div>
+            <div class="grid">
+              <div class="card">
+                <h2>🎯 Goal</h2>
+                <div class="item">Improve the quality of task descriptions</div>
+                <div class="item">Simplify sales performance tracking</div>
+                <div class="item">Create accurate, exportable reports</div>
+              </div>
+              <div class="card">
+                <h2>📌 What does the system offer?</h2>
+                <div class="item">Filtering by date and country</div>
+                <div class="item">
+                  Intelligent task description classification
+                </div>
+                <div class="item">Tracking tables and Excel reports</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2 -->
+        <section class="slide">
+          <div class="glass">
+            <h1>Dashboard and Filtering</h1>
+            <div class="sub">
+              The main page provides a comprehensive overview with advanced
+              filtering tools by date, description type, and country.
+            </div>
+            <div class="grid">
+              <div class="card">
+                <h2>🗓️ Time Filtering</h2>
+                <div class="item">
+                  Select a specific period to analyze tasks
+                </div>
+                <div class="item">Review daily or campaign activity</div>
+              </div>
+              <div class="card">
+                <h2>📊 Quick Summary</h2>
+                <div class="item">Total number of tasks</div>
+                <div class="item">Live breakdown by status</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3 -->
+        <section class="slide">
+          <div class="glass">
+            <h1>Task Description Verification</h1>
+            <div class="sub">
+              The system uses classification to verify the quality of the task
+              description written by the sales representative.
+            </div>
+            <div class="grid">
+              <div class="card">
+                <h2>✅ Description Types</h2>
+                <div class="item">
+                  Real Description: Clear and useful information
+                </div>
+                <div class="item">
+                  Non-Real Description: Generic or repetitive
+                </div>
+                <div class="item">No Description: Lack of data</div>
+              </div>
+              <div class="card">
+                <h2>🎯 Benefit</h2>
+                <div class="item">Improve data quality</div>
+                <div class="item">Enhance follow-up and review</div>
+                <div class="item">Reduce errors and repetition</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4 -->
+        <section class="slide">
+          <div class="glass">
+            <h1>Tracking and Comparison Tables</h1>
+            <div class="sub">
+              Filter results can be saved in independent tables and reloaded
+              later for comparison with current CRM data.
+            </div>
+            <div class="grid">
+              <div class="card">
+                <h2>📂 Saved Tables</h2>
+                <div class="item">Save snapshots of data at specific times</div>
+                <div class="item">Manage tables easily</div>
+              </div>
+              <div class="card">
+                <h2>🔍 Data Comparison</h2>
+                <div class="item">Track changes over time</div>
+                <div class="item">Analyze improvement or decline</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5 -->
+        <section class="slide">
+          <div class="glass">
+            <h1>Task Details and Reports</h1>
+            <div class="sub">
+              The system displays details of each task with a comparison of the
+              original and current description, with the ability to export
+              results to Excel.
+            </div>
+            <div class="grid">
+              <div class="card">
+                <h2>🧾 Task Details</h2>
+                <div class="item">Client and representative data</div>
+                <div class="item">Status and priority</div>
+              </div>
+              <div class="card">
+                <h2>📤 Reports</h2>
+                <div class="item">Export to Excel</div>
+                <div class="item">Use in management reports</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" onclick="go(-1)">◀</button>
+      <div class="counter" id="counter">1 / 5</div>
+      <button class="btn" onclick="go(1)">▶</button>
+    </div>
+
+    <script>
+      const slides = document.querySelectorAll(".slide");
+      let idx = 0;
+      function go(step) {
+        slides[idx].classList.remove("active");
+        idx = (idx + step + slides.length) % slides.length;
+        slides[idx].classList.add("active");
+        document.getElementById("counter").textContent =
+          `${idx + 1} / ${slides.length}`;
+      }
+    </script>
+  </body>
+</html>
