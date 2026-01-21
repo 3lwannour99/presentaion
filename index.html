@@ -459,7 +459,7 @@
             <h1>Integrated Product Presentation</h1>
             <div class="hint">All modules in one clean deck</div>
           </div>
-          <div class="pill" title="Keyboard: 1-7 to switch">⌨️ 1–7</div>
+          <div class="pill" title="Keyboard: 1-8 to switch">⌨️ 1–8</div>
         </div>
 
         <div class="nav" id="nav"></div>
@@ -472,7 +472,7 @@
           <div class="krow">
             <span>Switch Module</span><code class="key">1</code>–<code
               class="key"
-              >7</code
+              >8</code
             >
           </div>
           <div class="krow">
@@ -520,7 +520,7 @@
             <div class="pill">
               ✨ Unified navigation • consistent look • clean demo flow
             </div>
-            <div class="heroTitle">One presentation. six modules.</div>
+            <div class="heroTitle">One presentation. eight modules.</div>
 
             <!-- Language Toggle -->
             <div class="lang-toggle">
@@ -586,6 +586,22 @@
           icon: "📣",
           file: "meta-ads.html",
         },
+
+        /* ✅ NEW MODULE: Meta API ↔ CRM Inbox */
+        {
+          id: "metaApi",
+          title: {
+            en: "Meta API ↔ CRM Inbox",
+            ar: "تكامل Meta API مع صندوق CRM",
+          },
+          desc: {
+            en: "7-slide deck: unified inbox for Meta messages/comments and CRM-based replies (AR + EN).",
+            ar: "عرض 7 شرائح: توحيد رسائل/تعليقات ميتا داخل CRM والرد من داخل النظام (عربي + إنجليزي).",
+          },
+          icon: "🔌",
+          file: "metaApi.html",
+        },
+
         {
           id: "tasks",
           title: {
@@ -815,8 +831,8 @@
         if (k === "h" || k === "H") return showHome();
         if (k === "f" || k === "F") return toggleFullscreen();
 
-        // ✅ updated to 1–7
-        if (k >= "1" && k <= "7") return openModule(parseInt(k, 10) - 1);
+        // ✅ updated to 1–8
+        if (k >= "1" && k <= "8") return openModule(parseInt(k, 10) - 1);
 
         if (e.ctrlKey && (k === "ArrowRight" || k === "ArrowLeft")) {
           e.preventDefault();
