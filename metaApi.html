@@ -23,7 +23,11 @@
         --hero: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
       }
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
       body {
         font-family: "Cairo", sans-serif;
         background: var(--dark);
@@ -62,10 +66,19 @@
         animation-delay: -9s;
       }
       @keyframes float {
-        0%, 100% { transform: translate(0, 0) rotate(0); }
-        25% { transform: translate(70px, 45px) rotate(6deg); }
-        50% { transform: translate(0, 120px) rotate(0); }
-        75% { transform: translate(-70px, 45px) rotate(-6deg); }
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0);
+        }
+        25% {
+          transform: translate(70px, 45px) rotate(6deg);
+        }
+        50% {
+          transform: translate(0, 120px) rotate(0);
+        }
+        75% {
+          transform: translate(-70px, 45px) rotate(-6deg);
+        }
       }
 
       .wrap {
@@ -73,11 +86,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem;
+        padding: 0; /* مهم */
       }
+
+      /* ✅ المقاس المطلوب: 1163 × 834 */
       .stage {
-        width: min(1300px, 96vw);
-        aspect-ratio: 16/9;
+        width: 1163px;
+        height: 834px;
+
+        /* ✅ لو نافذة المتصفح أصغر من المقاس */
+        max-width: 100vw;
+        max-height: 100vh;
+
+        /* ✅ يحافظ على المقاس داخل أي شاشة */
+        width: min(1163px, 100vw);
+        height: min(834px, 100vh);
+
         border-radius: 28px;
         overflow: hidden;
         box-shadow: var(--shadow);
@@ -85,14 +109,22 @@
         background: rgba(255, 255, 255, 0.04);
         position: relative;
       }
-      .slide { position: absolute; inset: 0; padding: 2rem; display: none; }
-      .slide.active { display: block; }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 1.5rem;
+        display: none;
+      }
+      .slide.active {
+        display: block;
+      }
       .glass {
         height: 100%;
         background: var(--glass);
         border: 1px solid var(--glass-border);
         border-radius: 24px;
-        padding: 2rem;
+        padding: 1.5rem;
         backdrop-filter: blur(18px);
         display: flex;
         flex-direction: column;
@@ -121,8 +153,8 @@
         font-weight: 900;
         line-height: 1.25;
         background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent; /* fallback */
       }
       .sub {
         color: var(--muted);
@@ -134,10 +166,11 @@
 
       .grid {
         display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
+        grid-template-columns: 1fr 1fr;
         gap: 1rem;
         flex: 1;
-        min-height: 0;
+        min-height: 35vh;
+        overflow: hidden;
       }
       .card {
         background: rgba(255, 255, 255, 0.04);
@@ -145,15 +178,20 @@
         border-radius: 20px;
         padding: 1rem;
         min-height: 0;
-        overflow: hidden;
       }
       .card h2 {
         font-size: 1.2rem;
         font-weight: 900;
         margin-bottom: 0.55rem;
       }
-      .muted { color: var(--muted); }
-      .list { display: grid; gap: 0.6rem; margin-top: 0.35rem; }
+      .muted {
+        color: var(--muted);
+      }
+      .list {
+        display: grid;
+        gap: 0.6rem;
+        margin-top: 0.35rem;
+      }
       .item {
         display: flex;
         gap: 0.6rem;
@@ -191,14 +229,29 @@
         border: 1px solid rgba(255, 255, 255, 0.15);
         white-space: nowrap;
       }
-      .p-primary { background: rgba(99, 102, 241, 0.14); border-color: rgba(99, 102, 241, 0.35); }
-      .p-cyan { background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.35); }
-      .p-amber { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
-      .p-green { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); }
-      .p-danger { background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.35); }
+      .p-primary {
+        background: rgba(99, 102, 241, 0.14);
+        border-color: rgba(99, 102, 241, 0.35);
+      }
+      .p-cyan {
+        background: rgba(6, 182, 212, 0.12);
+        border-color: rgba(6, 182, 212, 0.35);
+      }
+      .p-amber {
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.35);
+      }
+      .p-green {
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+      .p-danger {
+        background: rgba(239, 68, 68, 0.12);
+        border-color: rgba(239, 68, 68, 0.35);
+      }
 
       /* === Global Language Toggle (EN/AR) === */
-      .langToggle{
+      .langToggle {
         position: fixed;
         top: 14px;
         right: 14px;
@@ -206,8 +259,11 @@
         gap: 8px;
         z-index: 9999;
       }
-      html[dir="rtl"] .langToggle{ right:auto; left:14px; }
-      .langBtn{
+      html[dir="rtl"] .langToggle {
+        right: auto;
+        left: 14px;
+      }
+      .langBtn {
         padding: 10px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.18);
@@ -218,7 +274,7 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
       }
-      .langBtn.active{
+      .langBtn.active {
         border-color: rgba(6, 182, 212, 0.9);
         box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
       }
@@ -250,7 +306,11 @@
         font-weight: 900;
         cursor: pointer;
       }
-      .dots { display: flex; gap: 0.35rem; padding: 0 0.2rem; }
+      .dots {
+        display: flex;
+        gap: 0.35rem;
+        padding: 0 0.2rem;
+      }
       .dotnav {
         width: 10px;
         height: 10px;
@@ -272,14 +332,26 @@
       }
 
       /* i18n visibility */
-      [data-lang] { display: none; }
-      html[lang="en"] [data-lang="en"] { display: block; }
-      html[lang="ar"] [data-lang="ar"] { display: block; }
+      [data-lang] {
+        display: none;
+      }
+      html[lang="en"] [data-lang="en"] {
+        display: block;
+      }
+      html[lang="ar"] [data-lang="ar"] {
+        display: block;
+      }
 
       @media (max-width: 980px) {
-        .grid { grid-template-columns: 1fr; }
-        h1 { font-size: 1.8rem; }
-        .sub { font-size: 1rem; }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 1.8rem;
+        }
+        .sub {
+          font-size: 1rem;
+        }
       }
     </style>
   </head>
@@ -295,17 +367,21 @@
 
     <div class="wrap">
       <div class="stage">
-
         <!-- Slide 1 -->
         <section class="slide active">
           <div class="glass">
             <div class="top">
               <div>
                 <div data-lang="en">
-                  <h1>Meta API ↔ CRM <span style="white-space:nowrap">Integration</span></h1>
+                  <h1>
+                    Meta API ↔ CRM
+                    <span style="white-space: nowrap">Integration</span>
+                  </h1>
                   <div class="sub">
-                    A dedicated platform for Laith Alobaidi Group – Cars that pulls messages & comments from selected Meta pages,
-                    then <strong>integrates</strong> them with the CRM so agents reply faster with higher accuracy.
+                    A dedicated platform for Laith Alobaidi Group – Cars that
+                    pulls messages & comments from selected Meta pages, then
+                    <strong>integrates</strong> them with the CRM so agents
+                    reply faster with higher accuracy.
                   </div>
                   <div class="pills">
                     <span class="pill p-primary">🔌 Integration</span>
@@ -316,10 +392,15 @@
                 </div>
 
                 <div data-lang="ar">
-                  <h1><span style="white-space:nowrap">Integration</span> بين Meta API و CRM</h1>
+                  <h1>
+                    <span style="white-space: nowrap">Integration</span> بين
+                    Meta API و CRM
+                  </h1>
                   <div class="sub">
-                    منصة خاصة بـ <strong>شركة ليث العبيدي للسيارات</strong> تسحب الرسائل والتعليقات من صفحات Meta المحددة،
-                    وتعمل <strong>Integration</strong> مع الـ CRM بحيث الموظفين يردّوا من داخل الـ CRM بسرعة ودقّة.
+                    منصة خاصة بـ <strong>شركة ليث العبيدي للسيارات</strong> تسحب
+                    الرسائل والتعليقات من صفحات Meta المحددة، وتعمل
+                    <strong>Integration</strong> مع الـ CRM بحيث الموظفين يردّوا
+                    من داخل الـ CRM بسرعة ودقّة.
                   </div>
                   <div class="pills">
                     <span class="pill p-primary">🔌 Integration</span>
@@ -339,15 +420,30 @@
                   <div class="list">
                     <div class="item">
                       <div class="dot">1</div>
-                      <div><strong>Unify inbox</strong><div class="muted">One place for Meta messages + comments.</div></div>
+                      <div>
+                        <strong>Unify inbox</strong>
+                        <div class="muted">
+                          One place for Meta messages + comments.
+                        </div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">2</div>
-                      <div><strong>CRM-based replies</strong><div class="muted">Agents respond from the CRM workflow.</div></div>
+                      <div>
+                        <strong>CRM-based replies</strong>
+                        <div class="muted">
+                          Agents respond from the CRM workflow.
+                        </div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">3</div>
-                      <div><strong>Speed + accuracy</strong><div class="muted">Faster handling, fewer mistakes.</div></div>
+                      <div>
+                        <strong>Speed + accuracy</strong>
+                        <div class="muted">
+                          Faster handling, fewer mistakes.
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -357,15 +453,24 @@
                   <div class="list">
                     <div class="item">
                       <div class="dot">1</div>
-                      <div><strong>توحيد الصندوق</strong><div class="muted">مكان واحد للرسائل + التعليقات.</div></div>
+                      <div>
+                        <strong>توحيد الصندوق</strong>
+                        <div class="muted">مكان واحد للرسائل + التعليقات.</div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">2</div>
-                      <div><strong>الرد من داخل الـ CRM</strong><div class="muted">ضمن نفس إجراءات الموظفين.</div></div>
+                      <div>
+                        <strong>الرد من داخل الـ CRM</strong>
+                        <div class="muted">ضمن نفس إجراءات الموظفين.</div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">3</div>
-                      <div><strong>سرعة + دقّة</strong><div class="muted">تقليل التأخير والأخطاء.</div></div>
+                      <div>
+                        <strong>سرعة + دقّة</strong>
+                        <div class="muted">تقليل التأخير والأخطاء.</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -375,18 +480,64 @@
                 <div data-lang="en">
                   <h2>✅ What’s Included</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📥</div><div><strong>Pull</strong><div class="muted">Fetch threads from selected Meta pages.</div></div></div>
-                    <div class="item"><div class="dot">🔁</div><div><strong>Sync</strong><div class="muted">Bi-directional status + assignment (optional).</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>Context</strong><div class="muted">Link user/chat to customer lead/profile.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📥</div>
+                      <div>
+                        <strong>Pull</strong>
+                        <div class="muted">
+                          Fetch threads from selected Meta pages.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>
+                        <strong>Sync</strong>
+                        <div class="muted">
+                          Bi-directional status + assignment (optional).
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>Context</strong>
+                        <div class="muted">
+                          Link user/chat to customer lead/profile.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>✅ نطاق العمل</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📥</div><div><strong>سحب الداتا</strong><div class="muted">من صفحات Meta المحددة.</div></div></div>
-                    <div class="item"><div class="dot">🔁</div><div><strong>مزامنة</strong><div class="muted">حالة المحادثة + التعيين (حسب الحاجة).</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>ربط سياق</strong><div class="muted">ربط المحادثة بملف العميل/الـ Lead.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📥</div>
+                      <div>
+                        <strong>سحب الداتا</strong>
+                        <div class="muted">من صفحات Meta المحددة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>
+                        <strong>مزامنة</strong>
+                        <div class="muted">
+                          حالة المحادثة + التعيين (حسب الحاجة).
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>ربط سياق</strong>
+                        <div class="muted">
+                          ربط المحادثة بملف العميل/الـ Lead.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -400,17 +551,25 @@
             <div class="top">
               <div>
                 <div data-lang="en">
-                  <h1>Why the <span style="white-space:nowrap">Integration</span> Matters</h1>
+                  <h1>
+                    Why the
+                    <span style="white-space: nowrap">Integration</span> Matters
+                  </h1>
                   <div class="sub">
-                    Before integration, messages and comments were scattered across pages and devices. Now everything flows into the CRM,
+                    Before integration, messages and comments were scattered
+                    across pages and devices. Now everything flows into the CRM,
                     enabling consistent handling and accountability.
                   </div>
                 </div>
                 <div data-lang="ar">
-                  <h1>ليش الـ <span style="white-space:nowrap">Integration</span> مهم؟</h1>
+                  <h1>
+                    ليش الـ
+                    <span style="white-space: nowrap">Integration</span> مهم؟
+                  </h1>
                   <div class="sub">
-                    قبل الـ Integration كانت الرسائل والتعليقات موزّعة بين الصفحات والأجهزة.
-                    الآن كل شيء يدخل على الـ CRM ليصير الرد موحّد ومُوثّق وقابل للمتابعة.
+                    قبل الـ Integration كانت الرسائل والتعليقات موزّعة بين
+                    الصفحات والأجهزة. الآن كل شيء يدخل على الـ CRM ليصير الرد
+                    موحّد ومُوثّق وقابل للمتابعة.
                   </div>
                 </div>
               </div>
@@ -422,18 +581,60 @@
                 <div data-lang="en">
                   <h2>⚠️ Pain Points (Before)</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⏳</div><div><strong>Delayed replies</strong><div class="muted">Inbox scattered across multiple pages.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>No unified tracking</strong><div class="muted">Hard to know who replied and when.</div></div></div>
-                    <div class="item"><div class="dot">❌</div><div><strong>Missed comments</strong><div class="muted">Comments often get lost under posts.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⏳</div>
+                      <div>
+                        <strong>Delayed replies</strong>
+                        <div class="muted">
+                          Inbox scattered across multiple pages.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>No unified tracking</strong>
+                        <div class="muted">
+                          Hard to know who replied and when.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">❌</div>
+                      <div>
+                        <strong>Missed comments</strong>
+                        <div class="muted">
+                          Comments often get lost under posts.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>⚠️ التحديات (قبل)</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⏳</div><div><strong>تأخير بالرد</strong><div class="muted">الرسائل موزعة بين أكثر من صفحة.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>غياب التتبع</strong><div class="muted">مين رد ومتى؟ بصعوبة ينرصد.</div></div></div>
-                    <div class="item"><div class="dot">❌</div><div><strong>ضياع تعليقات</strong><div class="muted">التعليقات تتراكم وقد تُفقد.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⏳</div>
+                      <div>
+                        <strong>تأخير بالرد</strong>
+                        <div class="muted">الرسائل موزعة بين أكثر من صفحة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>غياب التتبع</strong>
+                        <div class="muted">مين رد ومتى؟ بصعوبة ينرصد.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">❌</div>
+                      <div>
+                        <strong>ضياع تعليقات</strong>
+                        <div class="muted">التعليقات تتراكم وقد تُفقد.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -442,11 +643,35 @@
                 <div data-lang="en">
                   <h2>✅ Outcomes (After)</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🔌</div><div><strong>Integration into CRM</strong><div class="muted">Everything in one operational tool.</div></div></div>
-                    <div class="item"><div class="dot">👥</div><div><strong>Assignment + ownership</strong><div class="muted">Each conversation has a responsible agent.</div></div></div>
-                    <div class="item"><div class="dot">📈</div><div><strong>Faster SLA</strong><div class="muted">Improve response time and customer trust.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🔌</div>
+                      <div>
+                        <strong>Integration into CRM</strong>
+                        <div class="muted">
+                          Everything in one operational tool.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>
+                        <strong>Assignment + ownership</strong>
+                        <div class="muted">
+                          Each conversation has a responsible agent.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📈</div>
+                      <div>
+                        <strong>Faster SLA</strong>
+                        <div class="muted">
+                          Improve response time and customer trust.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">CRM Workflow</span>
                     <span class="pill p-cyan">Unified Inbox</span>
                     <span class="pill p-green">Accountability</span>
@@ -456,11 +681,29 @@
                 <div data-lang="ar">
                   <h2>✅ النتائج (بعد)</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🔌</div><div><strong>Integration داخل الـ CRM</strong><div class="muted">كل شيء بمكان واحد.</div></div></div>
-                    <div class="item"><div class="dot">👥</div><div><strong>توزيع ومَلكية</strong><div class="muted">كل محادثة عليها موظف مسؤول.</div></div></div>
-                    <div class="item"><div class="dot">📈</div><div><strong>تحسين زمن الرد</strong><div class="muted">رفع الثقة وتجربة العميل.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🔌</div>
+                      <div>
+                        <strong>Integration داخل الـ CRM</strong>
+                        <div class="muted">كل شيء بمكان واحد.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>
+                        <strong>توزيع ومَلكية</strong>
+                        <div class="muted">كل محادثة عليها موظف مسؤول.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📈</div>
+                      <div>
+                        <strong>تحسين زمن الرد</strong>
+                        <div class="muted">رفع الثقة وتجربة العميل.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Workflow</span>
                     <span class="pill p-cyan">Inbox موحّد</span>
                     <span class="pill p-green">مسؤولية</span>
@@ -477,17 +720,23 @@
             <div class="top">
               <div>
                 <div data-lang="en">
-                  <h1><span style="white-space:nowrap">Integration</span> Architecture</h1>
+                  <h1>
+                    <span style="white-space: nowrap">Integration</span>
+                    Architecture
+                  </h1>
                   <div class="sub">
-                    The platform acts as the bridge between Meta pages and the CRM:
-                    ingest → normalize → route → respond → sync status.
+                    The platform acts as the bridge between Meta pages and the
+                    CRM: ingest → normalize → route → respond → sync status.
                   </div>
                 </div>
                 <div data-lang="ar">
-                  <h1>معمارية الـ <span style="white-space:nowrap">Integration</span></h1>
+                  <h1>
+                    معمارية الـ
+                    <span style="white-space: nowrap">Integration</span>
+                  </h1>
                   <div class="sub">
-                    المنصة تعمل كجسر بين صفحات Meta والـ CRM:
-                    سحب → ترتيب/تنظيف → توزيع → رد → مزامنة الحالة.
+                    المنصة تعمل كجسر بين صفحات Meta والـ CRM: سحب → ترتيب/تنظيف
+                    → توزيع → رد → مزامنة الحالة.
                   </div>
                 </div>
               </div>
@@ -499,20 +748,76 @@
                 <div data-lang="en">
                   <h2>🧩 Components</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📡</div><div><strong>Meta API Connector</strong><div class="muted">Pull messages & comment threads.</div></div></div>
-                    <div class="item"><div class="dot">🧱</div><div><strong>Normalization Layer</strong><div class="muted">Unify formats (msg/comment) into one model.</div></div></div>
-                    <div class="item"><div class="dot">🔀</div><div><strong>Routing Engine</strong><div class="muted">Assign by page, branch, or team rules.</div></div></div>
-                    <div class="item"><div class="dot">🗂️</div><div><strong>CRM Module</strong><div class="muted">Inbox inside CRM with history & ownership.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📡</div>
+                      <div>
+                        <strong>Meta API Connector</strong>
+                        <div class="muted">
+                          Pull messages & comment threads.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧱</div>
+                      <div>
+                        <strong>Normalization Layer</strong>
+                        <div class="muted">
+                          Unify formats (msg/comment) into one model.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔀</div>
+                      <div>
+                        <strong>Routing Engine</strong>
+                        <div class="muted">
+                          Assign by page, branch, or team rules.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🗂️</div>
+                      <div>
+                        <strong>CRM Module</strong>
+                        <div class="muted">
+                          Inbox inside CRM with history & ownership.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>🧩 المكوّنات</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📡</div><div><strong>موصل Meta API</strong><div class="muted">سحب الرسائل وخيوط التعليقات.</div></div></div>
-                    <div class="item"><div class="dot">🧱</div><div><strong>توحيد البيانات</strong><div class="muted">توحيد شكل الرسائل والتعليقات.</div></div></div>
-                    <div class="item"><div class="dot">🔀</div><div><strong>محرك التوزيع</strong><div class="muted">تعيين حسب الصفحة/الفرع/الفريق.</div></div></div>
-                    <div class="item"><div class="dot">🗂️</div><div><strong>وحدة داخل CRM</strong><div class="muted">Inbox داخل الـ CRM مع سجل كامل.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📡</div>
+                      <div>
+                        <strong>موصل Meta API</strong>
+                        <div class="muted">سحب الرسائل وخيوط التعليقات.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧱</div>
+                      <div>
+                        <strong>توحيد البيانات</strong>
+                        <div class="muted">توحيد شكل الرسائل والتعليقات.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔀</div>
+                      <div>
+                        <strong>محرك التوزيع</strong>
+                        <div class="muted">تعيين حسب الصفحة/الفرع/الفريق.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🗂️</div>
+                      <div>
+                        <strong>وحدة داخل CRM</strong>
+                        <div class="muted">Inbox داخل الـ CRM مع سجل كامل.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -521,11 +826,33 @@
                 <div data-lang="en">
                   <h2>🔒 Operational Quality</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🔑</div><div><strong>Token/Access control</strong><div class="muted">Secure access to pages (permissions).</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>Audit trail</strong><div class="muted">Who replied, what, and when.</div></div></div>
-                    <div class="item"><div class="dot">🔁</div><div><strong>Status sync</strong><div class="muted">Seen / replied / resolved states.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🔑</div>
+                      <div>
+                        <strong>Token/Access control</strong>
+                        <div class="muted">
+                          Secure access to pages (permissions).
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>Audit trail</strong>
+                        <div class="muted">Who replied, what, and when.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>
+                        <strong>Status sync</strong>
+                        <div class="muted">
+                          Seen / replied / resolved states.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-cyan">Security</span>
                     <span class="pill p-primary">Traceability</span>
                     <span class="pill p-green">Consistency</span>
@@ -535,11 +862,29 @@
                 <div data-lang="ar">
                   <h2>🔒 جودة التشغيل</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🔑</div><div><strong>صلاحيات آمنة</strong><div class="muted">ضبط الوصول للصفحات.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>سجل تدقيق</strong><div class="muted">مين رد ومتى وبأي نص.</div></div></div>
-                    <div class="item"><div class="dot">🔁</div><div><strong>مزامنة الحالة</strong><div class="muted">تمت القراءة/الرد/الإغلاق.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🔑</div>
+                      <div>
+                        <strong>صلاحيات آمنة</strong>
+                        <div class="muted">ضبط الوصول للصفحات.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>سجل تدقيق</strong>
+                        <div class="muted">مين رد ومتى وبأي نص.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>
+                        <strong>مزامنة الحالة</strong>
+                        <div class="muted">تمت القراءة/الرد/الإغلاق.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-cyan">أمان</span>
                     <span class="pill p-primary">تتبع</span>
                     <span class="pill p-green">اتساق</span>
@@ -556,15 +901,24 @@
             <div class="top">
               <div>
                 <div data-lang="en">
-                  <h1>End-to-End <span style="white-space:nowrap">Integration</span> Flow</h1>
+                  <h1>
+                    End-to-End
+                    <span style="white-space: nowrap">Integration</span> Flow
+                  </h1>
                   <div class="sub">
-                    From Meta page interaction to CRM action — the flow is automated to reduce manual work and accelerate response.
+                    From Meta page interaction to CRM action — the flow is
+                    automated to reduce manual work and accelerate response.
                   </div>
                 </div>
                 <div data-lang="ar">
-                  <h1>تدفق الـ <span style="white-space:nowrap">Integration</span> من البداية للنهاية</h1>
+                  <h1>
+                    تدفق الـ
+                    <span style="white-space: nowrap">Integration</span> من
+                    البداية للنهاية
+                  </h1>
                   <div class="sub">
-                    من تفاعل العميل على صفحات Meta إلى إجراء داخل الـ CRM — تدفق آلي يقلل العمل اليدوي ويرفع سرعة الاستجابة.
+                    من تفاعل العميل على صفحات Meta إلى إجراء داخل الـ CRM — تدفق
+                    آلي يقلل العمل اليدوي ويرفع سرعة الاستجابة.
                   </div>
                 </div>
               </div>
@@ -576,22 +930,98 @@
                 <div data-lang="en">
                   <h2>🔄 Automated Steps</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div><strong>Customer writes</strong><div class="muted">Message or comment on selected pages.</div></div></div>
-                    <div class="item"><div class="dot">2</div><div><strong>Platform pulls</strong><div class="muted">Fetch via Meta API + normalize content.</div></div></div>
-                    <div class="item"><div class="dot">3</div><div><strong>CRM creates/links</strong><div class="muted">Match to lead/customer or create new case.</div></div></div>
-                    <div class="item"><div class="dot">4</div><div><strong>Agent replies</strong><div class="muted">Reply from CRM (templates + notes).</div></div></div>
-                    <div class="item"><div class="dot">5</div><div><strong>Sync back</strong><div class="muted">Status updated + timeline stored.</div></div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>Customer writes</strong>
+                        <div class="muted">
+                          Message or comment on selected pages.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>Platform pulls</strong>
+                        <div class="muted">
+                          Fetch via Meta API + normalize content.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>CRM creates/links</strong>
+                        <div class="muted">
+                          Match to lead/customer or create new case.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>
+                        <strong>Agent replies</strong>
+                        <div class="muted">
+                          Reply from CRM (templates + notes).
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">5</div>
+                      <div>
+                        <strong>Sync back</strong>
+                        <div class="muted">
+                          Status updated + timeline stored.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>🔄 الخطوات الآلية</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div><strong>تواصل العميل</strong><div class="muted">رسالة أو تعليق على الصفحات المحددة.</div></div></div>
-                    <div class="item"><div class="dot">2</div><div><strong>سحب عبر المنصة</strong><div class="muted">سحب من Meta API + توحيد البيانات.</div></div></div>
-                    <div class="item"><div class="dot">3</div><div><strong>ربط داخل CRM</strong><div class="muted">ربط بملف العميل/Lead أو إنشاء حالة.</div></div></div>
-                    <div class="item"><div class="dot">4</div><div><strong>الرد من CRM</strong><div class="muted">قوالب رد + ملاحظات + متابعة.</div></div></div>
-                    <div class="item"><div class="dot">5</div><div><strong>مزامنة للخلف</strong><div class="muted">تحديث الحالة + حفظ السجل.</div></div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>تواصل العميل</strong>
+                        <div class="muted">
+                          رسالة أو تعليق على الصفحات المحددة.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>سحب عبر المنصة</strong>
+                        <div class="muted">
+                          سحب من Meta API + توحيد البيانات.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>ربط داخل CRM</strong>
+                        <div class="muted">
+                          ربط بملف العميل/Lead أو إنشاء حالة.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>
+                        <strong>الرد من CRM</strong>
+                        <div class="muted">قوالب رد + ملاحظات + متابعة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">5</div>
+                      <div>
+                        <strong>مزامنة للخلف</strong>
+                        <div class="muted">تحديث الحالة + حفظ السجل.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -600,11 +1030,35 @@
                 <div data-lang="en">
                   <h2>🎯 What the CRM Gains</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📌</div><div><strong>Single inbox</strong><div class="muted">Messages + comments in one queue.</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>Customer context</strong><div class="muted">Lead stage, model interest, history.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>Resolution workflow</strong><div class="muted">Open → Assigned → Replied → Closed.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📌</div>
+                      <div>
+                        <strong>Single inbox</strong>
+                        <div class="muted">
+                          Messages + comments in one queue.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>Customer context</strong>
+                        <div class="muted">
+                          Lead stage, model interest, history.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>Resolution workflow</strong>
+                        <div class="muted">
+                          Open → Assigned → Replied → Closed.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Integration</span>
                     <span class="pill p-cyan">Context</span>
                     <span class="pill p-green">Workflow</span>
@@ -614,11 +1068,33 @@
                 <div data-lang="ar">
                   <h2>🎯 شو كسبنا داخل الـ CRM؟</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📌</div><div><strong>Inbox موحّد</strong><div class="muted">رسائل + تعليقات بصف واحد.</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>سياق العميل</strong><div class="muted">مرحلة الـ Lead واهتمامه بالموديل.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>Workflow للإغلاق</strong><div class="muted">مفتوح → مُعيّن → تم الرد → مُغلق.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📌</div>
+                      <div>
+                        <strong>Inbox موحّد</strong>
+                        <div class="muted">رسائل + تعليقات بصف واحد.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>سياق العميل</strong>
+                        <div class="muted">
+                          مرحلة الـ Lead واهتمامه بالموديل.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>Workflow للإغلاق</strong>
+                        <div class="muted">
+                          مفتوح → مُعيّن → تم الرد → مُغلق.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Integration</span>
                     <span class="pill p-cyan">سياق</span>
                     <span class="pill p-green">إجراءات</span>
@@ -637,13 +1113,15 @@
                 <div data-lang="en">
                   <h1>CRM Agent Experience</h1>
                   <div class="sub">
-                    The integration is designed for the CRM team: clear queues, fast replies, and controlled quality.
+                    The integration is designed for the CRM team: clear queues,
+                    fast replies, and controlled quality.
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h1>تجربة موظف الـ CRM</h1>
                   <div class="sub">
-                    الـ Integration مبني لراحة فريق الـ CRM: طوابير واضحة، رد سريع، وجودة أعلى.
+                    الـ Integration مبني لراحة فريق الـ CRM: طوابير واضحة، رد
+                    سريع، وجودة أعلى.
                   </div>
                 </div>
               </div>
@@ -655,20 +1133,74 @@
                 <div data-lang="en">
                   <h2>🧑‍💼 Daily Workflow</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div><strong>Open queue</strong><div class="muted">New messages/comments appear instantly.</div></div></div>
-                    <div class="item"><div class="dot">2</div><div><strong>Assign</strong><div class="muted">To agent/team based on rules.</div></div></div>
-                    <div class="item"><div class="dot">3</div><div><strong>Reply</strong><div class="muted">Templates + personalization + notes.</div></div></div>
-                    <div class="item"><div class="dot">4</div><div><strong>Close & tag</strong><div class="muted">Outcome tags: test drive / pricing / availability.</div></div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>Open queue</strong>
+                        <div class="muted">
+                          New messages/comments appear instantly.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>Assign</strong>
+                        <div class="muted">To agent/team based on rules.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>Reply</strong>
+                        <div class="muted">
+                          Templates + personalization + notes.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>
+                        <strong>Close & tag</strong>
+                        <div class="muted">
+                          Outcome tags: test drive / pricing / availability.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>🧑‍💼 سير العمل اليومي</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div><strong>فتح الطابور</strong><div class="muted">ظهور الرسائل/التعليقات مباشرة.</div></div></div>
-                    <div class="item"><div class="dot">2</div><div><strong>تعيين</strong><div class="muted">حسب القواعد للفريق/الموظف.</div></div></div>
-                    <div class="item"><div class="dot">3</div><div><strong>رد</strong><div class="muted">قوالب + تخصيص + ملاحظات.</div></div></div>
-                    <div class="item"><div class="dot">4</div><div><strong>إغلاق وتوسيم</strong><div class="muted">تجربة قيادة / سعر / توفر.</div></div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>فتح الطابور</strong>
+                        <div class="muted">ظهور الرسائل/التعليقات مباشرة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>تعيين</strong>
+                        <div class="muted">حسب القواعد للفريق/الموظف.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>رد</strong>
+                        <div class="muted">قوالب + تخصيص + ملاحظات.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>
+                        <strong>إغلاق وتوسيم</strong>
+                        <div class="muted">تجربة قيادة / سعر / توفر.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -677,11 +1209,33 @@
                 <div data-lang="en">
                   <h2>✨ Quality Controls</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🧾</div><div><strong>Conversation history</strong><div class="muted">Full timeline inside CRM.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>Standard replies</strong><div class="muted">Consistent tone & approved messaging.</div></div></div>
-                    <div class="item"><div class="dot">📌</div><div><strong>Escalation</strong><div class="muted">Transfer cases to sales/branch when needed.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>Conversation history</strong>
+                        <div class="muted">Full timeline inside CRM.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>Standard replies</strong>
+                        <div class="muted">
+                          Consistent tone & approved messaging.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📌</div>
+                      <div>
+                        <strong>Escalation</strong>
+                        <div class="muted">
+                          Transfer cases to sales/branch when needed.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-cyan">Consistency</span>
                     <span class="pill p-primary">Audit</span>
                     <span class="pill p-green">Teamwork</span>
@@ -691,11 +1245,29 @@
                 <div data-lang="ar">
                   <h2>✨ ضبط الجودة</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🧾</div><div><strong>سجل محادثة</strong><div class="muted">Timeline كامل داخل الـ CRM.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>قوالب موحّدة</strong><div class="muted">نفس الأسلوب والرسائل المعتمدة.</div></div></div>
-                    <div class="item"><div class="dot">📌</div><div><strong>تصعيد للحالات</strong><div class="muted">تحويل لمبيعات/فرع حسب الحاجة.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>سجل محادثة</strong>
+                        <div class="muted">Timeline كامل داخل الـ CRM.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>قوالب موحّدة</strong>
+                        <div class="muted">نفس الأسلوب والرسائل المعتمدة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📌</div>
+                      <div>
+                        <strong>تصعيد للحالات</strong>
+                        <div class="muted">تحويل لمبيعات/فرع حسب الحاجة.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-cyan">اتساق</span>
                     <span class="pill p-primary">تدقيق</span>
                     <span class="pill p-green">تعاون</span>
@@ -712,15 +1284,23 @@
             <div class="top">
               <div>
                 <div data-lang="en">
-                  <h1>Data & Security in the <span style="white-space:nowrap">Integration</span></h1>
+                  <h1>
+                    Data & Security in the
+                    <span style="white-space: nowrap">Integration</span>
+                  </h1>
                   <div class="sub">
-                    The integration protects operational data and ensures reliable synchronization between systems.
+                    The integration protects operational data and ensures
+                    reliable synchronization between systems.
                   </div>
                 </div>
                 <div data-lang="ar">
-                  <h1>البيانات والأمان في الـ <span style="white-space:nowrap">Integration</span></h1>
+                  <h1>
+                    البيانات والأمان في الـ
+                    <span style="white-space: nowrap">Integration</span>
+                  </h1>
                   <div class="sub">
-                    الـ Integration يحافظ على أمان البيانات ويضمن مزامنة موثوقة بين الأنظمة.
+                    الـ Integration يحافظ على أمان البيانات ويضمن مزامنة موثوقة
+                    بين الأنظمة.
                   </div>
                 </div>
               </div>
@@ -732,18 +1312,62 @@
                 <div data-lang="en">
                   <h2>🛡️ Protection</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🔐</div><div><strong>Role-based access</strong><div class="muted">CRM permissions control who can view/reply.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>Logs & audit</strong><div class="muted">Track actions: view, reply, assign, close.</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>Data normalization</strong><div class="muted">Clean structure for reporting & quality.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🔐</div>
+                      <div>
+                        <strong>Role-based access</strong>
+                        <div class="muted">
+                          CRM permissions control who can view/reply.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>Logs & audit</strong>
+                        <div class="muted">
+                          Track actions: view, reply, assign, close.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>Data normalization</strong>
+                        <div class="muted">
+                          Clean structure for reporting & quality.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>🛡️ الحماية</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🔐</div><div><strong>صلاحيات حسب الدور</strong><div class="muted">الـ CRM يحدد مين يشوف ومين يرد.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>Logs وتدقيق</strong><div class="muted">تسجيل العرض/الرد/التعيين/الإغلاق.</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>توحيد البيانات</strong><div class="muted">هيكلة نظيفة للتقارير والجودة.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🔐</div>
+                      <div>
+                        <strong>صلاحيات حسب الدور</strong>
+                        <div class="muted">الـ CRM يحدد مين يشوف ومين يرد.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>Logs وتدقيق</strong>
+                        <div class="muted">
+                          تسجيل العرض/الرد/التعيين/الإغلاق.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>توحيد البيانات</strong>
+                        <div class="muted">هيكلة نظيفة للتقارير والجودة.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -752,11 +1376,33 @@
                 <div data-lang="en">
                   <h2>🔁 Reliability</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⏱️</div><div><strong>Near real-time sync</strong><div class="muted">Frequent pulls & quick routing.</div></div></div>
-                    <div class="item"><div class="dot">🧯</div><div><strong>Error handling</strong><div class="muted">Retries + safe queues for failed items.</div></div></div>
-                    <div class="item"><div class="dot">📦</div><div><strong>Scalable pages</strong><div class="muted">Add more pages without changing workflow.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⏱️</div>
+                      <div>
+                        <strong>Near real-time sync</strong>
+                        <div class="muted">Frequent pulls & quick routing.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧯</div>
+                      <div>
+                        <strong>Error handling</strong>
+                        <div class="muted">
+                          Retries + safe queues for failed items.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📦</div>
+                      <div>
+                        <strong>Scalable pages</strong>
+                        <div class="muted">
+                          Add more pages without changing workflow.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Integration</span>
                     <span class="pill p-cyan">Resilience</span>
                     <span class="pill p-amber">Scale</span>
@@ -766,11 +1412,29 @@
                 <div data-lang="ar">
                   <h2>🔁 الاعتمادية</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⏱️</div><div><strong>مزامنة شبه فورية</strong><div class="muted">سحب متكرر وتوزيع سريع.</div></div></div>
-                    <div class="item"><div class="dot">🧯</div><div><strong>معالجة الأخطاء</strong><div class="muted">إعادة المحاولة + طوابير آمنة.</div></div></div>
-                    <div class="item"><div class="dot">📦</div><div><strong>قابلية التوسع</strong><div class="muted">إضافة صفحات بدون تغيير التشغيل.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⏱️</div>
+                      <div>
+                        <strong>مزامنة شبه فورية</strong>
+                        <div class="muted">سحب متكرر وتوزيع سريع.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧯</div>
+                      <div>
+                        <strong>معالجة الأخطاء</strong>
+                        <div class="muted">إعادة المحاولة + طوابير آمنة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📦</div>
+                      <div>
+                        <strong>قابلية التوسع</strong>
+                        <div class="muted">إضافة صفحات بدون تغيير التشغيل.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Integration</span>
                     <span class="pill p-cyan">اعتمادية</span>
                     <span class="pill p-amber">توسع</span>
@@ -787,15 +1451,24 @@
             <div class="top">
               <div>
                 <div data-lang="en">
-                  <h1>Business Impact of the <span style="white-space:nowrap">Integration</span></h1>
+                  <h1>
+                    Business Impact of the
+                    <span style="white-space: nowrap">Integration</span>
+                  </h1>
                   <div class="sub">
-                    The integration transforms Meta engagement into CRM-managed conversations with measurable improvements.
+                    The integration transforms Meta engagement into CRM-managed
+                    conversations with measurable improvements.
                   </div>
                 </div>
                 <div data-lang="ar">
-                  <h1>أثر الـ <span style="white-space:nowrap">Integration</span> على العمل</h1>
+                  <h1>
+                    أثر الـ
+                    <span style="white-space: nowrap">Integration</span> على
+                    العمل
+                  </h1>
                   <div class="sub">
-                    الـ Integration يحوّل تفاعل Meta إلى محادثات مُدارة داخل الـ CRM مع تحسّن واضح وقابل للقياس.
+                    الـ Integration يحوّل تفاعل Meta إلى محادثات مُدارة داخل الـ
+                    CRM مع تحسّن واضح وقابل للقياس.
                   </div>
                 </div>
               </div>
@@ -807,20 +1480,76 @@
                 <div data-lang="en">
                   <h2>📊 KPIs to Track</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⚡</div><div><strong>First response time</strong><div class="muted">Minutes saved per inquiry.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>Reply coverage</strong><div class="muted">% of comments/messages answered.</div></div></div>
-                    <div class="item"><div class="dot">📈</div><div><strong>Lead conversion</strong><div class="muted">Conversations → test drive / sale.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>Agent productivity</strong><div class="muted">Cases handled per day with quality.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⚡</div>
+                      <div>
+                        <strong>First response time</strong>
+                        <div class="muted">Minutes saved per inquiry.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>Reply coverage</strong>
+                        <div class="muted">
+                          % of comments/messages answered.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📈</div>
+                      <div>
+                        <strong>Lead conversion</strong>
+                        <div class="muted">
+                          Conversations → test drive / sale.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>Agent productivity</strong>
+                        <div class="muted">
+                          Cases handled per day with quality.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>📊 مؤشرات قياس</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⚡</div><div><strong>زمن أول رد</strong><div class="muted">كم دقيقة وفرنا لكل استفسار.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>نسبة التغطية</strong><div class="muted">% الرسائل/التعليقات التي تم الرد عليها.</div></div></div>
-                    <div class="item"><div class="dot">📈</div><div><strong>تحويل إلى Lead</strong><div class="muted">محادثات → تجربة قيادة / بيع.</div></div></div>
-                    <div class="item"><div class="dot">🧾</div><div><strong>إنتاجية الموظف</strong><div class="muted">عدد الحالات يوميًا مع جودة.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⚡</div>
+                      <div>
+                        <strong>زمن أول رد</strong>
+                        <div class="muted">كم دقيقة وفرنا لكل استفسار.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>نسبة التغطية</strong>
+                        <div class="muted">
+                          % الرسائل/التعليقات التي تم الرد عليها.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📈</div>
+                      <div>
+                        <strong>تحويل إلى Lead</strong>
+                        <div class="muted">محادثات → تجربة قيادة / بيع.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>
+                        <strong>إنتاجية الموظف</strong>
+                        <div class="muted">عدد الحالات يوميًا مع جودة.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -829,11 +1558,35 @@
                 <div data-lang="en">
                   <h2>🚀 Next Enhancements</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🏷️</div><div><strong>Smart tagging</strong><div class="muted">Auto-detect intent: price, availability, booking.</div></div></div>
-                    <div class="item"><div class="dot">📍</div><div><strong>Branch routing</strong><div class="muted">Send to the right branch/team instantly.</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>Templates library</strong><div class="muted">Approved replies per model/campaign.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🏷️</div>
+                      <div>
+                        <strong>Smart tagging</strong>
+                        <div class="muted">
+                          Auto-detect intent: price, availability, booking.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📍</div>
+                      <div>
+                        <strong>Branch routing</strong>
+                        <div class="muted">
+                          Send to the right branch/team instantly.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>Templates library</strong>
+                        <div class="muted">
+                          Approved replies per model/campaign.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Integration</span>
                     <span class="pill p-cyan">Automation</span>
                     <span class="pill p-green">Scale</span>
@@ -843,11 +1596,31 @@
                 <div data-lang="ar">
                   <h2>🚀 تطويرات مقترحة</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🏷️</div><div><strong>وسوم ذكية</strong><div class="muted">تمييز نية العميل تلقائيًا (سعر/توفر/حجز).</div></div></div>
-                    <div class="item"><div class="dot">📍</div><div><strong>توجيه للفروع</strong><div class="muted">تحويل فوري للفريق المناسب.</div></div></div>
-                    <div class="item"><div class="dot">🧠</div><div><strong>مكتبة قوالب</strong><div class="muted">ردود معتمدة حسب الموديل/الحملة.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🏷️</div>
+                      <div>
+                        <strong>وسوم ذكية</strong>
+                        <div class="muted">
+                          تمييز نية العميل تلقائيًا (سعر/توفر/حجز).
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📍</div>
+                      <div>
+                        <strong>توجيه للفروع</strong>
+                        <div class="muted">تحويل فوري للفريق المناسب.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧠</div>
+                      <div>
+                        <strong>مكتبة قوالب</strong>
+                        <div class="muted">ردود معتمدة حسب الموديل/الحملة.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Integration</span>
                     <span class="pill p-cyan">أتمتة</span>
                     <span class="pill p-green">توسع</span>
@@ -857,7 +1630,6 @@
             </div>
           </div>
         </section>
-
       </div>
     </div>
 
@@ -895,16 +1667,26 @@
         renderDots();
       }
 
-      function next() { go(idx + 1); }
-      function prev() { go(idx - 1); }
+      function next() {
+        go(idx + 1);
+      }
+      function prev() {
+        go(idx - 1);
+      }
 
       nextBtn.addEventListener("click", next);
       prevBtn.addEventListener("click", prev);
 
       window.addEventListener("keydown", (e) => {
         const k = e.key;
-        if (k === "ArrowRight" || k === " " || k === "Enter") { e.preventDefault(); next(); }
-        if (k === "ArrowLeft" || k === "Backspace") { e.preventDefault(); prev(); }
+        if (k === "ArrowRight" || k === " " || k === "Enter") {
+          e.preventDefault();
+          next();
+        }
+        if (k === "ArrowLeft" || k === "Backspace") {
+          e.preventDefault();
+          prev();
+        }
       });
 
       // Language toggle (simple)
@@ -959,7 +1741,9 @@
         }
 
         function safeSetStorage(lang) {
-          try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}
+          try {
+            localStorage.setItem(STORAGE_KEY, lang);
+          } catch (_) {}
         }
 
         function broadcast(lang) {
@@ -974,7 +1758,9 @@
 
           // Tell children iframes (if any)
           document.querySelectorAll("iframe").forEach((fr) => {
-            try { fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*"); } catch (_) {}
+            try {
+              fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*");
+            } catch (_) {}
           });
         }
 
@@ -996,7 +1782,12 @@
 
           // Forward to any nested iframes for consistency
           document.querySelectorAll("iframe").forEach((fr) => {
-            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: d.lang }, "*"); } catch (_) {}
+            try {
+              fr.contentWindow.postMessage(
+                { type: CHANNEL, lang: d.lang },
+                "*",
+              );
+            } catch (_) {}
           });
         });
 
@@ -1007,14 +1798,20 @@
 
         // Init from storage (fallback: current html lang)
         let initial = "en";
-        try { initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en"; } catch (_) { initial = html.lang || "en"; }
+        try {
+          initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en";
+        } catch (_) {
+          initial = html.lang || "en";
+        }
         applyLang(initial);
 
         // Push current language to any iframes on load
         window.addEventListener("load", () => {
           const cur = html.lang || initial;
           document.querySelectorAll("iframe").forEach((fr) => {
-            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*"); } catch (_) {}
+            try {
+              fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*");
+            } catch (_) {}
           });
         });
       })();
