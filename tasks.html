@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -109,6 +109,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 0.5rem;
       }
+
       .controls {
         position: fixed;
         bottom: 14px;
@@ -120,6 +121,8 @@
         background: rgba(15, 23, 42, 0.7);
         padding: 0.6rem 0.9rem;
         border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
       }
       .btn {
         width: 42px;
@@ -134,16 +137,83 @@
       .counter {
         color: var(--muted);
         font-weight: 900;
+        white-space: nowrap;
       }
 
-      /* ✅ إضافة بسيطة لدعم RTL عند العربي */
+      /* ✅ RTL عند العربي */
       body[dir="rtl"] {
         text-align: right;
+      }
+
+      /* === Global Language Toggle (EN/AR) === */
+      .langToggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        display: flex;
+        gap: 8px;
+        z-index: 9999;
+      }
+      html[dir="rtl"] .langToggle {
+        right: auto;
+        left: 14px;
+      }
+      .langBtn {
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(15, 23, 42, 0.55);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .langBtn.active {
+        border-color: rgba(6, 182, 212, 0.9);
+        box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+      }
+
+      /* ✅ نخفي زر اللغة اللي تحت (نستخدم اللي فوق فقط) */
+      #langBtn {
+        display: none !important;
+      }
+
+      /* ✅ Dots navigation */
+      .dots{
+        display:flex;
+        gap:0.35rem;
+        padding:0 0.2rem;
+        align-items:center;
+      }
+      .dotnav{
+        width:10px;
+        height:10px;
+        border-radius:50%;
+        background: rgba(255,255,255,0.22);
+        border:1px solid rgba(255,255,255,0.18);
+        cursor:pointer;
+        transition: .15s;
+      }
+      .dotnav:hover{
+        transform: translateY(-1px);
+        border-color: rgba(6,182,212,0.55);
+      }
+      .dotnav.active{
+        background: rgba(6,182,212,0.85);
+        border-color: rgba(6,182,212,0.9);
+        box-shadow: 0 0 14px rgba(6,182,212,0.45);
       }
     </style>
   </head>
 
   <body>
+    <!-- Language Switch (Global Sync) -->
+    <div class="langToggle" data-lang-ui>
+      <button class="langBtn" id="btnEn" type="button">EN</button>
+      <button class="langBtn" id="btnAr" type="button">AR</button>
+    </div>
+
     <div class="bg"></div>
 
     <div class="wrap">
@@ -316,17 +386,22 @@
     </div>
 
     <div class="controls">
-      <button class="btn" onclick="go(-1)">◀</button>
+      <button class="btn" onclick="go(-1)" title="Previous">◀</button>
 
-      <!-- ✅ زر تغيير اللغة (إضافة فقط) -->
-      <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
+      <!-- ✅ dots between arrows -->
+      <div class="dots" id="dots"></div>
 
       <div class="counter" id="counter">1 / 5</div>
-      <button class="btn" onclick="go(1)">▶</button>
+
+      <button class="btn" onclick="go(1)" title="Next">▶</button>
+
+      <!-- ✅ مخفي: نستخدم زر اللغة اللي فوق فقط -->
+      <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
     </div>
 
     <script>
       const slides = document.querySelectorAll(".slide");
+      const dotsWrap = document.getElementById("dots");
       let idx = 0;
 
       // ✅ نظام الترجمة
@@ -447,19 +522,19 @@
       };
 
       function applyLanguage(lang) {
-        // تحديث خصائص الصفحة (اتجاه/لغة)
-        document.documentElement.lang = lang;
+        const html = document.documentElement;
+
+        html.lang = lang;
+        html.dir = lang === "ar" ? "rtl" : "ltr";
         document.body.dir = lang === "ar" ? "rtl" : "ltr";
 
-        // تحديث نصوص كل العناصر التي تحمل data-i18n
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
-          if (i18n[lang][key]) el.textContent = i18n[lang][key];
+          if (i18n[lang] && i18n[lang][key]) el.textContent = i18n[lang][key];
         });
 
-        // تحديث نص زر اللغة
         const btn = document.getElementById("langBtn");
-        btn.textContent = lang === "en" ? "EN" : "AR";
+        if (btn) btn.textContent = lang === "en" ? "EN" : "AR";
       }
 
       function toggleLang() {
@@ -467,19 +542,135 @@
         applyLanguage(currentLang);
       }
 
-      function go(step) {
-        slides[idx].classList.remove("active");
-        idx = (idx + step + slides.length) % slides.length;
-        slides[idx].classList.add("active");
-        document.getElementById("counter").textContent =
-          `${idx + 1} / ${slides.length}`;
+      function renderDots() {
+        dotsWrap.innerHTML = "";
+        slides.forEach((_, i) => {
+          const d = document.createElement("div");
+          d.className = "dotnav" + (i === idx ? " active" : "");
+          d.title = "Slide " + (i + 1);
+          d.addEventListener("click", () => goTo(i));
+          dotsWrap.appendChild(d);
+        });
+      }
 
-        // ✅ لضمان أن النص يبقى بنفس اللغة بعد التنقل
+      function goTo(i) {
+        slides[idx].classList.remove("active");
+        idx = (i + slides.length) % slides.length;
+        slides[idx].classList.add("active");
+
+        document.getElementById("counter").textContent = `${idx + 1} / ${slides.length}`;
+
+        renderDots();
         applyLanguage(currentLang);
       }
 
-      // تشغيل افتراضي على الإنجليزي (كما ملفك)
-      applyLanguage(currentLang);
+      function go(step) {
+        goTo(idx + step);
+      }
+
+      // ✅ واجهة سكربت المزامنة
+      window.__setAppLang = function (lang) {
+        currentLang = lang === "ar" ? "ar" : "en";
+        applyLanguage(currentLang);
+      };
+
+      // init
+      renderDots();
+      goTo(0);
+    </script>
+
+    <script>
+      (function () {
+        const STORAGE_KEY = "global_lang";
+        const CHANNEL = "GLOBAL_LANG_SYNC_V1";
+
+        const html = document.documentElement;
+        const btnEn = document.getElementById("btnEn");
+        const btnAr = document.getElementById("btnAr");
+
+        function applyLang(lang) {
+          lang = lang === "ar" ? "ar" : "en";
+          html.lang = lang;
+          html.dir = lang === "ar" ? "rtl" : "ltr";
+
+          if (btnEn && btnAr) {
+            btnEn.classList.toggle("active", lang === "en");
+            btnAr.classList.toggle("active", lang === "ar");
+          }
+
+          // ✅ ترجمة محتوى data-i18n
+          try {
+            if (typeof window.__setAppLang === "function") window.__setAppLang(lang);
+          } catch (_) {}
+
+          // data-en / data-ar
+          document.querySelectorAll("[data-en],[data-ar]").forEach((el) => {
+            const v = el.getAttribute(`data-${lang}`);
+            if (v !== null && v !== undefined) el.textContent = v;
+          });
+
+          // Optional: class-based swapping
+          document.querySelectorAll(".lang-en").forEach((el) => {
+            el.style.display = lang === "en" ? "" : "none";
+          });
+          document.querySelectorAll(".lang-ar").forEach((el) => {
+            el.style.display = lang === "ar" ? "" : "none";
+          });
+        }
+
+        function safeSetStorage(lang) {
+          try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}
+        }
+
+        function broadcast(lang) {
+          safeSetStorage(lang);
+
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type: CHANNEL, lang }, "*");
+            }
+          } catch (_) {}
+
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try { fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*"); } catch (_) {}
+          });
+        }
+
+        function setLang(lang) {
+          applyLang(lang);
+          broadcast(lang);
+        }
+
+        if (btnEn) btnEn.addEventListener("click", () => setLang("en"));
+        if (btnAr) btnAr.addEventListener("click", () => setLang("ar"));
+
+        window.addEventListener("message", (event) => {
+          const d = event.data;
+          if (!d || d.type !== CHANNEL) return;
+
+          applyLang(d.lang);
+          safeSetStorage(d.lang);
+
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: d.lang }, "*"); } catch (_) {}
+          });
+        });
+
+        window.addEventListener("storage", (e) => {
+          if (e.key === STORAGE_KEY && e.newValue) applyLang(e.newValue);
+        });
+
+        let initial = "en";
+        try { initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en"; } catch (_) { initial = html.lang || "en"; }
+        applyLang(initial);
+
+        window.addEventListener("load", () => {
+          const cur = html.lang || initial;
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*"); } catch (_) {}
+          });
+        });
+      })();
     </script>
   </body>
 </html>
