@@ -86,11 +86,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem;
+        padding: 0; /* مهم */
       }
+
+      /* ✅ المقاس المطلوب: 1163 × 834 */
       .stage {
-        width: min(1300px, 96vw);
-        aspect-ratio: 16/9;
+        width: 1163px;
+        height: 834px;
+
+        /* ✅ لو نافذة المتصفح أصغر من المقاس */
+        max-width: 100vw;
+        max-height: 100vh;
+
+        /* ✅ يحافظ على المقاس داخل أي شاشة */
+        width: min(1163px, 100vw);
+        height: min(834px, 100vh);
+
         border-radius: 28px;
         overflow: hidden;
         box-shadow: var(--shadow);
@@ -98,6 +109,7 @@
         background: rgba(255, 255, 255, 0.04);
         position: relative;
       }
+
       .slide {
         position: absolute;
         inset: 0;
@@ -141,8 +153,8 @@
         font-weight: 900;
         line-height: 1.25;
         background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent; /* fallback */
       }
       .sub {
         color: var(--muted);
@@ -159,7 +171,7 @@
         flex: 1;
       }
       .card {
-        background: rgba(255, 255,  255, 0.04);
+        background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 20px;
         padding: 1rem;
@@ -195,7 +207,7 @@
         justify-content: center;
         font-weight: 900;
         background: rgba(99, 102, 241, 0.14);
-        border: 1px solid rgba(99, 102, 241,  0.35);
+        border: 1px solid rgba(99, 102, 241, 0.35);
         flex: 0 0 auto;
       }
       .pills {
@@ -310,9 +322,15 @@
       }
 
       /* i18n visibility */
-      [data-lang] { display: none; }
-      html[lang="en"] [data-lang="en"] { display: block; }
-      html[lang="ar"] [data-lang="ar"] { display: block; }
+      [data-lang] {
+        display: none;
+      }
+      html[lang="en"] [data-lang="en"] {
+        display: block;
+      }
+      html[lang="ar"] [data-lang="ar"] {
+        display: block;
+      }
 
       @media (max-width: 980px) {
         .grid {
@@ -325,9 +343,9 @@
           font-size: 1rem;
         }
       }
-    
+
       /* === Global Language Toggle (EN/AR) === */
-      .langToggle{
+      .langToggle {
         position: fixed;
         top: 14px;
         right: 14px;
@@ -335,8 +353,11 @@
         gap: 8px;
         z-index: 9999;
       }
-      html[dir="rtl"] .langToggle{ right:auto; left:14px; }
-      .langBtn{
+      html[dir="rtl"] .langToggle {
+        right: auto;
+        left: 14px;
+      }
+      .langBtn {
         padding: 10px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.18);
@@ -347,11 +368,10 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
       }
-      .langBtn.active{
+      .langBtn.active {
         border-color: rgba(6, 182, 212, 0.9);
         box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
       }
-
     </style>
   </head>
 
@@ -374,8 +394,9 @@
                 <div data-lang="en">
                   <h1>Website Purpose</h1>
                   <div class="sub">
-                    The website is a showcase platform to present car models and their specifications in a clear,
-                    structured format, enabling customers to compare options and make an initial decision.
+                    The website is a showcase platform to present car models and
+                    their specifications in a clear, structured format, enabling
+                    customers to compare options and make an initial decision.
                   </div>
                   <div class="pills">
                     <span class="pill p-primary">🚗 Models</span>
@@ -387,8 +408,9 @@
                 <div data-lang="ar">
                   <h1>هدف الموقع</h1>
                   <div class="sub">
-                    الموقع عبارة عن منصة عرض لعرض موديلات السيارات ومواصفاتها بشكل منظّم وواضح،
-                    بهدف مساعدة العميل على المقارنة واتخاذ قرار مبدئي.
+                    الموقع عبارة عن منصة عرض لعرض موديلات السيارات ومواصفاتها
+                    بشكل منظّم وواضح، بهدف مساعدة العميل على المقارنة واتخاذ
+                    قرار مبدئي.
                   </div>
                   <div class="pills">
                     <span class="pill p-primary">🚗 الموديلات</span>
@@ -407,15 +429,24 @@
                   <div class="list">
                     <div class="item">
                       <div class="dot">1</div>
-                      <div><strong>Structured presentation</strong><div class="muted">A consistent layout per model.</div></div>
+                      <div>
+                        <strong>Structured presentation</strong>
+                        <div class="muted">A consistent layout per model.</div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">2</div>
-                      <div><strong>Faster comparison</strong><div class="muted">Help customers choose quickly.</div></div>
+                      <div>
+                        <strong>Faster comparison</strong>
+                        <div class="muted">Help customers choose quickly.</div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">3</div>
-                      <div><strong>Convert interest into leads</strong><div class="muted">Via Test Drive / Order forms.</div></div>
+                      <div>
+                        <strong>Convert interest into leads</strong>
+                        <div class="muted">Via Test Drive / Order forms.</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -425,15 +456,28 @@
                   <div class="list">
                     <div class="item">
                       <div class="dot">1</div>
-                      <div><strong>عرض منظّم</strong><div class="muted">هيكل موحّد لكل موديل لتسهيل القراءة.</div></div>
+                      <div>
+                        <strong>عرض منظّم</strong>
+                        <div class="muted">
+                          هيكل موحّد لكل موديل لتسهيل القراءة.
+                        </div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">2</div>
-                      <div><strong>مقارنة أسرع</strong><div class="muted">تمكين العميل من اختيار الأنسب بسرعة.</div></div>
+                      <div>
+                        <strong>مقارنة أسرع</strong>
+                        <div class="muted">
+                          تمكين العميل من اختيار الأنسب بسرعة.
+                        </div>
+                      </div>
                     </div>
                     <div class="item">
                       <div class="dot">3</div>
-                      <div><strong>تحويل الاهتمام إلى Lead</strong><div class="muted">من خلال نماذج الطلب.</div></div>
+                      <div>
+                        <strong>تحويل الاهتمام إلى Lead</strong>
+                        <div class="muted">من خلال نماذج الطلب.</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -443,18 +487,36 @@
                 <div data-lang="en">
                   <h2>✅ Scope</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🖥️</div><div>Display models & specs only</div></div>
-                    <div class="item"><div class="dot">🧾</div><div>Test Drive & Order/Inquiry forms</div></div>
-                    <div class="item"><div class="dot">🔁</div><div>Automated flow to Excel then CRM</div></div>
+                    <div class="item">
+                      <div class="dot">🖥️</div>
+                      <div>Display models & specs only</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>Test Drive & Order/Inquiry forms</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>Automated flow to Excel then CRM</div>
+                    </div>
                   </div>
                 </div>
 
                 <div data-lang="ar">
                   <h2>✅ نطاق الموقع</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🖥️</div><div>عرض الموديلات والمواصفات فقط</div></div>
-                    <div class="item"><div class="dot">🧾</div><div>نماذج تجربة قيادة وطلب شراء/استفسار</div></div>
-                    <div class="item"><div class="dot">🔁</div><div>تدفق تلقائي إلى Excel ثم CRM</div></div>
+                    <div class="item">
+                      <div class="dot">🖥️</div>
+                      <div>عرض الموديلات والمواصفات فقط</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🧾</div>
+                      <div>نماذج تجربة قيادة وطلب شراء/استفسار</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>تدفق تلقائي إلى Excel ثم CRM</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -470,13 +532,15 @@
                 <div data-lang="en">
                   <h1>Structured Models & Specs</h1>
                   <div class="sub">
-                    Each model is presented using the same structured layout to make information easy to read and compare.
+                    Each model is presented using the same structured layout to
+                    make information easy to read and compare.
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h1>عرض الموديلات والمواصفات</h1>
                   <div class="sub">
-                    يتم عرض كل موديل بنفس الهيكل بشكل موحّد لتسهيل القراءة والمقارنة بين الخيارات.
+                    يتم عرض كل موديل بنفس الهيكل بشكل موحّد لتسهيل القراءة
+                    والمقارنة بين الخيارات.
                   </div>
                 </div>
               </div>
@@ -488,17 +552,59 @@
                 <div data-lang="en">
                   <h2>📦 Model Page Includes</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📋</div><div><strong>Key specs</strong><div class="muted">Trim, features, engine, colors…</div></div></div>
-                    <div class="item"><div class="dot">🖼️</div><div><strong>Images & highlights</strong><div class="muted">Main selling points, clearly listed.</div></div></div>
-                    <div class="item"><div class="dot">↔️</div><div><strong>Comparison</strong><div class="muted">Support faster decision-making.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📋</div>
+                      <div>
+                        <strong>Key specs</strong>
+                        <div class="muted">Trim, features, engine, colors…</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🖼️</div>
+                      <div>
+                        <strong>Images & highlights</strong>
+                        <div class="muted">
+                          Main selling points, clearly listed.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">↔️</div>
+                      <div>
+                        <strong>Comparison</strong>
+                        <div class="muted">Support faster decision-making.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h2>📦 ماذا يظهر في صفحة الموديل؟</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">📋</div><div><strong>مواصفات رئيسية</strong><div class="muted">الفئة، التجهيزات، المحرك، الألوان…</div></div></div>
-                    <div class="item"><div class="dot">🖼️</div><div><strong>صور ومميزات</strong><div class="muted">عرض نقاط القوة بشكل مختصر.</div></div></div>
-                    <div class="item"><div class="dot">↔️</div><div><strong>مقارنة</strong><div class="muted">مساعدة العميل على الاختيار بسرعة.</div></div></div>
+                    <div class="item">
+                      <div class="dot">📋</div>
+                      <div>
+                        <strong>مواصفات رئيسية</strong>
+                        <div class="muted">
+                          الفئة، التجهيزات، المحرك، الألوان…
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🖼️</div>
+                      <div>
+                        <strong>صور ومميزات</strong>
+                        <div class="muted">عرض نقاط القوة بشكل مختصر.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">↔️</div>
+                      <div>
+                        <strong>مقارنة</strong>
+                        <div class="muted">
+                          مساعدة العميل على الاختيار بسرعة.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -507,10 +613,22 @@
                 <div data-lang="en">
                   <h2>🧩 Standardized Layout</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⚙️</div><div><strong>Consistent structure</strong><div class="muted">Same sections for all models.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>Clear wording</strong><div class="muted">Short, direct information.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⚙️</div>
+                      <div>
+                        <strong>Consistent structure</strong>
+                        <div class="muted">Same sections for all models.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>Clear wording</strong>
+                        <div class="muted">Short, direct information.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Consistency</span>
                     <span class="pill p-cyan">Clarity</span>
                     <span class="pill p-amber">Compare</span>
@@ -519,10 +637,24 @@
                 <div data-lang="ar">
                   <h2>🧩 معيارية العرض</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⚙️</div><div><strong>نفس الهيكل لكل الموديلات</strong><div class="muted">لتقليل التشتت وتحسين تجربة المستخدم.</div></div></div>
-                    <div class="item"><div class="dot">✅</div><div><strong>وضوح البيانات</strong><div class="muted">المعلومات قصيرة ومباشرة.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⚙️</div>
+                      <div>
+                        <strong>نفس الهيكل لكل الموديلات</strong>
+                        <div class="muted">
+                          لتقليل التشتت وتحسين تجربة المستخدم.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>وضوح البيانات</strong>
+                        <div class="muted">المعلومات قصيرة ومباشرة.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">اتساق</span>
                     <span class="pill p-cyan">وضوح</span>
                     <span class="pill p-amber">مقارنة</span>
@@ -541,13 +673,15 @@
                 <div data-lang="en">
                   <h1>Forms (Lead Capture)</h1>
                   <div class="sub">
-                    Two forms convert customer interest into actionable leads for the call center team.
+                    Two forms convert customer interest into actionable leads
+                    for the call center team.
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h1>النماذج (جمع الـ Leads)</h1>
                   <div class="sub">
-                    يوجد نماذج واضحة لتحويل اهتمام العميل إلى بيانات قابلة للمتابعة من فريق الكول سنتر.
+                    يوجد نماذج واضحة لتحويل اهتمام العميل إلى بيانات قابلة
+                    للمتابعة من فريق الكول سنتر.
                   </div>
                 </div>
               </div>
@@ -559,15 +693,45 @@
                 <div data-lang="en">
                   <h2>🧾 Available Forms</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🚗</div><div><strong>Test Drive Request</strong><div class="muted">Book a test drive for a specific model.</div></div></div>
-                    <div class="item"><div class="dot">🛒</div><div><strong>Order / Inquiry</strong><div class="muted">Purchase request or availability/price inquiry.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🚗</div>
+                      <div>
+                        <strong>Test Drive Request</strong>
+                        <div class="muted">
+                          Book a test drive for a specific model.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🛒</div>
+                      <div>
+                        <strong>Order / Inquiry</strong>
+                        <div class="muted">
+                          Purchase request or availability/price inquiry.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h2>🧾 النماذج المتوفرة</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">🚗</div><div><strong>طلب تجربة قيادة</strong><div class="muted">طلب تجربة قيادة لموديل محدد.</div></div></div>
-                    <div class="item"><div class="dot">🛒</div><div><strong>طلب شراء / استفسار</strong><div class="muted">طلب شراء أو استفسار حول توفر/سعر.</div></div></div>
+                    <div class="item">
+                      <div class="dot">🚗</div>
+                      <div>
+                        <strong>طلب تجربة قيادة</strong>
+                        <div class="muted">طلب تجربة قيادة لموديل محدد.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🛒</div>
+                      <div>
+                        <strong>طلب شراء / استفسار</strong>
+                        <div class="muted">
+                          طلب شراء أو استفسار حول توفر/سعر.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -576,12 +740,24 @@
                 <div data-lang="en">
                   <h2>📌 Captured Fields (Minimal)</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">👤</div><div>Name</div></div>
-                    <div class="item"><div class="dot">📞</div><div>Phone number</div></div>
-                    <div class="item"><div class="dot">🚙</div><div>Requested model</div></div>
-                    <div class="item"><div class="dot">📍</div><div>City / Branch (if applicable)</div></div>
+                    <div class="item">
+                      <div class="dot">👤</div>
+                      <div>Name</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📞</div>
+                      <div>Phone number</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🚙</div>
+                      <div>Requested model</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📍</div>
+                      <div>City / Branch (if applicable)</div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Lead</span>
                     <span class="pill p-cyan">Minimal Fields</span>
                     <span class="pill p-amber">Fast Submit</span>
@@ -590,12 +766,24 @@
                 <div data-lang="ar">
                   <h2>📌 بيانات يتم جمعها (مختصرة)</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">👤</div><div>الاسم</div></div>
-                    <div class="item"><div class="dot">📞</div><div>رقم الهاتف</div></div>
-                    <div class="item"><div class="dot">🚙</div><div>الموديل المطلوب</div></div>
-                    <div class="item"><div class="dot">📍</div><div>المدينة / الفرع (إن وجد)</div></div>
+                    <div class="item">
+                      <div class="dot">👤</div>
+                      <div>الاسم</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📞</div>
+                      <div>رقم الهاتف</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🚙</div>
+                      <div>الموديل المطلوب</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📍</div>
+                      <div>المدينة / الفرع (إن وجد)</div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Lead</span>
                     <span class="pill p-cyan">حقول مختصرة</span>
                     <span class="pill p-amber">إرسال سريع</span>
@@ -614,14 +802,16 @@
                 <div data-lang="en">
                   <h1>Data Flow (Form → Excel → CRM)</h1>
                   <div class="sub">
-                    Once a form is submitted, the data is automatically sent to a shared Excel sheet and aligned with the CRM for follow-up.
+                    Once a form is submitted, the data is automatically sent to
+                    a shared Excel sheet and aligned with the CRM for follow-up.
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h1>تدفق البيانات (فورم → Excel → CRM)</h1>
                   <div class="sub">
-                    عند تعبئة النموذج، يتم إرسال البيانات تلقائيًا إلى Excel Sheet مشتركة،
-                    ثم تكون متاحة ومتوافقة مع الـ CRM للمتابعة بدون إدخال يدوي.
+                    عند تعبئة النموذج، يتم إرسال البيانات تلقائيًا إلى Excel
+                    Sheet مشتركة، ثم تكون متاحة ومتوافقة مع الـ CRM للمتابعة
+                    بدون إدخال يدوي.
                   </div>
                 </div>
               </div>
@@ -633,17 +823,65 @@
                 <div data-lang="en">
                   <h2>🔄 Flow</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div><strong>Submit</strong><div class="muted">Customer completes the form on the website.</div></div></div>
-                    <div class="item"><div class="dot">2</div><div><strong>Excel Sheet</strong><div class="muted">Data is captured automatically in a shared sheet.</div></div></div>
-                    <div class="item"><div class="dot">3</div><div><strong>CRM Visibility</strong><div class="muted">The same lead data is available in the CRM.</div></div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>Submit</strong>
+                        <div class="muted">
+                          Customer completes the form on the website.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>Excel Sheet</strong>
+                        <div class="muted">
+                          Data is captured automatically in a shared sheet.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>CRM Visibility</strong>
+                        <div class="muted">
+                          The same lead data is available in the CRM.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h2>🔄 التسلسل</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div><strong>إرسال</strong><div class="muted">العميل يعبّي النموذج على الموقع.</div></div></div>
-                    <div class="item"><div class="dot">2</div><div><strong>Excel Sheet</strong><div class="muted">البيانات تصل تلقائيًا إلى شيت مشتركة.</div></div></div>
-                    <div class="item"><div class="dot">3</div><div><strong>CRM</strong><div class="muted">نفس البيانات تكون متاحة عبر الـ CRM.</div></div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>إرسال</strong>
+                        <div class="muted">
+                          العميل يعبّي النموذج على الموقع.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>Excel Sheet</strong>
+                        <div class="muted">
+                          البيانات تصل تلقائيًا إلى شيت مشتركة.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>CRM</strong>
+                        <div class="muted">
+                          نفس البيانات تكون متاحة عبر الـ CRM.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -652,10 +890,26 @@
                 <div data-lang="en">
                   <h2>✅ Outcome</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⛔</div><div><strong>No duplicate entry</strong><div class="muted">Less manual work and fewer errors.</div></div></div>
-                    <div class="item"><div class="dot">📌</div><div><strong>Ready-to-follow lead</strong><div class="muted">Structured data for fast handling.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⛔</div>
+                      <div>
+                        <strong>No duplicate entry</strong>
+                        <div class="muted">
+                          Less manual work and fewer errors.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📌</div>
+                      <div>
+                        <strong>Ready-to-follow lead</strong>
+                        <div class="muted">
+                          Structured data for fast handling.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-green">Automation</span>
                     <span class="pill p-cyan">Shared Sheet</span>
                     <span class="pill p-primary">CRM Alignment</span>
@@ -664,10 +918,24 @@
                 <div data-lang="ar">
                   <h2>✅ النتيجة</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">⛔</div><div><strong>بدون إدخال مكرر</strong><div class="muted">تقليل الأخطاء وتوفير وقت الفريق.</div></div></div>
-                    <div class="item"><div class="dot">📌</div><div><strong>Lead جاهز للمتابعة</strong><div class="muted">بيانات منظمة وسهلة التتبع.</div></div></div>
+                    <div class="item">
+                      <div class="dot">⛔</div>
+                      <div>
+                        <strong>بدون إدخال مكرر</strong>
+                        <div class="muted">
+                          تقليل الأخطاء وتوفير وقت الفريق.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📌</div>
+                      <div>
+                        <strong>Lead جاهز للمتابعة</strong>
+                        <div class="muted">بيانات منظمة وسهلة التتبع.</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-green">أتمتة</span>
                     <span class="pill p-cyan">شيت مشتركة</span>
                     <span class="pill p-primary">توافق CRM</span>
@@ -686,13 +954,15 @@
                 <div data-lang="en">
                   <h1>Call Center Workflow</h1>
                   <div class="sub">
-                    Call center agents use the shared sheet/CRM leads to contact customers and coordinate the next steps.
+                    Call center agents use the shared sheet/CRM leads to contact
+                    customers and coordinate the next steps.
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h1>آلية عمل الكول سنتر</h1>
                   <div class="sub">
-                    موظفو الكول سنتر يعتمدون على بيانات النماذج (Excel/CRM) للتواصل مع العملاء وترتيب الخطوات التالية.
+                    موظفو الكول سنتر يعتمدون على بيانات النماذج (Excel/CRM)
+                    للتواصل مع العملاء وترتيب الخطوات التالية.
                   </div>
                 </div>
               </div>
@@ -704,17 +974,35 @@
                 <div data-lang="en">
                   <h2>📞 Follow-up Steps</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div>Contact the customer who submitted the form</div></div>
-                    <div class="item"><div class="dot">2</div><div>Confirm details (model, time, branch, request)</div></div>
-                    <div class="item"><div class="dot">3</div><div>Arrange a test drive or proceed with the order</div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>Contact the customer who submitted the form</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>Confirm details (model, time, branch, request)</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>Arrange a test drive or proceed with the order</div>
+                    </div>
                   </div>
                 </div>
                 <div data-lang="ar">
                   <h2>📞 خطوات المتابعة</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">1</div><div>الاتصال بالعميل الذي قام بتعبئة النموذج</div></div>
-                    <div class="item"><div class="dot">2</div><div>تأكيد التفاصيل (الموديل/الوقت/الفرع/الطلب)</div></div>
-                    <div class="item"><div class="dot">3</div><div>ترتيب تجربة القيادة أو إجراءات الطلب حسب الحالة</div></div>
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>الاتصال بالعميل الذي قام بتعبئة النموذج</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>تأكيد التفاصيل (الموديل/الوقت/الفرع/الطلب)</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>ترتيب تجربة القيادة أو إجراءات الطلب حسب الحالة</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -723,11 +1011,35 @@
                 <div data-lang="en">
                   <h2>🎯 Result</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">✅</div><div><strong>Faster response</strong><div class="muted">Shorter time from request to contact.</div></div></div>
-                    <div class="item"><div class="dot">📈</div><div><strong>Better organization</strong><div class="muted">Leads are tracked and handled consistently.</div></div></div>
-                    <div class="item"><div class="dot">🤝</div><div><strong>Improved customer experience</strong><div class="muted">Professional follow-up from the first touchpoint.</div></div></div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>Faster response</strong>
+                        <div class="muted">
+                          Shorter time from request to contact.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📈</div>
+                      <div>
+                        <strong>Better organization</strong>
+                        <div class="muted">
+                          Leads are tracked and handled consistently.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🤝</div>
+                      <div>
+                        <strong>Improved customer experience</strong>
+                        <div class="muted">
+                          Professional follow-up from the first touchpoint.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">Follow-up</span>
                     <span class="pill p-cyan">Process</span>
                     <span class="pill p-green">CX</span>
@@ -737,11 +1049,33 @@
                 <div data-lang="ar">
                   <h2>🎯 النتيجة</h2>
                   <div class="list">
-                    <div class="item"><div class="dot">✅</div><div><strong>استجابة أسرع</strong><div class="muted">تقليل الوقت بين الطلب والمتابعة.</div></div></div>
-                    <div class="item"><div class="dot">📈</div><div><strong>تنظيم أعلى</strong><div class="muted">سهولة ترتيب الحالات وتوثيقها.</div></div></div>
-                    <div class="item"><div class="dot">🤝</div><div><strong>تحسين تجربة العميل</strong><div class="muted">متابعة واضحة ومهنية من أول تواصل.</div></div></div>
+                    <div class="item">
+                      <div class="dot">✅</div>
+                      <div>
+                        <strong>استجابة أسرع</strong>
+                        <div class="muted">
+                          تقليل الوقت بين الطلب والمتابعة.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📈</div>
+                      <div>
+                        <strong>تنظيم أعلى</strong>
+                        <div class="muted">سهولة ترتيب الحالات وتوثيقها.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🤝</div>
+                      <div>
+                        <strong>تحسين تجربة العميل</strong>
+                        <div class="muted">
+                          متابعة واضحة ومهنية من أول تواصل.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pills" style="margin-top:0.75rem">
+                  <div class="pills" style="margin-top: 0.75rem">
                     <span class="pill p-primary">متابعة</span>
                     <span class="pill p-cyan">إجراءات</span>
                     <span class="pill p-green">تجربة العميل</span>
@@ -788,16 +1122,26 @@
         renderDots();
       }
 
-      function next() { go(idx + 1); }
-      function prev() { go(idx - 1); }
+      function next() {
+        go(idx + 1);
+      }
+      function prev() {
+        go(idx - 1);
+      }
 
       nextBtn.addEventListener("click", next);
       prevBtn.addEventListener("click", prev);
 
       window.addEventListener("keydown", (e) => {
         const k = e.key;
-        if (k === "ArrowRight" || k === " " || k === "Enter") { e.preventDefault(); next(); }
-        if (k === "ArrowLeft" || k === "Backspace") { e.preventDefault(); prev(); }
+        if (k === "ArrowRight" || k === " " || k === "Enter") {
+          e.preventDefault();
+          next();
+        }
+        if (k === "ArrowLeft" || k === "Backspace") {
+          e.preventDefault();
+          prev();
+        }
       });
 
       // Language toggle
@@ -819,7 +1163,7 @@
       go(0);
       setLang("en");
     </script>
-  
+
     <script>
       (function () {
         const STORAGE_KEY = "global_lang";
@@ -855,7 +1199,9 @@
         }
 
         function safeSetStorage(lang) {
-          try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}
+          try {
+            localStorage.setItem(STORAGE_KEY, lang);
+          } catch (_) {}
         }
 
         function broadcast(lang) {
@@ -871,7 +1217,9 @@
 
           // Tell children iframes (if any)
           document.querySelectorAll("iframe").forEach((fr) => {
-            try { fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*"); } catch (_) {}
+            try {
+              fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*");
+            } catch (_) {}
           });
         }
 
@@ -893,7 +1241,12 @@
 
           // Forward to any nested iframes for consistency
           document.querySelectorAll("iframe").forEach((fr) => {
-            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: d.lang }, "*"); } catch (_) {}
+            try {
+              fr.contentWindow.postMessage(
+                { type: CHANNEL, lang: d.lang },
+                "*",
+              );
+            } catch (_) {}
           });
         });
 
@@ -904,18 +1257,23 @@
 
         // Init from storage (fallback: current html lang)
         let initial = "en";
-        try { initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en"; } catch (_) { initial = html.lang || "en"; }
+        try {
+          initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en";
+        } catch (_) {
+          initial = html.lang || "en";
+        }
         applyLang(initial);
 
         // If this page contains iframes, push current language to them on load
         window.addEventListener("load", () => {
           const cur = html.lang || initial;
           document.querySelectorAll("iframe").forEach((fr) => {
-            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*"); } catch (_) {}
+            try {
+              fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*");
+            } catch (_) {}
           });
         });
       })();
     </script>
-
   </body>
 </html>

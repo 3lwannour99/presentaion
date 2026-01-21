@@ -151,8 +151,8 @@
         font-weight: 900;
         line-height: 1.25;
         background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent; /* fallback */
       }
       .sub {
         color: var(--muted);
@@ -268,8 +268,8 @@
         font-size: 1.7rem;
         font-weight: 900;
         background: linear-gradient(135deg, #4facfe, #00f2fe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent; /* fallback */
       }
       .lab {
         color: var(--muted);
