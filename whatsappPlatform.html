@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Integration – WhatsApp Business API (AR + EN)</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #6366f1;
+        --secondary: #06b6d4;
+        --accent: #f59e0b;
+        --success: #10b981;
+        --danger: #ef4444;
+        --dark: #0f172a;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --hero: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        overflow: hidden;
+      }
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: var(--hero);
+        overflow: hidden;
+      }
+      .bg::before,
+      .bg::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(110px);
+        animation: float 18s ease-in-out infinite;
+        opacity: 0.95;
+      }
+      .bg::before {
+        width: 700px;
+        height: 700px;
+        background: rgba(99, 102, 241, 0.3);
+        top: -260px;
+        right: -260px;
+      }
+      .bg::after {
+        width: 620px;
+        height: 620px;
+        background: rgba(6, 182, 212, 0.22);
+        bottom: -260px;
+        left: -260px;
+        animation-delay: -9s;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0);
+        }
+        25% {
+          transform: translate(70px, 45px) rotate(6deg);
+        }
+        50% {
+          transform: translate(0, 120px) rotate(0);
+        }
+        75% {
+          transform: translate(-70px, 45px) rotate(-6deg);
+        }
+      }
+
+      .wrap {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .stage {
+        width: min(1300px, 96vw);
+        aspect-ratio: 16/9;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        position: relative;
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 2rem;
+        display: none;
+      }
+      .slide.active {
+        display: block;
+      }
+      .glass {
+        height: 100%;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 2rem;
+        backdrop-filter: blur(18px);
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .tag {
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid rgba(6, 182, 212, 0.35);
+        background: rgba(6, 182, 212, 0.12);
+        font-weight: 900;
+        white-space: nowrap;
+      }
+      h1 {
+        font-size: 2.1rem;
+        font-weight: 900;
+        line-height: 1.25;
+        background: linear-gradient(135deg, #fff, #a5b4fc, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .sub {
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 1.05rem;
+        max-width: 960px;
+        margin-top: 0.35rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 1rem;
+        flex: 1;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 1rem;
+      }
+      .card h2 {
+        font-size: 1.2rem;
+        font-weight: 900;
+        margin-bottom: 0.55rem;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .list {
+        display: grid;
+        gap: 0.6rem;
+        margin-top: 0.35rem;
+      }
+      .item {
+        display: flex;
+        gap: 0.6rem;
+        align-items: flex-start;
+        padding: 0.75rem 0.85rem;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .dot {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        background: rgba(99, 102, 241, 0.14);
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        flex: 0 0 auto;
+      }
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-top: 0.4rem;
+      }
+      .pill {
+        display: inline-flex;
+        gap: 0.45rem;
+        align-items: center;
+        padding: 0.28rem 0.7rem;
+        border-radius: 999px;
+        font-weight: 900;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        white-space: nowrap;
+      }
+      .p-primary {
+        background: rgba(99, 102, 241, 0.14);
+        border-color: rgba(99, 102, 241, 0.35);
+      }
+      .p-cyan {
+        background: rgba(6, 182, 212, 0.12);
+        border-color: rgba(6, 182, 212, 0.35);
+      }
+      .p-amber {
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.35);
+      }
+      .p-green {
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+
+      /* Language toggle */
+      .lang {
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.45rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+      }
+      .lang button {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        padding: 0.45rem 0.75rem;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 900;
+      }
+      .lang button.active {
+        background: rgba(6, 182, 212, 0.2);
+        border-color: rgba(6, 182, 212, 0.55);
+      }
+
+      /* Controls */
+      .controls {
+        position: fixed;
+        left: 50%;
+        bottom: 14px;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.55rem 0.8rem;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 999px;
+        backdrop-filter: blur(12px);
+        user-select: none;
+      }
+      .btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .dots {
+        display: flex;
+        gap: 0.35rem;
+        padding: 0 0.2rem;
+      }
+      .dotnav {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        cursor: pointer;
+      }
+      .dotnav.active {
+        background: rgba(6, 182, 212, 0.85);
+        border-color: rgba(6, 182, 212, 0.9);
+        box-shadow: 0 0 14px rgba(6, 182, 212, 0.45);
+      }
+      .counter {
+        color: var(--muted);
+        font-weight: 900;
+        font-size: 0.95rem;
+        white-space: nowrap;
+      }
+
+      /* i18n visibility */
+      [data-lang] {
+        display: none;
+      }
+      html[lang="en"] [data-lang="en"] {
+        display: block;
+      }
+      html[lang="ar"] [data-lang="ar"] {
+        display: block;
+      }
+
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 1.8rem;
+        }
+        .sub {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg"></div>
+
+    <!-- Language Toggle -->
+    <div class="lang" aria-label="Language toggle">
+      <button id="btnAr" type="button">AR</button>
+      <button id="btnEn" type="button" class="active">EN</button>
+    </div>
+
+    <div class="wrap">
+      <div class="stage">
+        <!-- Slide 1 -->
+        <section class="slide active">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>WhatsApp Business API Platform</h1>
+                  <div class="sub">
+                    A complete Arabic-first platform for sending bulk WhatsApp
+                    messages with full tracking and detailed analytics.
+                  </div>
+                  <div class="pills">
+                    <span class="pill p-primary">📱 WhatsApp Business API</span>
+                    <span class="pill p-cyan">📊 Full Tracking</span>
+                    <span class="pill p-amber">📈 Analytics</span>
+                  </div>
+                </div>
+
+                <div data-lang="ar">
+                  <h1>منصة واتساب للأعمال</h1>
+                  <div class="sub">
+                    منصة عربية متكاملة لإرسال رسائل واتساب جماعية مع تتبع كامل
+                    للرسائل وإحصائيات تفصيلية.
+                  </div>
+                  <div class="pills">
+                    <span class="pill p-primary">📱 واتساب للأعمال</span>
+                    <span class="pill p-cyan">📊 تتبع كامل</span>
+                    <span class="pill p-amber">📈 إحصائيات</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 1 • Overview</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🎯 Core Value</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>Bulk Messaging</strong>
+                        <div class="muted">
+                          Send thousands of messages in one go.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>Full Message Tracking</strong>
+                        <div class="muted">
+                          Sent → Delivered → Read → Replied.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>Official Meta API</strong>
+                        <div class="muted">
+                          No risk of number bans or blocks.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div data-lang="ar">
+                  <h2>🎯 القيمة الأساسية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>
+                        <strong>إرسال جماعي</strong>
+                        <div class="muted">أرسل آلاف الرسائل دفعة واحدة.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>
+                        <strong>تتبع كامل للرسائل</strong>
+                        <div class="muted">
+                          مرسلة → مستلمة → مقروءة → مردود عليها.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>
+                        <strong>API رسمي من Meta</strong>
+                        <div class="muted">بدون خوف من الحظر أو التعطيل.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>✅ Key Benefits</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🚀</div>
+                      <div>Scale customer communication</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🛡️</div>
+                      <div>100% compliant & secure</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>Seamless team collaboration</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div data-lang="ar">
+                  <h2>✅ الفوائد الرئيسية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🚀</div>
+                      <div>توسيع نطاق التواصل مع العملاء</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🛡️</div>
+                      <div>آمن ومتوافق 100%</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>تعاون فريق سلس</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 2 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>How Your Company Benefits</h1>
+                  <div class="sub">
+                    Transform your business communication with automation,
+                    analytics, and official WhatsApp integration.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>كيف تستفيد شركتك</h1>
+                  <div class="sub">
+                    حوّل طريقة تواصلك مع العملاء عبر الأتمتة، التحليلات،
+                    والتكامل الرسمي مع واتساب.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 2 • Business Impact</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>💼 For Sales & Marketing</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📢</div>
+                      <div>
+                        <strong>Campaigns at scale</strong>
+                        <div class="muted">
+                          Launch promotions to thousands instantly.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📊</div>
+                      <div>
+                        <strong>Real-time analytics</strong>
+                        <div class="muted">
+                          Track open rates, replies, and conversions.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>
+                        <strong>Automated follow-ups</strong>
+                        <div class="muted">
+                          Nurture leads without manual effort.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>💼 للمبيعات والتسويق</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📢</div>
+                      <div>
+                        <strong>حملات على نطاق واسع</strong>
+                        <div class="muted">
+                          أطلق العروض لآلاف العملاء فوراً.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📊</div>
+                      <div>
+                        <strong>تحليلات لحظية</strong>
+                        <div class="muted">
+                          تتبع نسب الفتح، الردود، والتحويلات.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔁</div>
+                      <div>
+                        <strong>متابَعات آلية</strong>
+                        <div class="muted">طور عملائك دون جهد يدوي.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🛠️ For Operations</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>
+                        <strong>Team management</strong>
+                        <div class="muted">
+                          Assign roles, track activity, and audit logs.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⏱️</div>
+                      <div>
+                        <strong>24/7 continuity</strong>
+                        <div class="muted">
+                          Messages send even if app is closed.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔒</div>
+                      <div>
+                        <strong>Secure & compliant</strong>
+                        <div class="muted">
+                          Official WhatsApp Business API from Meta.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🛠️ للعمليات</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>
+                        <strong>إدارة الفريق</strong>
+                        <div class="muted">خصص الصلاحيات وتتبع النشاطات.</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⏱️</div>
+                      <div>
+                        <strong>استمرارية 24/7</strong>
+                        <div class="muted">
+                          الإرسال يستمر حتى لو تم إغلاق البرنامج.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔒</div>
+                      <div>
+                        <strong>آمن ومتوافق</strong>
+                        <div class="muted">واتساب للأعمال الرسمي من Meta.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>Deep Integration Capabilities</h1>
+                  <div class="sub">
+                    Connect RootCode seamlessly with your existing systems via
+                    powerful APIs and webhooks.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>قدرات التكامل المتقدمة</h1>
+                  <div class="sub">
+                    اربط منصة RootCode بسلاسة مع أنظمتك الحالية عبر واجهات برمجة
+                    قوية وWebhooks.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 3 • Integration</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🔌 Integration Types</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>
+                        <strong>CRM Sync</strong>
+                        <div class="muted">
+                          Push/pull contacts and conversation history.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🛒</div>
+                      <div>
+                        <strong>E-commerce Platforms</strong>
+                        <div class="muted">
+                          Order confirmations, shipping updates, support.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⚙️</div>
+                      <div>
+                        <strong>Custom Workflows</strong>
+                        <div class="muted">
+                          Trigger messages based on internal events.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🔌 أنواع التكامل</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>
+                        <strong>مزامنة CRM</strong>
+                        <div class="muted">
+                          استيراد/تصدير جهات الاتصال وسجل المحادثات.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🛒</div>
+                      <div>
+                        <strong>منصات التجارة الإلكترونية</strong>
+                        <div class="muted">
+                          تأكيد الطلبات، تحديثات الشحن، الدعم.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⚙️</div>
+                      <div>
+                        <strong>سير عمل مخصص</strong>
+                        <div class="muted">
+                          تشغيل رسائل بناءً على أحداث داخلية.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🧩 Technical Features</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🔑</div>
+                      <div>RESTful API with full documentation</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📡</div>
+                      <div>Webhooks for real-time event notifications</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔐</div>
+                      <div>OAuth 2.0 authentication & role-based access</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">API</span>
+                    <span class="pill p-cyan">Webhooks</span>
+                    <span class="pill p-amber">Security</span>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🧩 الميزات التقنية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🔑</div>
+                      <div>واجهة برمجة RESTful مع توثيق كامل</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📡</div>
+                      <div>Webhooks لإشعارات الأحداث الفورية</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔐</div>
+                      <div>مصادقة OAuth 2.0 وصلاحيات حسب الأدوار</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">واجهة برمجة</span>
+                    <span class="pill p-cyan">Webhooks</span>
+                    <span class="pill p-amber">الأمان</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 4 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>Integration Use Cases</h1>
+                  <div class="sub">
+                    Real-world scenarios where RootCode’s integration delivers
+                    measurable business value.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>حالات استخدام التكامل</h1>
+                  <div class="sub">
+                    سيناريوهات واقعية حيث يحقق تكامل RootCode قيمة أعمال قابلة
+                    للقياس.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 4 • Use Cases</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🛒 E-commerce</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📦</div>
+                      <div>Auto-send order confirmation + tracking link</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⭐</div>
+                      <div>Request reviews after delivery</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>Abandoned cart recovery messages</div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🛒 التجارة الإلكترونية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📦</div>
+                      <div>إرسال تأكيد الطلب ورابط التتبع تلقائياً</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⭐</div>
+                      <div>طلب تقييم بعد التوصيل</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>رسائل استرجاع السلة المهجورة</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🏥 Healthcare</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📅</div>
+                      <div>Appointment reminders 24h before</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">💊</div>
+                      <div>Medication adherence notifications</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📋</div>
+                      <div>Follow-up surveys post-consultation</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-green">Automation</span>
+                    <span class="pill p-cyan">Compliance</span>
+                    <span class="pill p-primary">Engagement</span>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🏥 الرعاية الصحية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📅</div>
+                      <div>تذكير بالموعد قبل 24 ساعة</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">💊</div>
+                      <div>إشعارات الالتزام بالأدوية</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📋</div>
+                      <div>استبيانات متابعة بعد الاستشارة</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-green">أتمتة</span>
+                    <span class="pill p-cyan">امتثال</span>
+                    <span class="pill p-primary">تفاعل</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>Technical Integration Flow</h1>
+                  <div class="sub">
+                    How your system connects with RootCode to enable seamless
+                    two-way communication.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>تدفق التكامل التقني</h1>
+                  <div class="sub">
+                    كيف يتصل نظامك بـ RootCode لتمكين تواصل ثنائي الاتجاه
+                    بسلاسة.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 5 • Architecture</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🔄 Data Flow</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>Your system triggers an event (e.g., new order)</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>API call sends payload to RootCode</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>RootCode processes & sends WhatsApp message</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>Customer replies → webhook to your system</div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🔄 تدفق البيانات</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>نظامك يُفعّل حدثاً (مثل طلب جديد)</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>طلب API يرسل البيانات إلى RootCode</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>RootCode تعالج البيانات وتُرسل رسالة واتساب</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>رد العميل → Webhook إلى نظامك</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🛡️ Security & Reliability</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🔐</div>
+                      <div>End-to-end encryption for all messages</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⚡</div>
+                      <div>99.9% uptime SLA</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>Automatic retry & failover mechanisms</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">Secure</span>
+                    <span class="pill p-cyan">Reliable</span>
+                    <span class="pill p-green">Scalable</span>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🛡️ الأمان والموثوقية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🔐</div>
+                      <div>تشفير من طرف لطرف لجميع الرسائل</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">⚡</div>
+                      <div>اتفاق مستوى خدمة 99.9%</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔄</div>
+                      <div>آليات إعادة المحاولة والاسترداد التلقائي</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">آمن</span>
+                    <span class="pill p-cyan">موثوق</span>
+                    <span class="pill p-green">قابل للتوسع</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 6 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>Implementation & Support</h1>
+                  <div class="sub">
+                    Fast, smooth onboarding with dedicated technical support and
+                    comprehensive documentation.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>التنفيذ والدعم</h1>
+                  <div class="sub">
+                    تشغيل سريع وسلس مع دعم تقني مخصص ووثائق شاملة.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 6 • Onboarding</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🚀 Go-Live Timeline</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>Day 1: API credentials & sandbox access</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>Days 2–3: Integration testing</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>Day 4: Production deployment</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>Day 5: Live & scaling</div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🚀 جدول التشغيل</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">1</div>
+                      <div>اليوم 1: بيانات الاعتماد ووصول Sandbox</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">2</div>
+                      <div>الأيام 2–3: اختبار التكامل</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">3</div>
+                      <div>اليوم 4: النشر في البيئة الإنتاجية</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">4</div>
+                      <div>اليوم 5: التشغيل والتوسع</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🛠️ Support Included</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">👨‍💻</div>
+                      <div>Dedicated integration engineer</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📚</div>
+                      <div>Full API documentation & SDKs</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📞</div>
+                      <div>24/7 technical support</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">Fast</span>
+                    <span class="pill p-cyan">Supported</span>
+                    <span class="pill p-amber">Simple</span>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🛠️ الدعم المشمول</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">👨‍💻</div>
+                      <div>مهندس تكامل مخصص</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📚</div>
+                      <div>وثائق واجهة برمجة كاملة وSDKs</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📞</div>
+                      <div>دعم تقني 24/7</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">سريع</span>
+                    <span class="pill p-cyan">مدعوم</span>
+                    <span class="pill p-amber">بسيط</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 7 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>Pricing & Packages</h1>
+                  <div class="sub">
+                    Flexible plans designed for businesses of all sizes, with
+                    full integration features included.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>الأسعار والباقات</h1>
+                  <div class="sub">
+                    خطط مرنة مصممة لجميع أحجام الأعمال، مع تضمين جميع ميزات
+                    التكامل.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 7 • Pricing</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>💼 Professional Plan</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">💰</div>
+                      <div>1,500 SAR/month</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📤</div>
+                      <div>10,000 messages/month</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>5 team members</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔌</div>
+                      <div>Full API & webhook access</div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>💼 الباقة الاحترافية</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">💰</div>
+                      <div>1,500 ريال/شهر</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📤</div>
+                      <div>10,000 رسالة/شهر</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>5 أعضاء في الفريق</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔌</div>
+                      <div>وصول كامل لواجهة البرمجة وWebhooks</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>🏢 Advanced Plan</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">💎</div>
+                      <div>4,000 SAR/month</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">♾️</div>
+                      <div>Unlimited messages</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>Unlimited team members</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🏷️</div>
+                      <div>White-label & custom integrations</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">Scalable</span>
+                    <span class="pill p-cyan">Enterprise</span>
+                    <span class="pill p-amber">Custom</span>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>🏢 الباقة المتقدمة</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">💎</div>
+                      <div>4,000 ريال/شهر</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">♾️</div>
+                      <div>رسائل غير محدودة</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👥</div>
+                      <div>أعضاء فريق غير محدودين</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🏷️</div>
+                      <div>علامة بيضاء وتكاملات مخصصة</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-primary">قابلة للتوسع</span>
+                    <span class="pill p-cyan">مؤسسة</span>
+                    <span class="pill p-amber">مخصصة</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 8 -->
+        <section class="slide">
+          <div class="glass">
+            <div class="top">
+              <div>
+                <div data-lang="en">
+                  <h1>Get Started Today</h1>
+                  <div class="sub">
+                    Begin your 7-day free trial with 100 free messages and full
+                    integration access.
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h1>ابدأ اليوم</h1>
+                  <div class="sub">
+                    ابدأ تجربتك المجانية لمدة 7 أيام مع 100 رسالة مجانية ووصول
+                    كامل لميزات التكامل.
+                  </div>
+                </div>
+              </div>
+              <div class="tag">SLIDE 8 • CTA</div>
+            </div>
+
+            <div class="grid">
+              <div class="card">
+                <div data-lang="en">
+                  <h2>✅ What You Get</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🧪</div>
+                      <div>7-day free trial</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📨</div>
+                      <div>100 free messages</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔌</div>
+                      <div>Full API & webhook access</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👨‍🏫</div>
+                      <div>Free onboarding session</div>
+                    </div>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>✅ ما ستحصل عليه</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">🧪</div>
+                      <div>تجربة مجانية 7 أيام</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">📨</div>
+                      <div>100 رسالة مجانية</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🔌</div>
+                      <div>وصول كامل لواجهة البرمجة وWebhooks</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">👨‍🏫</div>
+                      <div>جلسة تشغيل مجانية</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div data-lang="en">
+                  <h2>📞 Contact Us</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📱</div>
+                      <div>WhatsApp: +966 50 123 4567</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✉️</div>
+                      <div>Email: info@rootcode.sa</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🌐</div>
+                      <div>Website: rootcode.sa</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-green">Free Trial</span>
+                    <span class="pill p-cyan">No Credit Card</span>
+                    <span class="pill p-primary">Start Now</span>
+                  </div>
+                </div>
+                <div data-lang="ar">
+                  <h2>📞 تواصل معنا</h2>
+                  <div class="list">
+                    <div class="item">
+                      <div class="dot">📱</div>
+                      <div>واتساب: +966 50 123 4567</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">✉️</div>
+                      <div>البريد: info@rootcode.sa</div>
+                    </div>
+                    <div class="item">
+                      <div class="dot">🌐</div>
+                      <div>الموقع: rootcode.sa</div>
+                    </div>
+                  </div>
+                  <div class="pills" style="margin-top: 0.75rem">
+                    <span class="pill p-green">تجربة مجانية</span>
+                    <span class="pill p-cyan">بدون بطاقة ائتمان</span>
+                    <span class="pill p-primary">ابدأ الآن</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev">◀</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn" id="next">▶</button>
+      <div class="counter" id="counter">1 / 8</div>
+    </div>
+
+    <script>
+      // Slides
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsWrap = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      let idx = 0;
+
+      function renderDots() {
+        dotsWrap.innerHTML = "";
+        slides.forEach((_, i) => {
+          const d = document.createElement("div");
+          d.className = "dotnav" + (i === idx ? " active" : "");
+          d.title = "Slide " + (i + 1);
+          d.addEventListener("click", () => go(i));
+          dotsWrap.appendChild(d);
+        });
+      }
+
+      function go(i) {
+        idx = (i + slides.length) % slides.length;
+        slides.forEach((s, k) => s.classList.toggle("active", k === idx));
+        counter.textContent = `${idx + 1} / ${slides.length}`;
+        renderDots();
+      }
+
+      function next() {
+        go(idx + 1);
+      }
+      function prev() {
+        go(idx - 1);
+      }
+
+      nextBtn.addEventListener("click", next);
+      prevBtn.addEventListener("click", prev);
+
+      window.addEventListener("keydown", (e) => {
+        const k = e.key;
+        if (k === "ArrowRight" || k === " " || k === "Enter") {
+          e.preventDefault();
+          next();
+        }
+        if (k === "ArrowLeft" || k === "Backspace") {
+          e.preventDefault();
+          prev();
+        }
+      });
+
+      // Language toggle
+      const btnAr = document.getElementById("btnAr");
+      const btnEn = document.getElementById("btnEn");
+
+      function setLang(lang) {
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+        btnAr.classList.toggle("active", lang === "ar");
+        btnEn.classList.toggle("active", lang === "en");
+      }
+
+      btnAr.addEventListener("click", () => setLang("ar"));
+      btnEn.addEventListener("click", () => setLang("en"));
+
+      // Init
+      renderDots();
+      go(0);
+      setLang("en");
+    </script>
+  </body>
+</html>
