@@ -328,6 +328,7 @@
         border-radius: 999px;
         backdrop-filter: blur(12px);
         user-select: none;
+        direction: ltr;
       }
       .btn {
         width: 42px;
@@ -404,69 +405,74 @@
         }
       }
       /* Make slide content fit 16:9 without overflow */
-.slide {
-  height: 100%;
-}
+      .slide {
+        height: 100%;
+      }
 
-.glass {
-  height: 100%;
-  overflow: hidden; /* important */
-}
+      .glass {
+        height: 100%;
+        overflow: hidden; /* important */
+      }
 
-/* Let grid take the remaining height */
-.grid {
-  min-height: 0;         /* critical for overflow in flex/grid */
-  height: 100%;
-  overflow: hidden;
-}
+      /* Let grid take the remaining height */
+      .grid {
+        min-height: 0; /* critical for overflow in flex/grid */
+        height: 100%;
+        overflow: hidden;
+      }
 
-/* Cards become scrollable containers */
-.card {
-  min-height: 0;         /* critical */
-  overflow: hidden;      /* keep card edges clean */
-  display: flex;
-  flex-direction: column;
-}
+      /* Cards become scrollable containers */
+      .card {
+        min-height: 0; /* critical */
+        overflow: hidden; /* keep card edges clean */
+        display: flex;
+        flex-direction: column;
+      }
 
-/* The content area inside card should scroll if long */
-.card .list,
-.card .barWrap,
-.card p,
-.card .pills {
-  min-height: 0;
-}
+      /* The content area inside card should scroll if long */
+      .card .list,
+      .card .barWrap,
+      .card p,
+      .card .pills {
+        min-height: 0;
+      }
 
-.card .list {
-  overflow: auto;        /* scroll inside card */
-  padding-right: 6px;    /* space for scrollbar */
-}
+      .card .list {
+        overflow: auto; /* scroll inside card */
+        padding-right: 6px; /* space for scrollbar */
+      }
 
-/* RTL scrollbar padding */
-html[dir="rtl"] .card .list {
-  padding-right: 0;
-  padding-left: 6px;
-}
+      /* RTL scrollbar padding */
+      html[dir="rtl"] .card .list {
+        padding-right: 0;
+        padding-left: 6px;
+      }
 
-/* Optional: nicer scrollbar */
-.card .list::-webkit-scrollbar {
-  width: 8px;
-}
-.card .list::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.18);
-  border-radius: 999px;
-}
-.card .list::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.06);
-  border-radius: 999px;
-}
+      /* Optional: nicer scrollbar */
+      .card .list::-webkit-scrollbar {
+        width: 8px;
+      }
+      .card .list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+      }
+      .card .list::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 999px;
+      }
 
-/* Reduce spacing a bit on smaller screens to avoid overflow */
-@media (max-width: 1300px) {
-  .glass { padding: 1.6rem; }
-  .slide { padding: 1.6rem; }
-  .sub { line-height: 1.7; }
-}
-
+      /* Reduce spacing a bit on smaller screens to avoid overflow */
+      @media (max-width: 1300px) {
+        .glass {
+          padding: 1.6rem;
+        }
+        .slide {
+          padding: 1.6rem;
+        }
+        .sub {
+          line-height: 1.7;
+        }
+      }
     </style>
   </head>
 

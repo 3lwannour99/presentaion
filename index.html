@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Integrated Presentation</title>
+    <title>Integrated Presentation - Laith Alobaidi Group</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;600;700;800;900&display=swap"
       rel="stylesheet"
@@ -401,6 +401,30 @@
         margin-top: 4px;
       }
 
+      /* Language toggle */
+      .lang-toggle {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .lang-btn {
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .lang-btn.active {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+      .lang-btn:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
       @media (max-width: 980px) {
         body {
           overflow: auto;
@@ -435,7 +459,7 @@
             <h1>Integrated Product Presentation</h1>
             <div class="hint">All modules in one clean deck</div>
           </div>
-          <div class="pill" title="Keyboard: 1-5 to switch">⌨️ 1–5</div>
+          <div class="pill" title="Keyboard: 1-6 to switch">⌨️ 1–6</div>
         </div>
 
         <div class="nav" id="nav"></div>
@@ -448,7 +472,7 @@
           <div class="krow">
             <span>Switch Module</span><code class="key">1</code>–<code
               class="key"
-              >5</code
+              >6</code
             >
           </div>
           <div class="krow">
@@ -496,12 +520,16 @@
             <div class="pill">
               ✨ Unified navigation • consistent look • clean demo flow
             </div>
-            <div class="heroTitle">One presentation. Five modules.</div>
-            <div class="heroSub">
-              This file is a “presentation shell” that brings your existing HTML
-              presentations together. It keeps each module intact (so your slide
-              controls still work), while giving you a professional, consistent
-              wrapper.
+            <div class="heroTitle">One presentation. six modules.</div>
+            
+            <!-- Language Toggle -->
+            <div class="lang-toggle">
+              <button class="lang-btn active" data-lang="en">English</button>
+              <button class="lang-btn" data-lang="ar">العربية</button>
+            </div>
+            
+            <div class="heroSub" id="heroDescription">
+              This integrated presentation showcases the comprehensive IT solutions developed by the IT Department of Laith Alobaidi Group. Our team has successfully implemented cutting-edge systems across automotive CRM, inventory management, digital marketing analytics, task automation, website lead generation, and WhatsApp business communications. Each module represents a strategic initiative that enhances operational efficiency, customer engagement, and data-driven decision making throughout our organization.
             </div>
 
             <div class="cards" id="homeCards"></div>
@@ -514,40 +542,71 @@
       const modules = [
         {
           id: "crm",
-          title: "Automotive CRM System",
-          desc: "Arabic landing-style overview: features, pipeline, automation, ROI, and security roles.",
+          title: { en: "Automotive CRM System", ar: "نظام إدارة علاقات العملاء للسيارات" },
+          desc: { 
+            en: "Arabic landing-style overview: features, pipeline, automation, ROI, and security roles.", 
+            ar: "نظرة عامة بنمط الهبوط باللغة العربية: الميزات، خط الأنابيب، الأتمتة، العائد على الاستثمار، وأدوار الأمان." 
+          },
           icon: "🚗",
           file: "CRM_Presentation.html",
         },
         {
           id: "dash",
-          title: "Inventory & Sales Dashboard",
-          desc: "10-slide dashboard presentation: KPIs, car data, status, colors/models, customer types, ranking, reports.",
+          title: { en: "Inventory & Sales Dashboard", ar: "لوحة تحكم المخزون والمبيعات" },
+          desc: { 
+            en: "10-slide dashboard presentation: KPIs, car data, status, colors/models, customer types, ranking, reports.", 
+            ar: "عرض تقديمي من 10 شرائح للوحة التحكم: مؤشرات الأداء الرئيسية، بيانات السيارات، الحالة، الألوان/الموديلات، أنواع العملاء، التصنيف، التقارير." 
+          },
           icon: "📊",
           file: "dashSAP.html",
         },
         {
           id: "meta",
-          title: "Meta Ads Library Tracking",
-          desc: "5-slide workflow: extract fields, pipeline, classify by brand keywords, export to Excel.",
+          title: { en: "Meta Ads Library Tracking", ar: "تتبع مكتبة إعلانات ميتا" },
+          desc: { 
+            en: "5-slide workflow: extract fields, pipeline, classify by brand keywords, export to Excel.", 
+            ar: "سير عمل من 5 شرائح: استخراج الحقول، خط الأنابيب، التصنيف حسب كلمات العلامة التجارية، التصدير إلى إكسل." 
+          },
           icon: "📣",
           file: "meta-ads.html",
         },
         {
           id: "tasks",
-          title: "CRM Tasks Manager",
-          desc: "5 slides: filtering, description verification, tracking tables, task details & Excel reports.",
+          title: { en: "CRM Tasks Manager", ar: "مدير مهام نظام إدارة علاقات العملاء" },
+          desc: { 
+            en: "5 slides: filtering, description verification, tracking tables, task details & Excel reports.", 
+            ar: "5 شرائح: التصفية، التحقق من الوصف، جداول التتبع، تفاصيل المهام والتقارير الإكسل." 
+          },
           icon: "✅",
           file: "tasks.html",
         },
         {
           id: "web",
-          title: "Website Lead Flow (AR+EN)",
-          desc: "5 slides: website purpose, structured specs, forms, data flow to Excel/CRM, call-center workflow.",
+          title: { en: "Websites Lead Flow", ar: "تدفق العملاء من الموقع الإلكتروني" },
+          desc: { 
+            en: "5 slides: website purpose, structured specs, forms, data flow to Excel/CRM, call-center workflow.", 
+            ar: "5 شرائح: غرض الموقع، المواصفات المنظمة، النماذج، تدفق البيانات إلى إكسل/نظام إدارة علاقات العملاء، سير عمل مركز الاتصال." 
+          },
           icon: "🌐",
           file: "websites.html",
         },
+        {
+          id: "whatsapp",
+          title: { en: "WhatsApp Business Platform", ar: "منصة واتساب للأعمال" },
+          desc: { 
+            en: "WhatsApp Business API platform: bulk messaging, tracking, analytics, integrations (AR + EN).", 
+            ar: "منصة واجهة برمجة تطبيقات واتساب للأعمال: الرسائل الجماعية، التتبع، التحليلات، التكاملات (عربي + إنجليزي)." 
+          },
+          icon: "💬",
+          file: "whatsappPlatform.html",
+        },
       ];
+
+      // Updated descriptions for Laith Alobaidi Group
+      const descriptions = {
+        en: "This integrated presentation showcases the comprehensive IT solutions developed by the IT Department of Laith Alobaidi Group. Our team has successfully implemented cutting-edge systems across automotive CRM, inventory management, digital marketing analytics, task automation, website lead generation, and WhatsApp business communications. Each module represents a strategic initiative that enhances operational efficiency, customer engagement, and data-driven decision making throughout our organization.",
+        ar: "يعرض هذا العرض التقديمي المتكامل الحلول التقنية الشاملة التي طورها قسم تكنولوجيا المعلومات في مجموعة ليث العبيدي. نجح فريقنا في تنفيذ أنظمة متطورة في مجالات إدارة علاقات العملاء للسيارات، وإدارة المخزون، وتحليلات التسويق الرقمي، وأتمتة المهام، وتوليد العملاء من المواقع الإلكترونية، واتصالات أعمال واتساب. يمثل كل وحدة مبادرة استراتيجية تعزز الكفاءة التشغيلية، وتفاعل العملاء، واتخاذ القرارات القائمة على البيانات في جميع أنحاء مؤسستنا."
+      };
 
       const nav = document.getElementById("nav");
       const home = document.getElementById("home");
@@ -558,8 +617,11 @@
       const btnHome = document.getElementById("btnHome");
       const btnFull = document.getElementById("btnFull");
       const btnOpen = document.getElementById("btnOpen");
+      const heroDescription = document.getElementById("heroDescription");
+      const langButtons = document.querySelectorAll(".lang-btn");
 
       let current = -1; // -1 = home
+      let currentLang = 'en';
 
       function setActiveNav() {
         [...nav.querySelectorAll(".navbtn")].forEach((b, i) =>
@@ -571,10 +633,11 @@
         current = -1;
         home.classList.add("show");
         frame.src = "about:blank";
-        topTitle.textContent = "Home";
-        topSub.textContent = "Choose a module from the left";
+        topTitle.textContent = currentLang === 'en' ? "Home" : "الرئيسية";
+        topSub.textContent = currentLang === 'en' ? "Choose a module from the left" : "اختر وحدة من اليسار";
         btnOpen.disabled = true;
         setActiveNav();
+        updateDescription();
       }
 
       function openModule(i) {
@@ -583,8 +646,8 @@
         current = i;
         home.classList.remove("show");
         frame.src = m.file;
-        topTitle.textContent = m.title;
-        topSub.textContent = m.desc;
+        topTitle.textContent = m.title[currentLang];
+        topSub.textContent = m.desc[currentLang];
         btnOpen.disabled = false;
         setActiveNav();
       }
@@ -603,6 +666,40 @@
         }
       }
 
+      function updateDescription() {
+        heroDescription.textContent = descriptions[currentLang];
+      }
+
+      function setLanguage(lang) {
+        currentLang = lang;
+        // Update language button states
+        langButtons.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        // Update home view
+        if (current === -1) {
+          showHome();
+        } else {
+          // Update current module display
+          const m = modules[current];
+          topTitle.textContent = m.title[currentLang];
+          topSub.textContent = m.desc[currentLang];
+        }
+        // Update all navigation items
+        const navItems = nav.querySelectorAll('.navbtn');
+        const cardItems = homeCards.querySelectorAll('.card');
+        modules.forEach((m, i) => {
+          if (navItems[i]) {
+            navItems[i].querySelector('.ntitle').textContent = `${i + 1}. ${m.title[currentLang]}`;
+            navItems[i].querySelector('.ndesc').textContent = m.desc[currentLang];
+          }
+          if (cardItems[i]) {
+            cardItems[i].querySelector('.ct').textContent = `${i + 1}. ${m.title[currentLang]}`;
+            cardItems[i].querySelector('.cs').textContent = m.desc[currentLang];
+          }
+        });
+      }
+
       // build sidebar nav
       modules.forEach((m, i) => {
         const b = document.createElement("div");
@@ -610,8 +707,8 @@
         b.innerHTML = `
         <div class="ic">${m.icon}</div>
         <div style="min-width:0">
-          <div class="ntitle">${i + 1}. ${m.title}</div>
-          <div class="ndesc">${m.desc}</div>
+          <div class="ntitle">${i + 1}. ${m.title.en}</div>
+          <div class="ndesc">${m.desc.en}</div>
         </div>
       `;
         b.addEventListener("click", () => openModule(i));
@@ -622,12 +719,19 @@
         c.innerHTML = `
         <div class="cic">${m.icon}</div>
         <div style="min-width:0">
-          <div class="ct">${i + 1}. ${m.title}</div>
-          <div class="cs">${m.desc}</div>
+          <div class="ct">${i + 1}. ${m.title.en}</div>
+          <div class="cs">${m.desc.en}</div>
         </div>
       `;
         c.addEventListener("click", () => openModule(i));
         homeCards.appendChild(c);
+      });
+
+      // Language button event listeners
+      langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          setLanguage(btn.dataset.lang);
+        });
       });
 
       btnHome.addEventListener("click", showHome);
@@ -639,7 +743,7 @@
         const k = e.key;
         if (k === "h" || k === "H") return showHome();
         if (k === "f" || k === "F") return toggleFullscreen();
-        if (k >= "1" && k <= "5") return openModule(parseInt(k, 10) - 1);
+        if (k >= "1" && k <= "6") return openModule(parseInt(k, 10) - 1);
 
         if (e.ctrlKey && (k === "ArrowRight" || k === "ArrowLeft")) {
           e.preventDefault();
@@ -654,3 +758,4 @@
     </script>
   </body>
 </html>
+
