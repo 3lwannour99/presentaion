@@ -459,7 +459,7 @@
             <h1>Integrated Product Presentation</h1>
             <div class="hint">All modules in one clean deck</div>
           </div>
-          <div class="pill" title="Keyboard: 1-6 to switch">⌨️ 1–6</div>
+          <div class="pill" title="Keyboard: 1-7 to switch">⌨️ 1–7</div>
         </div>
 
         <div class="nav" id="nav"></div>
@@ -472,7 +472,7 @@
           <div class="krow">
             <span>Switch Module</span><code class="key">1</code>–<code
               class="key"
-              >6</code
+              >7</code
             >
           </div>
           <div class="krow">
@@ -521,15 +521,22 @@
               ✨ Unified navigation • consistent look • clean demo flow
             </div>
             <div class="heroTitle">One presentation. six modules.</div>
-            
+
             <!-- Language Toggle -->
             <div class="lang-toggle">
               <button class="lang-btn active" data-lang="en">English</button>
               <button class="lang-btn" data-lang="ar">العربية</button>
             </div>
-            
+
             <div class="heroSub" id="heroDescription">
-              This integrated presentation showcases the comprehensive IT solutions developed by the IT Department of Laith Alobaidi Group. Our team has successfully implemented cutting-edge systems across automotive CRM, inventory management, digital marketing analytics, task automation, website lead generation, and WhatsApp business communications. Each module represents a strategic initiative that enhances operational efficiency, customer engagement, and data-driven decision making throughout our organization.
+              This integrated presentation showcases the comprehensive IT
+              solutions developed by the IT Department of Laith Alobaidi Group.
+              Our team has successfully implemented cutting-edge systems across
+              automotive CRM, inventory management, digital marketing analytics,
+              task automation, website lead generation, and WhatsApp business
+              communications. Each module represents a strategic initiative that
+              enhances operational efficiency, customer engagement, and
+              data-driven decision making throughout our organization.
             </div>
 
             <div class="cards" id="homeCards"></div>
@@ -542,70 +549,98 @@
       const modules = [
         {
           id: "crm",
-          title: { en: "Automotive CRM System", ar: "نظام إدارة علاقات العملاء للسيارات" },
-          desc: { 
-            en: "Arabic landing-style overview: features, pipeline, automation, ROI, and security roles.", 
-            ar: "نظرة عامة بنمط الهبوط باللغة العربية: الميزات، خط الأنابيب، الأتمتة، العائد على الاستثمار، وأدوار الأمان." 
+          title: {
+            en: "Automotive CRM System",
+            ar: "نظام إدارة علاقات العملاء للسيارات",
+          },
+          desc: {
+            en: "Arabic landing-style overview: features, pipeline, automation, ROI, and security roles.",
+            ar: "نظرة عامة بنمط الهبوط باللغة العربية: الميزات، خط الأنابيب، الأتمتة، العائد على الاستثمار، وأدوار الأمان.",
           },
           icon: "🚗",
           file: "CRM_Presentation.html",
         },
         {
           id: "dash",
-          title: { en: "Inventory & Sales Dashboard", ar: "لوحة تحكم المخزون والمبيعات" },
-          desc: { 
-            en: "10-slide dashboard presentation: KPIs, car data, status, colors/models, customer types, ranking, reports.", 
-            ar: "عرض تقديمي من 10 شرائح للوحة التحكم: مؤشرات الأداء الرئيسية، بيانات السيارات، الحالة، الألوان/الموديلات، أنواع العملاء، التصنيف، التقارير." 
+          title: {
+            en: "Inventory & Sales Dashboard",
+            ar: "لوحة تحكم المخزون والمبيعات",
+          },
+          desc: {
+            en: "10-slide dashboard presentation: KPIs, car data, status, colors/models, customer types, ranking, reports.",
+            ar: "عرض تقديمي من 10 شرائح للوحة التحكم: مؤشرات الأداء الرئيسية، بيانات السيارات، الحالة، الألوان/الموديلات، أنواع العملاء، التصنيف، التقارير.",
           },
           icon: "📊",
           file: "dashSAP.html",
         },
         {
           id: "meta",
-          title: { en: "Meta Ads Library Tracking", ar: "تتبع مكتبة إعلانات ميتا" },
-          desc: { 
-            en: "5-slide workflow: extract fields, pipeline, classify by brand keywords, export to Excel.", 
-            ar: "سير عمل من 5 شرائح: استخراج الحقول، خط الأنابيب، التصنيف حسب كلمات العلامة التجارية، التصدير إلى إكسل." 
+          title: {
+            en: "Meta Ads Library Tracking",
+            ar: "تتبع مكتبة إعلانات ميتا",
+          },
+          desc: {
+            en: "5-slide workflow: extract fields, pipeline, classify by brand keywords, export to Excel.",
+            ar: "سير عمل من 5 شرائح: استخراج الحقول، خط الأنابيب، التصنيف حسب كلمات العلامة التجارية، التصدير إلى إكسل.",
           },
           icon: "📣",
           file: "meta-ads.html",
         },
         {
           id: "tasks",
-          title: { en: "CRM Tasks Manager", ar: "مدير مهام نظام إدارة علاقات العملاء" },
-          desc: { 
-            en: "5 slides: filtering, description verification, tracking tables, task details & Excel reports.", 
-            ar: "5 شرائح: التصفية، التحقق من الوصف، جداول التتبع، تفاصيل المهام والتقارير الإكسل." 
+          title: {
+            en: "CRM Tasks Manager",
+            ar: "مدير مهام نظام إدارة علاقات العملاء",
+          },
+          desc: {
+            en: "5 slides: filtering, description verification, tracking tables, task details & Excel reports.",
+            ar: "5 شرائح: التصفية، التحقق من الوصف، جداول التتبع، تفاصيل المهام والتقارير الإكسل.",
           },
           icon: "✅",
           file: "tasks.html",
         },
         {
           id: "web",
-          title: { en: "Websites Lead Flow", ar: "تدفق العملاء من الموقع الإلكتروني" },
-          desc: { 
-            en: "5 slides: website purpose, structured specs, forms, data flow to Excel/CRM, call-center workflow.", 
-            ar: "5 شرائح: غرض الموقع، المواصفات المنظمة، النماذج، تدفق البيانات إلى إكسل/نظام إدارة علاقات العملاء، سير عمل مركز الاتصال." 
+          title: {
+            en: "Websites Lead Flow",
+            ar: "تدفق العملاء من الموقع الإلكتروني",
+          },
+          desc: {
+            en: "5 slides: website purpose, structured specs, forms, data flow to Excel/CRM, call-center workflow.",
+            ar: "5 شرائح: غرض الموقع، المواصفات المنظمة، النماذج، تدفق البيانات إلى إكسل/نظام إدارة علاقات العملاء، سير عمل مركز الاتصال.",
           },
           icon: "🌐",
           file: "websites.html",
         },
         {
           id: "whatsapp",
-          title: { en: "WhatsApp Business Platform", ar: "منصة واتساب للأعمال" },
-          desc: { 
-            en: "WhatsApp Business API platform: bulk messaging, tracking, analytics, integrations (AR + EN).", 
-            ar: "منصة واجهة برمجة تطبيقات واتساب للأعمال: الرسائل الجماعية، التتبع، التحليلات، التكاملات (عربي + إنجليزي)." 
+          title: {
+            en: "WhatsApp Business Platform",
+            ar: "منصة واتساب للأعمال",
+          },
+          desc: {
+            en: "WhatsApp Business API platform: bulk messaging, tracking, analytics, integrations (AR + EN).",
+            ar: "منصة واجهة برمجة تطبيقات واتساب للأعمال: الرسائل الجماعية، التتبع، التحليلات، التكاملات (عربي + إنجليزي).",
           },
           icon: "💬",
           file: "whatsappPlatform.html",
+        },
+        {
+          id: "referralpro",
+          title: { en: "ReferralPro System", ar: "نظام ReferralPro للإحالات" },
+          desc: {
+            en: "Referral & rewards platform: referral tracking, approvals, QR certificates, roles, and dashboards.",
+            ar: "منصة إحالات ومكافآت: تتبع الإحالات، الموافقات، شهادات QR، الأدوار ولوحات الأداء.",
+          },
+          icon: "🎁",
+          file: "referralpro.html",
         },
       ];
 
       // Updated descriptions for Laith Alobaidi Group
       const descriptions = {
         en: "This integrated presentation showcases the comprehensive IT solutions developed by the IT Department of Laith Alobaidi Group. Our team has successfully implemented cutting-edge systems across automotive CRM, inventory management, digital marketing analytics, task automation, website lead generation, and WhatsApp business communications. Each module represents a strategic initiative that enhances operational efficiency, customer engagement, and data-driven decision making throughout our organization.",
-        ar: "يعرض هذا العرض التقديمي المتكامل الحلول التقنية الشاملة التي طورها قسم تكنولوجيا المعلومات في مجموعة ليث العبيدي. نجح فريقنا في تنفيذ أنظمة متطورة في مجالات إدارة علاقات العملاء للسيارات، وإدارة المخزون، وتحليلات التسويق الرقمي، وأتمتة المهام، وتوليد العملاء من المواقع الإلكترونية، واتصالات أعمال واتساب. يمثل كل وحدة مبادرة استراتيجية تعزز الكفاءة التشغيلية، وتفاعل العملاء، واتخاذ القرارات القائمة على البيانات في جميع أنحاء مؤسستنا."
+        ar: "يعرض هذا العرض التقديمي المتكامل الحلول التقنية الشاملة التي طورها قسم تكنولوجيا المعلومات في مجموعة ليث العبيدي. نجح فريقنا في تنفيذ أنظمة متطورة في مجالات إدارة علاقات العملاء للسيارات، وإدارة المخزون، وتحليلات التسويق الرقمي، وأتمتة المهام، وتوليد العملاء من المواقع الإلكترونية، واتصالات أعمال واتساب. يمثل كل وحدة مبادرة استراتيجية تعزز الكفاءة التشغيلية، وتفاعل العملاء، واتخاذ القرارات القائمة على البيانات في جميع أنحاء مؤسستنا.",
       };
 
       const nav = document.getElementById("nav");
@@ -621,20 +656,48 @@
       const langButtons = document.querySelectorAll(".lang-btn");
 
       let current = -1; // -1 = home
-      let currentLang = 'en';
+      let currentLang = "en";
 
+      // ===== Global language sync keys =====
+      const STORAGE_KEY = "global_lang";
+      const CHANNEL = "GLOBAL_LANG_SYNC_V1";
+
+      function broadcastLangToIframe(lang) {
+        // store
+        try {
+          localStorage.setItem(STORAGE_KEY, lang);
+        } catch (_) {}
+
+        // send to iframe
+        try {
+          if (frame && frame.contentWindow) {
+            frame.contentWindow.postMessage({ type: CHANNEL, lang }, "*");
+          }
+        } catch (_) {}
+      }
+
+      // ===== UI helpers =====
       function setActiveNav() {
         [...nav.querySelectorAll(".navbtn")].forEach((b, i) =>
           b.classList.toggle("active", i === current),
         );
       }
 
+      function updateDescription() {
+        heroDescription.textContent = descriptions[currentLang];
+      }
+
       function showHome() {
         current = -1;
         home.classList.add("show");
         frame.src = "about:blank";
-        topTitle.textContent = currentLang === 'en' ? "Home" : "الرئيسية";
-        topSub.textContent = currentLang === 'en' ? "Choose a module from the left" : "اختر وحدة من اليسار";
+
+        topTitle.textContent = currentLang === "en" ? "Home" : "الرئيسية";
+        topSub.textContent =
+          currentLang === "en"
+            ? "Choose a module from the left"
+            : "اختر وحدة من اليسار";
+
         btnOpen.disabled = true;
         setActiveNav();
         updateDescription();
@@ -643,13 +706,19 @@
       function openModule(i) {
         const m = modules[i];
         if (!m) return;
+
         current = i;
         home.classList.remove("show");
         frame.src = m.file;
+
         topTitle.textContent = m.title[currentLang];
         topSub.textContent = m.desc[currentLang];
+
         btnOpen.disabled = false;
         setActiveNav();
+
+        // push current language after iframe navigates
+        setTimeout(() => broadcastLangToIframe(currentLang), 80);
       }
 
       function openInNewTab() {
@@ -659,91 +728,95 @@
 
       function toggleFullscreen() {
         const el = document.getElementById("stage");
-        if (!document.fullscreenElement) {
-          el.requestFullscreen?.();
-        } else {
-          document.exitFullscreen?.();
-        }
-      }
-
-      function updateDescription() {
-        heroDescription.textContent = descriptions[currentLang];
+        if (!document.fullscreenElement) el.requestFullscreen?.();
+        else document.exitFullscreen?.();
       }
 
       function setLanguage(lang) {
-        currentLang = lang;
-        // Update language button states
-        langButtons.forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.lang === lang);
+        currentLang = lang === "ar" ? "ar" : "en";
+
+        // buttons
+        langButtons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.lang === currentLang);
         });
-        // Update home view
+
+        // update home/module text
         if (current === -1) {
           showHome();
         } else {
-          // Update current module display
           const m = modules[current];
           topTitle.textContent = m.title[currentLang];
           topSub.textContent = m.desc[currentLang];
         }
-        // Update all navigation items
-        const navItems = nav.querySelectorAll('.navbtn');
-        const cardItems = homeCards.querySelectorAll('.card');
+
+        // update navigation + cards
+        const navItems = nav.querySelectorAll(".navbtn");
+        const cardItems = homeCards.querySelectorAll(".card");
+
         modules.forEach((m, i) => {
           if (navItems[i]) {
-            navItems[i].querySelector('.ntitle').textContent = `${i + 1}. ${m.title[currentLang]}`;
-            navItems[i].querySelector('.ndesc').textContent = m.desc[currentLang];
+            navItems[i].querySelector(".ntitle").textContent =
+              `${i + 1}. ${m.title[currentLang]}`;
+            navItems[i].querySelector(".ndesc").textContent =
+              m.desc[currentLang];
           }
           if (cardItems[i]) {
-            cardItems[i].querySelector('.ct').textContent = `${i + 1}. ${m.title[currentLang]}`;
-            cardItems[i].querySelector('.cs').textContent = m.desc[currentLang];
+            cardItems[i].querySelector(".ct").textContent =
+              `${i + 1}. ${m.title[currentLang]}`;
+            cardItems[i].querySelector(".cs").textContent = m.desc[currentLang];
           }
         });
+
+        // ✅ push language to iframe pages
+        broadcastLangToIframe(currentLang);
       }
 
-      // build sidebar nav
+      // ===== Build sidebar + home cards (once) =====
       modules.forEach((m, i) => {
         const b = document.createElement("div");
         b.className = "navbtn";
         b.innerHTML = `
-        <div class="ic">${m.icon}</div>
-        <div style="min-width:0">
-          <div class="ntitle">${i + 1}. ${m.title.en}</div>
-          <div class="ndesc">${m.desc.en}</div>
-        </div>
-      `;
+      <div class="ic">${m.icon}</div>
+      <div style="min-width:0">
+        <div class="ntitle">${i + 1}. ${m.title.en}</div>
+        <div class="ndesc">${m.desc.en}</div>
+      </div>
+    `;
         b.addEventListener("click", () => openModule(i));
         nav.appendChild(b);
 
         const c = document.createElement("div");
         c.className = "card";
         c.innerHTML = `
-        <div class="cic">${m.icon}</div>
-        <div style="min-width:0">
-          <div class="ct">${i + 1}. ${m.title.en}</div>
-          <div class="cs">${m.desc.en}</div>
-        </div>
-      `;
+      <div class="cic">${m.icon}</div>
+      <div style="min-width:0">
+        <div class="ct">${i + 1}. ${m.title.en}</div>
+        <div class="cs">${m.desc.en}</div>
+      </div>
+    `;
         c.addEventListener("click", () => openModule(i));
         homeCards.appendChild(c);
       });
 
-      // Language button event listeners
-      langButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          setLanguage(btn.dataset.lang);
-        });
+      // ===== Language buttons =====
+      langButtons.forEach((btn) => {
+        btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
       });
 
+      // ===== Actions =====
       btnHome.addEventListener("click", showHome);
       btnFull.addEventListener("click", toggleFullscreen);
       btnOpen.addEventListener("click", openInNewTab);
 
-      // keyboard
+      // ===== Keyboard =====
       window.addEventListener("keydown", (e) => {
         const k = e.key;
+
         if (k === "h" || k === "H") return showHome();
         if (k === "f" || k === "F") return toggleFullscreen();
-        if (k >= "1" && k <= "6") return openModule(parseInt(k, 10) - 1);
+
+        // ✅ updated to 1–7
+        if (k >= "1" && k <= "7") return openModule(parseInt(k, 10) - 1);
 
         if (e.ctrlKey && (k === "ArrowRight" || k === "ArrowLeft")) {
           e.preventDefault();
@@ -753,9 +826,19 @@
         }
       });
 
-      // init
+      // ===== Init language from storage =====
+      (function initLang() {
+        let saved = null;
+        try {
+          saved = localStorage.getItem(STORAGE_KEY);
+        } catch (_) {}
+
+        // default EN if nothing saved
+        setLanguage(saved === "ar" ? "ar" : "en");
+      })();
+
+      // ===== Init home =====
       showHome();
     </script>
   </body>
 </html>
-

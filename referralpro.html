@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-ar="ReferralPro - نظام الإحالات والمكافآت | RootCode" data-en="ReferralPro - Referral & Rewards System | RootCode">
+    ReferralPro - نظام الإحالات والمكافآت | RootCode
+  </title>
+  <meta name="description"
+    content="منصة لإدارة برنامج الإحالة من عميل إلى عميل مع متابعة التحويلات والمكافآت - من RootCode">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #f59e0b;
+      --primary-dark: #d97706;
+      --primary-light: #fbbf24;
+      --secondary: #10b981;
+      --dark: #0f172a;
+      --dark-light: #1e293b;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --gradient-1: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      --gradient-purple: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content { display: flex; align-items: center; justify-content: space-between; }
+
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: var(--gradient-purple);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: white;
+      font-family: monospace;
+    }
+
+    .logo-text { font-size: 24px; font-weight: 800; color: var(--text); }
+    .logo-text span { color: #818cf8; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-primary { background: var(--gradient-1); color: #1a1a1a; }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(245, 158, 11, 0.4); }
+
+    .btn-secondary { background: transparent; border: 2px solid var(--border); color: var(--text); }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+    .hero { padding: 160px 0 100px; position: relative; }
+    .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 50px;
+      margin-bottom: 24px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero-title .highlight { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .hero-description { font-size: 18px; color: var(--text-muted); margin-bottom: 32px; }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .hero-visual { display: flex; align-items: center; justify-content: center; }
+
+    .hero-icon-box {
+      width: 300px; height: 300px;
+      background: var(--gradient-1);
+      border-radius: 40px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 40px 80px rgba(245, 158, 11, 0.3);
+    }
+    .hero-icon-box i { font-size: 120px; color: rgba(26, 26, 26, 0.8); }
+
+    .section { padding: 100px 0; }
+    .section-alt { background: var(--dark-light); }
+
+    .section-header { text-align: center; margin-bottom: 60px; }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 50px;
+      color: var(--primary);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-title { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin-bottom: 16px; }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    .feature-card {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+
+    .feature-icon {
+      width: 60px; height: 60px;
+      background: rgba(245, 158, 11, 0.2);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 { font-size: 20px; margin-bottom: 12px; }
+    .feature-card p { color: var(--text-muted); font-size: 15px; }
+
+    .workflow { background: var(--dark-light); padding: 100px 0; }
+
+    .workflow-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .workflow-steps::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: var(--border);
+    }
+
+    .workflow-step { text-align: center; position: relative; flex: 1; }
+
+    .step-number {
+      width: 80px; height: 80px;
+      background: var(--gradient-1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+
+    .step-desc { font-size: 14px; color: var(--text-muted); max-width: 150px; margin: 0 auto; }
+
+    .roles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+    .role-card {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .role-card h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .role-card h3 i { color: var(--primary); }
+
+    .role-card ul { list-style: none; }
+
+    .role-card li {
+      padding: 8px 0;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .role-card li i { color: var(--secondary); font-size: 14px; }
+
+    .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    .tech-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+
+    .tech-card:hover { border-color: var(--primary); }
+
+    .tech-card i { font-size: 40px; color: var(--primary); margin-bottom: 16px; }
+    .tech-card span { font-weight: 600; display: block; }
+
+    .cta { text-align: center; padding: 100px 0; }
+
+    .cta h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; margin-bottom: 16px; }
+
+    .cta p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    .footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .footer p { color: var(--text-muted); }
+    .footer a { color: #818cf8; text-decoration: none; }
+
+    @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; text-align: center; }
+      .hero-visual { order: -1; }
+      .hero-icon-box { width: 200px; height: 200px; }
+      .hero-icon-box i { font-size: 80px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-grid { grid-template-columns: repeat(2, 1fr); }
+      .workflow-steps { flex-direction: column; gap: 40px; }
+      .workflow-steps::before { display: none; }
+      .roles-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-actions { justify-content: center; }
+    }
+
+    /* === Global Language Toggle (EN/AR) === */
+    .langToggle {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      gap: 8px;
+      z-index: 9999;
+    }
+
+    html[dir="rtl"] .langToggle { right: auto; left: 14px; }
+
+    .langBtn {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(15, 23, 42, 0.55);
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .langBtn.active {
+      border-color: rgba(6, 182, 212, 0.9);
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Global Language Toggle (EN/AR) -->
+  <div class="langToggle" data-lang-ui>
+    <button class="langBtn" id="btnEn" type="button">EN</button>
+    <button class="langBtn" id="btnAr" type="button">AR</button>
+  </div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div data-aos="fade-up">
+          <div class="hero-badge">
+            <i class="fas fa-gift"></i>
+            <span data-ar="ReferralPro" data-en="ReferralPro">ReferralPro</span>
+          </div>
+
+          <h1 class="hero-title" data-ar="نظام <span class='highlight'>الإحالات والمكافآت</span> المتكامل"
+            data-en="An Integrated <span class='highlight'>Referral & Rewards</span> System">
+            نظام <span class="highlight">الإحالات والمكافآت</span> المتكامل
+          </h1>
+
+          <p class="hero-description"
+            data-ar="منصة لإدارة برنامج الإحالة من عميل إلى عميل مع متابعة التحويلات والمكافآت ولوحات أداء للمبيعات. حوّل عملاءك إلى مسوقين لك!"
+            data-en="A platform to run customer-to-customer referrals with conversion tracking, rewards, and sales performance dashboards. Turn your customers into promoters!">
+            منصة لإدارة برنامج الإحالة من عميل إلى عميل مع متابعة التحويلات والمكافآت ولوحات أداء للمبيعات.
+            حوّل عملاءك إلى مسوقين لك!
+          </p>
+
+          <div class="hero-actions">
+            <a href="/#contact" class="btn btn-primary">
+              <span data-ar="اطلب عرض سعر" data-en="Request a Quote">اطلب عرض سعر</span>
+              <i class="fas fa-arrow-left"></i>
+            </a>
+
+            <a href="/#contact" class="btn btn-secondary">
+              <i class="fas fa-calendar"></i>
+              <span data-ar="احجز عرض توضيحي" data-en="Book a Demo">احجز عرض توضيحي</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-aos="fade-up" data-aos-delay="200">
+          <div class="hero-icon-box">
+            <i class="fas fa-gift"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-badge">
+          <i class="fas fa-bullseye"></i>
+          <span data-ar="الأهداف" data-en="Goals">الأهداف</span>
+        </div>
+        <h2 class="section-title" data-ar="ماذا يحقق النظام؟" data-en="What does the system achieve?">ماذا يحقق النظام؟</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3 data-ar="رفع نسبة التحويل" data-en="Increase Conversion Rate">رفع نسبة التحويل</h3>
+          <p data-ar="زيادة المبيعات عبر توصيات العملاء الحاليين الموثوقة"
+            data-en="Boost sales through trusted recommendations from existing customers.">
+            زيادة المبيعات عبر توصيات العملاء الحاليين الموثوقة
+          </p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon"><i class="fas fa-gift"></i></div>
+          <h3 data-ar="تحفيز العملاء" data-en="Motivate Customers">تحفيز العملاء</h3>
+          <p data-ar="مكافآت واضحة ومحفزة عند نجاح كل إحالة"
+            data-en="Clear, motivating rewards for every successful referral.">
+            مكافآت واضحة ومحفزة عند نجاح كل إحالة
+          </p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon"><i class="fas fa-eye"></i></div>
+          <h3 data-ar="متابعة دقيقة" data-en="Accurate Tracking">متابعة دقيقة</h3>
+          <p data-ar="تمكين الإدارة من متابعة أداء المبيعات والإحالات"
+            data-en="Enable management to track sales and referral performance.">
+            تمكين الإدارة من متابعة أداء المبيعات والإحالات
+          </p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon"><i class="fas fa-check-double"></i></div>
+          <h3 data-ar="نظام موافقات" data-en="Approval Workflow">نظام موافقات</h3>
+          <p data-ar="دورة موافقات متعددة المراحل لضبط المكافآت"
+            data-en="Multi-stage approvals to control and validate rewards.">
+            دورة موافقات متعددة المراحل لضبط المكافآت
+          </p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+          <h3 data-ar="شهادات QR" data-en="QR Certificates">شهادات QR</h3>
+          <p data-ar="شهادات خصم PDF مع رمز QR للتحقق الفوري"
+            data-en="PDF discount certificates with QR codes for instant verification.">
+            شهادات خصم PDF مع رمز QR للتحقق الفوري
+          </p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-icon"><i class="fas fa-share-alt"></i></div>
+          <h3 data-ar="مشاركة سهلة" data-en="Easy Sharing">مشاركة سهلة</h3>
+          <p data-ar="روابط إحالة شخصية قابلة للمشاركة عبر QR"
+            data-en="Personal referral links shareable via QR and social channels.">
+            روابط إحالة شخصية قابلة للمشاركة عبر QR
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="workflow">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-badge">
+          <i class="fas fa-route"></i>
+          <span data-ar="سير العمل" data-en="Workflow">سير العمل</span>
+        </div>
+        <h2 class="section-title" data-ar="دورة الإحالة والتحويل" data-en="Referral & Conversion Lifecycle">
+          دورة الإحالة والتحويل
+        </h2>
+      </div>
+
+      <div class="workflow-steps" data-aos="fade-up">
+        <div class="workflow-step">
+          <div class="step-number">1</div>
+          <div class="step-title" data-ar="إضافة مشتري" data-en="Add a Buyer">إضافة مشتري</div>
+          <div class="step-desc" data-ar="المندوب يضيف مشتري جديد + كود إحالة"
+            data-en="Sales rep adds a new buyer + referral code.">
+            المندوب يضيف مشتري جديد + كود إحالة
+          </div>
+        </div>
+
+        <div class="workflow-step">
+          <div class="step-number">2</div>
+          <div class="step-title" data-ar="مشاركة الرابط" data-en="Share the Link">مشاركة الرابط</div>
+          <div class="step-desc" data-ar="المشتري يشارك رابط الإحالة" data-en="Buyer shares the referral link.">
+            المشتري يشارك رابط الإحالة
+          </div>
+        </div>
+
+        <div class="workflow-step">
+          <div class="step-number">3</div>
+          <div class="step-title" data-ar="تسجيل مرشح" data-en="Candidate Registers">تسجيل مرشح</div>
+          <div class="step-desc" data-ar="المرشح يعبئ نموذج الإحالة" data-en="Candidate fills the referral form.">
+            المرشح يعبئ نموذج الإحالة
+          </div>
+        </div>
+
+        <div class="workflow-step">
+          <div class="step-number">4</div>
+          <div class="step-title" data-ar="التحويل" data-en="Conversion">التحويل</div>
+          <div class="step-desc" data-ar="المرشح يصبح مشتري" data-en="Candidate becomes a buyer.">
+            المرشح يصبح مشتري
+          </div>
+        </div>
+
+        <div class="workflow-step">
+          <div class="step-number">5</div>
+          <div class="step-title" data-ar="المكافأة" data-en="Reward">المكافأة</div>
+          <div class="step-desc" data-ar="إصدار شهادة خصم للمحيل" data-en="Issue a discount certificate for the referrer.">
+            إصدار شهادة خصم للمحيل
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-badge">
+          <i class="fas fa-users-cog"></i>
+          <span data-ar="الأدوار" data-en="Roles">الأدوار</span>
+        </div>
+        <h2 class="section-title" data-ar="الأدوار والصلاحيات" data-en="Roles & Permissions">الأدوار والصلاحيات</h2>
+      </div>
+
+      <div class="roles-grid">
+        <div class="role-card" data-aos="fade-up">
+          <h3 data-ar="<i class='fas fa-shield-alt'></i> الإدارة (Admin)" data-en="<i class='fas fa-shield-alt'></i> Admin">
+            <i class="fas fa-shield-alt"></i> الإدارة (Admin)
+          </h3>
+          <ul>
+            <li data-ar="<i class='fas fa-check'></i> إدارة المستخدمين والمندوبين" data-en="<i class='fas fa-check'></i> Manage users and sales reps">
+              <i class="fas fa-check"></i> إدارة المستخدمين والمندوبين
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> تعيين المندوبين للمديرين" data-en="<i class='fas fa-check'></i> Assign reps to managers">
+              <i class="fas fa-check"></i> تعيين المندوبين للمديرين
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> الموافقة النهائية على المكافآت" data-en="<i class='fas fa-check'></i> Final approval for rewards">
+              <i class="fas fa-check"></i> الموافقة النهائية على المكافآت
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> التقارير والإعدادات الكاملة" data-en="<i class='fas fa-check'></i> Full reporting and settings">
+              <i class="fas fa-check"></i> التقارير والإعدادات الكاملة
+            </li>
+          </ul>
+        </div>
+
+        <div class="role-card" data-aos="fade-up" data-aos-delay="100">
+          <h3 data-ar="<i class='fas fa-user-tie'></i> مدير المبيعات" data-en="<i class='fas fa-user-tie'></i> Sales Manager">
+            <i class="fas fa-user-tie"></i> مدير المبيعات
+          </h3>
+          <ul>
+            <li data-ar="<i class='fas fa-check'></i> متابعة المندوبين التابعين" data-en="<i class='fas fa-check'></i> Track assigned sales reps">
+              <i class="fas fa-check"></i> متابعة المندوبين التابعين
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> الاعتماد الأولي للمكافآت" data-en="<i class='fas fa-check'></i> Initial reward approvals">
+              <i class="fas fa-check"></i> الاعتماد الأولي للمكافآت
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> عرض المشترين والمرشحين" data-en="<i class='fas fa-check'></i> View buyers and candidates">
+              <i class="fas fa-check"></i> عرض المشترين والمرشحين
+            </li>
+          </ul>
+        </div>
+
+        <div class="role-card" data-aos="fade-up" data-aos-delay="200">
+          <h3 data-ar="<i class='fas fa-user'></i> مندوب المبيعات" data-en="<i class='fas fa-user'></i> Sales Representative">
+            <i class="fas fa-user"></i> مندوب المبيعات
+          </h3>
+          <ul>
+            <li data-ar="<i class='fas fa-check'></i> إضافة مشترين جدد" data-en="<i class='fas fa-check'></i> Add new buyers">
+              <i class="fas fa-check"></i> إضافة مشترين جدد
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> متابعة المرشحين" data-en="<i class='fas fa-check'></i> Track candidates">
+              <i class="fas fa-check"></i> متابعة المرشحين
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> لوحة أداء شخصية" data-en="<i class='fas fa-check'></i> Personal performance dashboard">
+              <i class="fas fa-check"></i> لوحة أداء شخصية
+            </li>
+          </ul>
+        </div>
+
+        <div class="role-card" data-aos="fade-up" data-aos-delay="300">
+          <h3 data-ar="<i class='fas fa-shopping-cart'></i> المشتري المحيل" data-en="<i class='fas fa-shopping-cart'></i> Referring Buyer">
+            <i class="fas fa-shopping-cart"></i> المشتري المحيل
+          </h3>
+          <ul>
+            <li data-ar="<i class='fas fa-check'></i> كود إحالة ورابط شخصي" data-en="<i class='fas fa-check'></i> Personal referral code & link">
+              <i class="fas fa-check"></i> كود إحالة ورابط شخصي
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> متابعة المرشحين والمكافآت" data-en="<i class='fas fa-check'></i> Track candidates and rewards">
+              <i class="fas fa-check"></i> متابعة المرشحين والمكافآت
+            </li>
+            <li data-ar="<i class='fas fa-check'></i> تخصيص صفحة الإحالة" data-en="<i class='fas fa-check'></i> Customize referral landing page">
+              <i class="fas fa-check"></i> تخصيص صفحة الإحالة
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-badge">
+          <i class="fas fa-code"></i>
+          <span data-ar="التقنيات" data-en="Tech Stack">التقنيات</span>
+        </div>
+        <h2 class="section-title" data-ar="بُني بأحدث التقنيات" data-en="Built with Modern Technologies">بُني بأحدث التقنيات</h2>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-card" data-aos="fade-up">
+          <i class="fab fa-react"></i>
+          <span>React + Vite</span>
+        </div>
+        <div class="tech-card" data-aos="fade-up" data-aos-delay="100">
+          <i class="fab fa-node-js"></i>
+          <span>Node.js + Express</span>
+        </div>
+        <div class="tech-card" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-database"></i>
+          <span>PostgreSQL</span>
+        </div>
+        <div class="tech-card" data-aos="fade-up" data-aos-delay="300">
+          <i class="fas fa-key"></i>
+          <span>JWT + bcrypt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container" data-aos="fade-up">
+      <div class="cta-actions">
+        <a href="/" class="btn btn-secondary">
+          <i class="fas fa-home"></i>
+          <span data-ar="العودة للرئيسية" data-en="Back to Home">العودة للرئيسية</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 800, once: true });</script>
+
+  <!-- Global Language Sync + Toggle (same style as your previous code) -->
+  <script>
+    (function () {
+      const STORAGE_KEY = "global_lang";
+      const CHANNEL = "GLOBAL_LANG_SYNC_V1";
+
+      const html = document.documentElement;
+      const btnEn = document.getElementById("btnEn");
+      const btnAr = document.getElementById("btnAr");
+
+      function applyLang(lang) {
+        lang = lang === "ar" ? "ar" : "en";
+        html.lang = lang;
+        html.dir = lang === "ar" ? "rtl" : "ltr";
+
+        if (btnEn && btnAr) {
+          btnEn.classList.toggle("active", lang === "en");
+          btnAr.classList.toggle("active", lang === "ar");
+        }
+
+        // Swap bilingual nodes (supports normal text + some HTML like <span class='highlight'>)
+        document.querySelectorAll("[data-en],[data-ar]").forEach((el) => {
+          const v = el.getAttribute(`data-${lang}`);
+          if (v === null || v === undefined) return;
+
+          // If translation contains HTML tags, render as HTML; otherwise text
+          if (/<[a-z][\s\S]*>/i.test(v)) el.innerHTML = v;
+          else el.textContent = v;
+        });
+      }
+
+      function safeSetStorage(lang) {
+        try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) { }
+      }
+
+      function broadcast(lang) {
+        safeSetStorage(lang);
+
+        // Tell parent (if inside iframe)
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: CHANNEL, lang }, "*");
+          }
+        } catch (_) { }
+
+        // Tell children iframes (if any)
+        document.querySelectorAll("iframe").forEach((fr) => {
+          try { fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*"); } catch (_) { }
+        });
+      }
+
+      function setLang(lang) {
+        applyLang(lang);
+        broadcast(lang);
+      }
+
+      if (btnEn) btnEn.addEventListener("click", () => setLang("en"));
+      if (btnAr) btnAr.addEventListener("click", () => setLang("ar"));
+
+      // Receive messages from parent/other frames
+      window.addEventListener("message", (event) => {
+        const d = event.data;
+        if (!d || d.type !== CHANNEL) return;
+
+        applyLang(d.lang);
+        safeSetStorage(d.lang);
+
+        // Forward to nested iframes for consistency
+        document.querySelectorAll("iframe").forEach((fr) => {
+          try { fr.contentWindow.postMessage({ type: CHANNEL, lang: d.lang }, "*"); } catch (_) { }
+        });
+      });
+
+      // Sync across tabs/windows (same origin)
+      window.addEventListener("storage", (e) => {
+        if (e.key === STORAGE_KEY && e.newValue) applyLang(e.newValue);
+      });
+
+      // Init from storage (fallback: current html lang)
+      let initial = "ar";
+      try { initial = localStorage.getItem(STORAGE_KEY) || html.lang || "ar"; } catch (_) { initial = html.lang || "ar"; }
+      applyLang(initial);
+
+      // If this page contains iframes, push current language to them on load
+      window.addEventListener("load", () => {
+        const cur = html.lang || initial;
+        document.querySelectorAll("iframe").forEach((fr) => {
+          try { fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*"); } catch (_) { }
+        });
+      });
+    })();
+  </script>
+
+  <script src="/js/product-page-loader.js"></script>
+</body>
+
+</html>
