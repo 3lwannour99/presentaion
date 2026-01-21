@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -144,12 +144,7 @@
         font-size: 2.1rem;
         font-weight: 900;
         line-height: 1.25;
-        background: linear-gradient(
-          135deg,
-          #ffffff 0%,
-          #a5b4fc 45%,
-          #06b6d4 100%
-        );
+        background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 45%, #06b6d4 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         filter: drop-shadow(0 0 22px rgba(99, 102, 241, 0.35));
@@ -333,6 +328,11 @@
         font-size: 0.95rem;
       }
 
+      /* ✅ Hide bottom language button (keep top only) */
+      #lang {
+        display: none !important;
+      }
+
       /* Bilingual text */
       .t {
         display: none;
@@ -373,6 +373,7 @@
           font-size: 1rem;
         }
       }
+
       /* Slide 5 overflow fix */
       .s5 .glass {
         padding: 1.7rem;
@@ -409,10 +410,45 @@
         margin-top: 0.65rem !important;
         padding: 0.85rem;
       }
+
+      /* === Global Language Toggle (EN/AR) === */
+      .langToggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        display: flex;
+        gap: 8px;
+        z-index: 9999;
+      }
+      html[dir="rtl"] .langToggle {
+        right: auto;
+        left: 14px;
+      }
+      .langBtn {
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(15, 23, 42, 0.55);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .langBtn.active {
+        border-color: rgba(6, 182, 212, 0.9);
+        box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+      }
     </style>
   </head>
 
   <body>
+    <!-- Language Switch (Global Sync) -->
+    <div class="langToggle" data-lang-ui>
+      <button class="langBtn" id="btnEn" type="button">EN</button>
+      <button class="langBtn" id="btnAr" type="button">AR</button>
+    </div>
+
     <div class="bg"></div>
 
     <div class="wrap">
@@ -439,22 +475,10 @@
                   </span>
                 </div>
                 <div class="pills">
-                  <span class="pill cyan"
-                    >📣 <span class="t en">Meta Ads Library</span
-                    ><span class="t ar">مكتبة إعلانات ميتا</span></span
-                  >
-                  <span class="pill primary"
-                    >🧾 <span class="t en">Funding Tracking</span
-                    ><span class="t ar">تتبّع التمويل</span></span
-                  >
-                  <span class="pill amber"
-                    >📝 <span class="t en">Ad Content</span
-                    ><span class="t ar">محتوى الإعلان</span></span
-                  >
-                  <span class="pill green"
-                    >🚗 <span class="t en">Brand Classification</span
-                    ><span class="t ar">تصنيف الماركة</span></span
-                  >
+                  <span class="pill cyan">📣 <span class="t en">Meta Ads Library</span><span class="t ar">مكتبة إعلانات ميتا</span></span>
+                  <span class="pill primary">🧾 <span class="t en">Funding Tracking</span><span class="t ar">تتبّع التمويل</span></span>
+                  <span class="pill amber">📝 <span class="t en">Ad Content</span><span class="t ar">محتوى الإعلان</span></span>
+                  <span class="pill green">🚗 <span class="t en">Brand Classification</span><span class="t ar">تصنيف الماركة</span></span>
                 </div>
               </div>
               <div class="badge">
@@ -465,10 +489,7 @@
 
             <div class="content">
               <div class="card">
-                <h3>
-                  🎯 <span class="t en">Goal</span
-                  ><span class="t ar">الهدف</span>
-                </h3>
+                <h3>🎯 <span class="t en">Goal</span><span class="t ar">الهدف</span></h3>
                 <div class="big muted">
                   <span class="t en">
                     Transform ad data from “in-platform display” into organized
@@ -482,64 +503,39 @@
                   </span>
                 </div>
                 <div class="pills" style="margin-top: 0.8rem">
-                  <span class="pill primary"
-                    >📅 <span class="t en">Funding Dates</span
-                    ><span class="t ar">تواريخ التمويل</span></span
-                  >
-                  <span class="pill cyan"
-                    >🏷️ <span class="t en">Pages</span
-                    ><span class="t ar">الصفحات</span></span
-                  >
-                  <span class="pill amber"
-                    >📰 <span class="t en">Content</span
-                    ><span class="t ar">المحتوى</span></span
-                  >
+                  <span class="pill primary">📅 <span class="t en">Funding Dates</span><span class="t ar">تواريخ التمويل</span></span>
+                  <span class="pill cyan">🏷️ <span class="t en">Pages</span><span class="t ar">الصفحات</span></span>
+                  <span class="pill amber">📰 <span class="t en">Content</span><span class="t ar">المحتوى</span></span>
                 </div>
               </div>
 
               <div class="card">
-                <h3>
-                  ✅ <span class="t en">Project Outputs</span
-                  ><span class="t ar">مخرجات المشروع</span>
-                </h3>
+                <h3>✅ <span class="t en">Project Outputs</span><span class="t ar">مخرجات المشروع</span></h3>
                 <div class="list">
                   <div class="item">
                     <div class="dot">1</div>
                     <div>
-                      <strong
-                        ><span class="t en">Data Collection</span
-                        ><span class="t ar">جمع البيانات</span></strong
-                      >
+                      <strong><span class="t en">Data Collection</span><span class="t ar">جمع البيانات</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Extract information about my ads.</span
-                        ><span class="t ar">استخراج معلومات عن إعلاناتي.</span>
+                        <span class="t en">Extract information about my ads.</span><span class="t ar">استخراج معلومات عن إعلاناتي.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">2</div>
                     <div>
-                      <strong
-                        ><span class="t en">Brand Classification</span
-                        ><span class="t ar">تصنيف الماركات</span></strong
-                      >
+                      <strong><span class="t en">Brand Classification</span><span class="t ar">تصنيف الماركات</span></strong>
                       <div class="muted">
-                        <span class="t en">Using keywords.</span
-                        ><span class="t ar">بالاعتماد على كلمات مفتاحية.</span>
+                        <span class="t en">Using keywords.</span><span class="t ar">بالاعتماد على كلمات مفتاحية.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">3</div>
                     <div>
-                      <strong
-                        ><span class="t en">Excel Export</span
-                        ><span class="t ar">تصدير إلى إكسل</span></strong
-                      >
+                      <strong><span class="t en">Excel Export</span><span class="t ar">تصدير إلى إكسل</span></strong>
                       <div class="muted">
-                        <span class="t en">Save the final report.</span
-                        ><span class="t ar">حفظ التقرير النهائي.</span>
+                        <span class="t en">Save the final report.</span><span class="t ar">حفظ التقرير النهائي.</span>
                       </div>
                     </div>
                   </div>
@@ -555,20 +551,12 @@
             <div class="topbar">
               <div>
                 <div class="title">
-                  <span class="t en"
-                    >What Do I Extract from Meta Ads Library?</span
-                  >
+                  <span class="t en">What Do I Extract from Meta Ads Library?</span>
                   <span class="t ar">ماذا أستخرج من مكتبة إعلانات ميتا؟</span>
                 </div>
                 <div class="subtitle">
-                  <span class="t en">
-                    The script collects the most important fields I need to
-                    track and analyze ads.
-                  </span>
-                  <span class="t ar">
-                    يقوم السكربت بجمع أهم الحقول التي أحتاجها لتتبع الإعلانات
-                    وتحليلها.
-                  </span>
+                  <span class="t en">The script collects the most important fields I need to track and analyze ads.</span>
+                  <span class="t ar">يقوم السكربت بجمع أهم الحقول التي أحتاجها لتتبع الإعلانات وتحليلها.</span>
                 </div>
               </div>
               <div class="badge">
@@ -579,73 +567,44 @@
 
             <div class="content">
               <div class="card">
-                <h3>
-                  📌 <span class="t en">Key Fields</span
-                  ><span class="t ar">الحقول الأساسية</span>
-                </h3>
+                <h3>📌 <span class="t en">Key Fields</span><span class="t ar">الحقول الأساسية</span></h3>
                 <div class="list">
                   <div class="item">
                     <div class="dot">📅</div>
                     <div>
-                      <strong
-                        ><span class="t en">Funding Dates/Period</span
-                        ><span class="t ar">تواريخ/فترة التمويل</span></strong
-                      >
+                      <strong><span class="t en">Funding Dates/Period</span><span class="t ar">تواريخ/فترة التمويل</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >When the ad started and when it was funded or
-                          updated.</span
-                        >
-                        <span class="t ar"
-                          >متى بدأ الإعلان ومتى تم تمويله أو تحديثه.</span
-                        >
+                        <span class="t en">When the ad started and when it was funded or updated.</span>
+                        <span class="t ar">متى بدأ الإعلان ومتى تم تمويله أو تحديثه.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">📝</div>
                     <div>
-                      <strong
-                        ><span class="t en">Ad Content</span
-                        ><span class="t ar">محتوى الإعلان</span></strong
-                      >
+                      <strong><span class="t en">Ad Content</span><span class="t ar">محتوى الإعلان</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >The visible texts or marketing messages.</span
-                        >
-                        <span class="t ar"
-                          >النصوص الظاهرة أو الرسائل التسويقية.</span
-                        >
+                        <span class="t en">The visible texts or marketing messages.</span>
+                        <span class="t ar">النصوص الظاهرة أو الرسائل التسويقية.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">🏷️</div>
                     <div>
-                      <strong
-                        ><span class="t en">Publishing Page</span
-                        ><span class="t ar">الصفحة الناشرة</span></strong
-                      >
+                      <strong><span class="t en">Publishing Page</span><span class="t ar">الصفحة الناشرة</span></strong>
                       <div class="muted">
-                        <span class="t en">Which page ran the ad.</span
-                        ><span class="t ar">أي صفحة قامت بتشغيل الإعلان.</span>
+                        <span class="t en">Which page ran the ad.</span><span class="t ar">أي صفحة قامت بتشغيل الإعلان.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">🔗</div>
                     <div>
-                      <strong
-                        ><span class="t en">Ad Link/ID</span
-                        ><span class="t ar">رابط/معرّف الإعلان</span></strong
-                      >
+                      <strong><span class="t en">Ad Link/ID</span><span class="t ar">رابط/معرّف الإعلان</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >To avoid duplication and link results later.</span
-                        >
-                        <span class="t ar"
-                          >لتجنب التكرار وربط النتائج لاحقًا.</span
-                        >
+                        <span class="t en">To avoid duplication and link results later.</span>
+                        <span class="t ar">لتجنب التكرار وربط النتائج لاحقًا.</span>
                       </div>
                     </div>
                   </div>
@@ -653,27 +612,12 @@
               </div>
 
               <div class="card">
-                <h3>
-                  🎯 <span class="t en">Why Are These Fields Important?</span
-                  ><span class="t ar">لماذا هذه الحقول مهمة؟</span>
-                </h3>
+                <h3>🎯 <span class="t en">Why Are These Fields Important?</span><span class="t ar">لماذا هذه الحقول مهمة؟</span></h3>
                 <div class="pills">
-                  <span class="pill primary"
-                    ><span class="t en">Budget Tracking</span
-                    ><span class="t ar">تتبع الميزانية</span></span
-                  >
-                  <span class="pill cyan"
-                    ><span class="t en">Linking Ads to Pages</span
-                    ><span class="t ar">ربط الإعلانات بالصفحات</span></span
-                  >
-                  <span class="pill amber"
-                    ><span class="t en">Message Analysis</span
-                    ><span class="t ar">تحليل الرسائل</span></span
-                  >
-                  <span class="pill green"
-                    ><span class="t en">Brand Identification</span
-                    ><span class="t ar">تحديد الماركة</span></span
-                  >
+                  <span class="pill primary"><span class="t en">Budget Tracking</span><span class="t ar">تتبع الميزانية</span></span>
+                  <span class="pill cyan"><span class="t en">Linking Ads to Pages</span><span class="t ar">ربط الإعلانات بالصفحات</span></span>
+                  <span class="pill amber"><span class="t en">Message Analysis</span><span class="t ar">تحليل الرسائل</span></span>
+                  <span class="pill green"><span class="t en">Brand Identification</span><span class="t ar">تحديد الماركة</span></span>
                 </div>
                 <div class="big muted" style="margin-top: 0.7rem">
                   <span class="t en">
@@ -700,13 +644,8 @@
                   <span class="t ar">كيف يعمل السكربت؟ (خطوات العمل)</span>
                 </div>
                 <div class="subtitle">
-                  <span class="t en"
-                    >Steps from collection to preparation for classification and
-                    export.</span
-                  >
-                  <span class="t ar"
-                    >خطوات منظّمة من الجمع حتى التجهيز للتصنيف والتصدير.</span
-                  >
+                  <span class="t en">Steps from collection to preparation for classification and export.</span>
+                  <span class="t ar">خطوات منظّمة من الجمع حتى التجهيز للتصنيف والتصدير.</span>
                 </div>
               </div>
               <div class="badge">
@@ -717,72 +656,45 @@
 
             <div class="content">
               <div class="card">
-                <h3>
-                  🧠 <span class="t en">Steps</span
-                  ><span class="t ar">الخطوات</span>
-                </h3>
+                <h3>🧠 <span class="t en">Steps</span><span class="t ar">الخطوات</span></h3>
                 <div class="list">
                   <div class="item">
                     <div class="dot">1</div>
                     <div>
-                      <strong
-                        ><span class="t en">Data Collection</span
-                        ><span class="t ar">جمع البيانات</span></strong
-                      >
+                      <strong><span class="t en">Data Collection</span><span class="t ar">جمع البيانات</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Extract my ad data from Meta Ads Library.</span
-                        ><span class="t ar"
-                          >استخراج بيانات إعلاناتي من مكتبة ميتا.</span
-                        >
+                        <span class="t en">Extract my ad data from Meta Ads Library.</span>
+                        <span class="t ar">استخراج بيانات إعلاناتي من مكتبة ميتا.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">2</div>
                     <div>
-                      <strong
-                        ><span class="t en">Cleaning & Standardization</span
-                        ><span class="t ar">تنظيف وتوحيد</span></strong
-                      >
+                      <strong><span class="t en">Cleaning & Standardization</span><span class="t ar">تنظيف وتوحيد</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Standardize date formats and organize fields.</span
-                        ><span class="t ar"
-                          >توحيد صيغ التواريخ وتنظيم الحقول.</span
-                        >
+                        <span class="t en">Standardize date formats and organize fields.</span>
+                        <span class="t ar">توحيد صيغ التواريخ وتنظيم الحقول.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">3</div>
                     <div>
-                      <strong
-                        ><span class="t en">Duplicate Removal</span
-                        ><span class="t ar">إزالة التكرار</span></strong
-                      >
+                      <strong><span class="t en">Duplicate Removal</span><span class="t ar">إزالة التكرار</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Identify duplicate ads via ID/Link.</span
-                        ><span class="t ar"
-                          >تحديد الإعلانات المكررة عبر المعرّف/الرابط.</span
-                        >
+                        <span class="t en">Identify duplicate ads via ID/Link.</span>
+                        <span class="t ar">تحديد الإعلانات المكررة عبر المعرّف/الرابط.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">4</div>
                     <div>
-                      <strong
-                        ><span class="t en">Prep for Classification</span
-                        ><span class="t ar">تجهيز للتصنيف</span></strong
-                      >
+                      <strong><span class="t en">Prep for Classification</span><span class="t ar">تجهيز للتصنيف</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Prepare ad text for keyword processing.</span
-                        ><span class="t ar"
-                          >تهيئة نص الإعلان لمعالجة الكلمات المفتاحية.</span
-                        >
+                        <span class="t en">Prepare ad text for keyword processing.</span>
+                        <span class="t ar">تهيئة نص الإعلان لمعالجة الكلمات المفتاحية.</span>
                       </div>
                     </div>
                   </div>
@@ -790,91 +702,41 @@
               </div>
 
               <div class="card">
-                <h3>
-                  📌 <span class="t en">Strengths</span
-                  ><span class="t ar">نقاط القوة</span>
-                </h3>
+                <h3>📌 <span class="t en">Strengths</span><span class="t ar">نقاط القوة</span></h3>
                 <div class="list">
                   <div class="item">
-                    <div
-                      class="dot"
-                      style="
-                        background: rgba(16, 185, 129, 0.12);
-                        border-color: rgba(16, 185, 129, 0.35);
-                      "
-                    >
-                      ✔
-                    </div>
+                    <div class="dot" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35);">✔</div>
                     <div>
-                      <strong
-                        ><span class="t en">Organized & Scalable</span
-                        ><span class="t ar">منظّم وقابل للتوسّع</span></strong
-                      >
+                      <strong><span class="t en">Organized & Scalable</span><span class="t ar">منظّم وقابل للتوسّع</span></strong>
                       <div class="muted">
-                        <span class="t en">Easy to add new fields.</span
-                        ><span class="t ar">سهل إضافة حقول جديدة.</span>
+                        <span class="t en">Easy to add new fields.</span><span class="t ar">سهل إضافة حقول جديدة.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
-                    <div
-                      class="dot"
-                      style="
-                        background: rgba(6, 182, 212, 0.12);
-                        border-color: rgba(6, 182, 212, 0.35);
-                      "
-                    >
-                      ⚡
-                    </div>
+                    <div class="dot" style="background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.35);">⚡</div>
                     <div>
-                      <strong
-                        ><span class="t en">Fast Report Prep</span
-                        ><span class="t ar">تجهيز سريع للتقارير</span></strong
-                      >
+                      <strong><span class="t en">Fast Report Prep</span><span class="t ar">تجهيز سريع للتقارير</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Suitable for filtering and analysis.</span
-                        ><span class="t ar">مناسب للفلترة والتحليل.</span>
+                        <span class="t en">Suitable for filtering and analysis.</span><span class="t ar">مناسب للفلترة والتحليل.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
-                    <div
-                      class="dot"
-                      style="
-                        background: rgba(245, 158, 11, 0.12);
-                        border-color: rgba(245, 158, 11, 0.35);
-                      "
-                    >
-                      🔁
-                    </div>
+                    <div class="dot" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35);">🔁</div>
                     <div>
-                      <strong
-                        ><span class="t en">Continuous Updates</span
-                        ><span class="t ar">تحديثات مستمرة</span></strong
-                      >
+                      <strong><span class="t en">Continuous Updates</span><span class="t ar">تحديثات مستمرة</span></strong>
                       <div class="muted">
-                        <span class="t en">Periodic runs to add new ads.</span
-                        ><span class="t ar"
-                          >تشغيل دوري لإضافة إعلانات جديدة.</span
-                        >
+                        <span class="t en">Periodic runs to add new ads.</span>
+                        <span class="t ar">تشغيل دوري لإضافة إعلانات جديدة.</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="pills" style="margin-top: 0.75rem">
-                  <span class="pill cyan"
-                    ><span class="t en">Data → Clean</span
-                    ><span class="t ar">بيانات ← تنظيف</span></span
-                  >
-                  <span class="pill primary"
-                    ><span class="t en">Clean → Classify</span
-                    ><span class="t ar">تنظيف ← تصنيف</span></span
-                  >
-                  <span class="pill green"
-                    ><span class="t en">Classify → Export</span
-                    ><span class="t ar">تصنيف ← تصدير</span></span
-                  >
+                  <span class="pill cyan"><span class="t en">Data → Clean</span><span class="t ar">بيانات ← تنظيف</span></span>
+                  <span class="pill primary"><span class="t en">Clean → Classify</span><span class="t ar">تنظيف ← تصنيف</span></span>
+                  <span class="pill green"><span class="t en">Classify → Export</span><span class="t ar">تصنيف ← تصدير</span></span>
                 </div>
               </div>
             </div>
@@ -891,28 +753,13 @@
                   <span class="t ar">تصنيف الإعلانات حسب ماركة السيارة</span>
                 </div>
                 <div class="subtitle">
-                  <span class="t en"
-                    >A keyword-based algorithm to determine the best brand for
-                    each ad.</span
-                  >
-                  <span class="t ar"
-                    >خوارزمية تعتمد على الكلمات المفتاحية لتحديد الماركة الأنسب
-                    لكل إعلان.</span
-                  >
+                  <span class="t en">A keyword-based algorithm to determine the best brand for each ad.</span>
+                  <span class="t ar">خوارزمية تعتمد على الكلمات المفتاحية لتحديد الماركة الأنسب لكل إعلان.</span>
                 </div>
                 <div class="pills">
-                  <span class="pill green"
-                    >🚗 <span class="t en">Brand Classification</span
-                    ><span class="t ar">تصنيف الماركات</span></span
-                  >
-                  <span class="pill amber"
-                    >🔎 <span class="t en">Keywords</span
-                    ><span class="t ar">كلمات مفتاحية</span></span
-                  >
-                  <span class="pill cyan"
-                    >📚 <span class="t en">Dictionary</span
-                    ><span class="t ar">قاموس</span></span
-                  >
+                  <span class="pill green">🚗 <span class="t en">Brand Classification</span><span class="t ar">تصنيف الماركات</span></span>
+                  <span class="pill amber">🔎 <span class="t en">Keywords</span><span class="t ar">كلمات مفتاحية</span></span>
+                  <span class="pill cyan">📚 <span class="t en">Dictionary</span><span class="t ar">قاموس</span></span>
                 </div>
               </div>
               <div class="badge">
@@ -923,73 +770,45 @@
 
             <div class="content">
               <div class="card">
-                <h3>
-                  📚 <span class="t en">Algorithm Concept</span
-                  ><span class="t ar">فكرة الخوارزمية</span>
-                </h3>
+                <h3>📚 <span class="t en">Algorithm Concept</span><span class="t ar">فكرة الخوارزمية</span></h3>
                 <div class="list">
                   <div class="item">
                     <div class="dot">1</div>
                     <div>
-                      <strong
-                        ><span class="t en">Keyword Dictionary per Brand</span
-                        ><span class="t ar">قاموس كلمات لكل ماركة</span></strong
-                      >
+                      <strong><span class="t en">Keyword Dictionary per Brand</span><span class="t ar">قاموس كلمات لكل ماركة</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Models, categories, abbreviations, marketing
-                          words.</span
-                        ><span class="t ar"
-                          >موديلات، فئات، اختصارات، كلمات تسويقية.</span
-                        >
+                        <span class="t en">Models, categories, abbreviations, marketing words.</span>
+                        <span class="t ar">موديلات، فئات، اختصارات، كلمات تسويقية.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">2</div>
                     <div>
-                      <strong
-                        ><span class="t en">Check Ad Text</span
-                        ><span class="t ar">فحص نص الإعلان</span></strong
-                      >
+                      <strong><span class="t en">Check Ad Text</span><span class="t ar">فحص نص الإعلان</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Search for keywords in ad content.</span
-                        ><span class="t ar"
-                          >البحث عن الكلمات داخل المحتوى.</span
-                        >
+                        <span class="t en">Search for keywords in ad content.</span>
+                        <span class="t ar">البحث عن الكلمات داخل المحتوى.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">3</div>
                     <div>
-                      <strong
-                        ><span class="t en">Select Best Match</span
-                        ><span class="t ar">اختيار أفضل تطابق</span></strong
-                      >
+                      <strong><span class="t en">Select Best Match</span><span class="t ar">اختيار أفضل تطابق</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Assign the closest brand by keyword hits.</span
-                        ><span class="t ar"
-                          >إسناد الماركة الأقرب حسب النتائج.</span
-                        >
+                        <span class="t en">Assign the closest brand by keyword hits.</span>
+                        <span class="t ar">إسناد الماركة الأقرب حسب النتائج.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">4</div>
                     <div>
-                      <strong
-                        ><span class="t en">Save Results</span
-                        ><span class="t ar">حفظ النتائج</span></strong
-                      >
+                      <strong><span class="t en">Save Results</span><span class="t ar">حفظ النتائج</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Add a “Brand” column in the report.</span
-                        ><span class="t ar"
-                          >إضافة عمود “الماركة” في التقرير.</span
-                        >
+                        <span class="t en">Add a “Brand” column in the report.</span>
+                        <span class="t ar">إضافة عمود “الماركة” في التقرير.</span>
                       </div>
                     </div>
                   </div>
@@ -997,89 +816,42 @@
               </div>
 
               <div class="card">
-                <h3>
-                  ✅ <span class="t en">Why Keywords Work Well?</span
-                  ><span class="t ar">لماذا الكلمات المفتاحية مناسبة؟</span>
-                </h3>
+                <h3>✅ <span class="t en">Why Keywords Work Well?</span><span class="t ar">لماذا الكلمات المفتاحية مناسبة؟</span></h3>
                 <div class="list">
                   <div class="item">
-                    <div
-                      class="dot"
-                      style="
-                        background: rgba(16, 185, 129, 0.12);
-                        border-color: rgba(16, 185, 129, 0.35);
-                      "
-                    >
-                      ✔
-                    </div>
+                    <div class="dot" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35);">✔</div>
                     <div>
-                      <strong
-                        ><span class="t en">Fast & Simple</span
-                        ><span class="t ar">سريعة وبسيطة</span></strong
-                      >
+                      <strong><span class="t en">Fast & Simple</span><span class="t ar">سريعة وبسيطة</span></strong>
                       <div class="muted">
-                        <span class="t en">No model training required.</span
-                        ><span class="t ar">لا تحتاج تدريب نموذج.</span>
+                        <span class="t en">No model training required.</span>
+                        <span class="t ar">لا تحتاج تدريب نموذج.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
-                    <div
-                      class="dot"
-                      style="
-                        background: rgba(6, 182, 212, 0.12);
-                        border-color: rgba(6, 182, 212, 0.35);
-                      "
-                    >
-                      🛠
-                    </div>
+                    <div class="dot" style="background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.35);">🛠</div>
                     <div>
-                      <strong
-                        ><span class="t en">Easy to Modify</span
-                        ><span class="t ar">سهلة التعديل</span></strong
-                      >
+                      <strong><span class="t en">Easy to Modify</span><span class="t ar">سهلة التعديل</span></strong>
                       <div class="muted">
-                        <span class="t en">Add or change words anytime.</span
-                        ><span class="t ar"
-                          >إضافة/تعديل الكلمات حسب الحاجة.</span
-                        >
+                        <span class="t en">Add or change words anytime.</span>
+                        <span class="t ar">إضافة/تعديل الكلمات حسب الحاجة.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
-                    <div
-                      class="dot"
-                      style="
-                        background: rgba(245, 158, 11, 0.12);
-                        border-color: rgba(245, 158, 11, 0.35);
-                      "
-                    >
-                      🎯
-                    </div>
+                    <div class="dot" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35);">🎯</div>
                     <div>
-                      <strong
-                        ><span class="t en">Car-friendly</span
-                        ><span class="t ar">مناسبة للسيارات</span></strong
-                      >
+                      <strong><span class="t en">Car-friendly</span><span class="t ar">مناسبة للسيارات</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >Models & categories often appear in text.</span
-                        ><span class="t ar"
-                          >لأن أسماء الموديلات والفئات تتكرر في النص.</span
-                        >
+                        <span class="t en">Models & categories often appear in text.</span>
+                        <span class="t ar">لأن أسماء الموديلات والفئات تتكرر في النص.</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="big muted" style="margin-top: 0.65rem">
-                  <span class="t en">
-                    Example: if a brand-specific model/category appears in the
-                    ad, it’s classified directly to that brand.
-                  </span>
-                  <span class="t ar">
-                    مثال: إذا ظهر اسم موديل/فئة خاص بمَاركة معينة داخل الإعلان،
-                    يتم تصنيفه مباشرةً لتلك الماركة.
-                  </span>
+                  <span class="t en">Example: if a brand-specific model/category appears in the ad, it’s classified directly to that brand.</span>
+                  <span class="t ar">مثال: إذا ظهر اسم موديل/فئة خاص بمَاركة معينة داخل الإعلان، يتم تصنيفه مباشرةً لتلك الماركة.</span>
                 </div>
               </div>
             </div>
@@ -1096,28 +868,13 @@
                   <span class="t ar">التصدير إلى إكسل</span>
                 </div>
                 <div class="subtitle">
-                  <span class="t en">
-                    After collection and classification, data is saved in an
-                    Excel file for analysis, filtering, and tracking.
-                  </span>
-                  <span class="t ar">
-                    بعد الجمع والتصنيف، يتم حفظ البيانات في ملف إكسل لتسهيل
-                    التحليل والفلترة والتتبع.
-                  </span>
+                  <span class="t en">After collection and classification, data is saved in an Excel file for analysis, filtering, and tracking.</span>
+                  <span class="t ar">بعد الجمع والتصنيف، يتم حفظ البيانات في ملف إكسل لتسهيل التحليل والفلترة والتتبع.</span>
                 </div>
                 <div class="pills">
-                  <span class="pill primary"
-                    >📊 <span class="t en">Reports</span
-                    ><span class="t ar">تقارير</span></span
-                  >
-                  <span class="pill cyan"
-                    >🗂️ <span class="t en">Archive</span
-                    ><span class="t ar">أرشفة</span></span
-                  >
-                  <span class="pill green"
-                    >🔎 <span class="t en">Analysis</span
-                    ><span class="t ar">تحليل</span></span
-                  >
+                  <span class="pill primary">📊 <span class="t en">Reports</span><span class="t ar">تقارير</span></span>
+                  <span class="pill cyan">🗂️ <span class="t en">Archive</span><span class="t ar">أرشفة</span></span>
+                  <span class="pill green">🔎 <span class="t en">Analysis</span><span class="t ar">تحليل</span></span>
                 </div>
               </div>
               <div class="badge">
@@ -1128,65 +885,45 @@
 
             <div class="content">
               <div class="card">
-                <h3>
-                  📁 <span class="t en">What’s in the Excel File?</span
-                  ><span class="t ar">ماذا يحتوي ملف الإكسل؟</span>
-                </h3>
+                <h3>📁 <span class="t en">What’s in the Excel File?</span><span class="t ar">ماذا يحتوي ملف الإكسل؟</span></h3>
                 <div class="list">
                   <div class="item">
                     <div class="dot">📅</div>
                     <div>
-                      <strong
-                        ><span class="t en">Funding Date/Period</span
-                        ><span class="t ar">تاريخ/فترة التمويل</span></strong
-                      >
+                      <strong><span class="t en">Funding Date/Period</span><span class="t ar">تاريخ/فترة التمويل</span></strong>
                       <div class="muted">
-                        <span class="t en"
-                          >For time-based filtering and monthly reports.</span
-                        ><span class="t ar"
-                          >للتحليل الزمني والتقارير الشهرية.</span
-                        >
+                        <span class="t en">For time-based filtering and monthly reports.</span>
+                        <span class="t ar">للتحليل الزمني والتقارير الشهرية.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">🏷️</div>
                     <div>
-                      <strong
-                        ><span class="t en">Publishing Page</span
-                        ><span class="t ar">الصفحة الناشرة</span></strong
-                      >
+                      <strong><span class="t en">Publishing Page</span><span class="t ar">الصفحة الناشرة</span></strong>
                       <div class="muted">
-                        <span class="t en">Compare activity across pages.</span
-                        ><span class="t ar">لمقارنة نشاط الصفحات.</span>
+                        <span class="t en">Compare activity across pages.</span>
+                        <span class="t ar">لمقارنة نشاط الصفحات.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">📝</div>
                     <div>
-                      <strong
-                        ><span class="t en">Ad Content</span
-                        ><span class="t ar">محتوى الإعلان</span></strong
-                      >
+                      <strong><span class="t en">Ad Content</span><span class="t ar">محتوى الإعلان</span></strong>
                       <div class="muted">
-                        <span class="t en">Review marketing messages.</span
-                        ><span class="t ar">لمراجعة الرسائل التسويقية.</span>
+                        <span class="t en">Review marketing messages.</span>
+                        <span class="t ar">لمراجعة الرسائل التسويقية.</span>
                       </div>
                     </div>
                   </div>
                   <div class="item">
                     <div class="dot">🚗</div>
                     <div>
-                      <strong
-                        ><span class="t en">Brand</span
-                        ><span class="t ar">الماركة</span></strong
-                      >
+                      <strong><span class="t en">Brand</span><span class="t ar">الماركة</span></strong>
                       <div class="muted">
-                        <span class="t en">Keyword classification result.</span
-                        ><span class="t ar"
-                          >نتيجة التصنيف بالكلمات المفتاحية.</span
-                        >
+                        <span class="t en">Keyword classification result.</span>
+                        <span class="t ar">نتيجة التصنيف بالكلمات المفتاحية.</span>
                       </div>
                     </div>
                   </div>
@@ -1194,10 +931,7 @@
               </div>
 
               <div class="card">
-                <h3>
-                  🎯 <span class="t en">How Do I Use It?</span
-                  ><span class="t ar">كيف أستخدمه؟</span>
-                </h3>
+                <h3>🎯 <span class="t en">How Do I Use It?</span><span class="t ar">كيف أستخدمه؟</span></h3>
                 <div class="big muted">
                   <span class="t en">
                     I can build pivot tables, filter by brand/page/period, and
@@ -1211,25 +945,13 @@
                   </span>
                 </div>
                 <div class="pills" style="margin-top: 0.8rem">
-                  <span class="pill amber"
-                    >📌 <span class="t en">Tracking</span
-                    ><span class="t ar">تتبّع</span></span
-                  >
-                  <span class="pill cyan"
-                    >📈 <span class="t en">Comparison</span
-                    ><span class="t ar">مقارنة</span></span
-                  >
-                  <span class="pill green"
-                    >🧠 <span class="t en">Analysis</span
-                    ><span class="t ar">تحليل</span></span
-                  >
+                  <span class="pill amber">📌 <span class="t en">Tracking</span><span class="t ar">تتبّع</span></span>
+                  <span class="pill cyan">📈 <span class="t en">Comparison</span><span class="t ar">مقارنة</span></span>
+                  <span class="pill green">🧠 <span class="t en">Analysis</span><span class="t ar">تحليل</span></span>
                 </div>
 
                 <div class="card" style="margin-top: 0.95rem">
-                  <h3>
-                    ⚠️ <span class="t en">Note</span
-                    ><span class="t ar">ملاحظة</span>
-                  </h3>
+                  <h3>⚠️ <span class="t en">Note</span><span class="t ar">ملاحظة</span></h3>
                   <div class="muted">
                     <span class="t en">
                       This presentation explains the idea. In practice, you
@@ -1251,9 +973,12 @@
 
     <div class="controls">
       <button class="btn" id="prev" title="Previous">◀</button>
+
+      <!-- ✅ Hidden by CSS, and JS click disabled -->
       <button class="btn langBtn" id="lang" title="Language">
         🌐 <span id="langLabel">AR</span>
       </button>
+
       <div class="dots" id="dots"></div>
       <button class="btn" id="next" title="Next">▶</button>
       <div class="counter" id="counter">1 / 5</div>
@@ -1310,8 +1035,8 @@
           prev();
         }
         if (k.toLowerCase() === "l") {
+          // language is controlled by the TOP buttons now
           e.preventDefault();
-          toggleLang();
         }
       });
 
@@ -1321,11 +1046,11 @@
         if (lang === "ar") {
           html.lang = "ar";
           html.dir = "rtl";
-          langLabel.textContent = "EN";
+          if (langLabel) langLabel.textContent = "EN";
         } else {
           html.lang = "en";
           html.dir = "ltr";
-          langLabel.textContent = "AR";
+          if (langLabel) langLabel.textContent = "AR";
         }
         localStorage.setItem("presLang", lang);
       }
@@ -1335,14 +1060,128 @@
         setLang(current === "en" ? "ar" : "en");
       }
 
-      langBtn.addEventListener("click", toggleLang);
+      // ✅ IMPORTANT: bottom language button disabled
+      // langBtn.addEventListener("click", toggleLang);
 
       renderDots();
       go(0);
 
-      // init language
+      // init language (will be overridden by global sync below)
       const saved = localStorage.getItem("presLang");
       setLang(saved || "en");
+    </script>
+
+    <script>
+      (function () {
+        const STORAGE_KEY = "global_lang";
+        const CHANNEL = "GLOBAL_LANG_SYNC_V1";
+
+        const html = document.documentElement;
+        const btnEn = document.getElementById("btnEn");
+        const btnAr = document.getElementById("btnAr");
+
+        function applyLang(lang) {
+          lang = lang === "ar" ? "ar" : "en";
+          html.lang = lang;
+          html.dir = lang === "ar" ? "rtl" : "ltr";
+          html.dataset.lang = lang; // ✅ IMPORTANT for .t.en/.t.ar
+
+          if (btnEn && btnAr) {
+            btnEn.classList.toggle("active", lang === "en");
+            btnAr.classList.toggle("active", lang === "ar");
+          }
+
+          // data-en / data-ar text swap
+          document.querySelectorAll("[data-en],[data-ar]").forEach((el) => {
+            const v = el.getAttribute(`data-${lang}`);
+            if (v !== null && v !== undefined) el.textContent = v;
+          });
+
+          // Optional: class-based swapping (if used)
+          document.querySelectorAll(".lang-en").forEach((el) => {
+            el.style.display = lang === "en" ? "" : "none";
+          });
+          document.querySelectorAll(".lang-ar").forEach((el) => {
+            el.style.display = lang === "ar" ? "" : "none";
+          });
+        }
+
+        function safeSetStorage(lang) {
+          try {
+            localStorage.setItem(STORAGE_KEY, lang);
+          } catch (_) {}
+        }
+
+        function broadcast(lang) {
+          // Save
+          safeSetStorage(lang);
+
+          // Tell parent (if inside iframe)
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type: CHANNEL, lang }, "*");
+            }
+          } catch (_) {}
+
+          // Tell children iframes (if any)
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try {
+              fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*");
+            } catch (_) {}
+          });
+        }
+
+        function setLang(lang) {
+          applyLang(lang);
+          broadcast(lang);
+        }
+
+        if (btnEn) btnEn.addEventListener("click", () => setLang("en"));
+        if (btnAr) btnAr.addEventListener("click", () => setLang("ar"));
+
+        // Receive messages from parent/other frames
+        window.addEventListener("message", (event) => {
+          const d = event.data;
+          if (!d || d.type !== CHANNEL) return;
+
+          applyLang(d.lang);
+          safeSetStorage(d.lang);
+
+          // Forward to any nested iframes for consistency
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try {
+              fr.contentWindow.postMessage({
+                type: CHANNEL,
+                lang: d.lang,
+              }, "*");
+            } catch (_) {}
+          });
+        });
+
+        // Sync across tabs/windows (same origin)
+        window.addEventListener("storage", (e) => {
+          if (e.key === STORAGE_KEY && e.newValue) applyLang(e.newValue);
+        });
+
+        // Init from storage (fallback: current html lang)
+        let initial = "en";
+        try {
+          initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en";
+        } catch (_) {
+          initial = html.lang || "en";
+        }
+        applyLang(initial);
+
+        // If this page contains iframes, push current language to them on load
+        window.addEventListener("load", () => {
+          const cur = html.lang || initial;
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try {
+              fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*");
+            } catch (_) {}
+          });
+        });
+      })();
     </script>
   </body>
 </html>

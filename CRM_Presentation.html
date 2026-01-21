@@ -131,6 +131,8 @@
         gap: 1.5rem;
         list-style: none;
         align-items: center;
+        width: 100%;
+        justify-content: center;
       }
       .nav-links a {
         color: var(--text-muted);
@@ -471,10 +473,40 @@
       .delay-2 {
         animation-delay: 0.4s;
       }
+    
+      /* === Global Language Toggle (EN/AR) === */
+      .langToggle{
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        display: flex;
+        gap: 8px;
+        z-index: 9999;
+      }
+      html[dir="rtl"] .langToggle{ right:auto; left:14px; }
+      .langBtn{
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(15, 23, 42, 0.55);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .langBtn.active{
+        border-color: rgba(6, 182, 212, 0.9);
+        box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+      }
+
     </style>
   </head>
 
   <body>
+    <!-- Language Switch (Global Sync) -->
+  
+
     <div class="bg-animation"></div>
 
     <nav>
@@ -492,10 +524,11 @@
         </li>
         <li><a href="#roi" data-ar="العائد" data-en="ROI"></a></li>
       </ul>
-
-      <button id="langToggle" class="lang-btn" aria-label="Toggle Language">
-        EN
-      </button>
+  <div class="langToggle" data-lang-ui>
+      <button class="langBtn" id="btnEn" type="button">EN</button>
+      <button class="langBtn" id="btnAr" type="button">AR</button>
+    </div>
+     
     </nav>
 
     <section class="hero">
@@ -972,5 +1005,103 @@
       } catch (e) {}
       switchLanguage(saved === "en" ? "en" : "ar");
     </script>
+  
+    <script>
+      (function () {
+        const STORAGE_KEY = "global_lang";
+        const CHANNEL = "GLOBAL_LANG_SYNC_V1";
+
+        const html = document.documentElement;
+        const btnEn = document.getElementById("btnEn");
+        const btnAr = document.getElementById("btnAr");
+
+        function applyLang(lang) {
+          lang = lang === "ar" ? "ar" : "en";
+          html.lang = lang;
+          html.dir = lang === "ar" ? "rtl" : "ltr";
+
+          if (btnEn && btnAr) {
+            btnEn.classList.toggle("active", lang === "en");
+            btnAr.classList.toggle("active", lang === "ar");
+          }
+
+          // data-en / data-ar text swap
+          document.querySelectorAll("[data-en],[data-ar]").forEach((el) => {
+            const v = el.getAttribute(`data-${lang}`);
+            if (v !== null && v !== undefined) el.textContent = v;
+          });
+
+          // Optional: class-based swapping (if used)
+          document.querySelectorAll(".lang-en").forEach((el) => {
+            el.style.display = lang === "en" ? "" : "none";
+          });
+          document.querySelectorAll(".lang-ar").forEach((el) => {
+            el.style.display = lang === "ar" ? "" : "none";
+          });
+        }
+
+        function safeSetStorage(lang) {
+          try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}
+        }
+
+        function broadcast(lang) {
+          // Save
+          safeSetStorage(lang);
+
+          // Tell parent (if inside iframe)
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ type: CHANNEL, lang }, "*");
+            }
+          } catch (_) {}
+
+          // Tell children iframes (if any)
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try { fr.contentWindow.postMessage({ type: CHANNEL, lang }, "*"); } catch (_) {}
+          });
+        }
+
+        function setLang(lang) {
+          applyLang(lang);
+          broadcast(lang);
+        }
+
+        if (btnEn) btnEn.addEventListener("click", () => setLang("en"));
+        if (btnAr) btnAr.addEventListener("click", () => setLang("ar"));
+
+        // Receive messages from parent/other frames
+        window.addEventListener("message", (event) => {
+          const d = event.data;
+          if (!d || d.type !== CHANNEL) return;
+
+          applyLang(d.lang);
+          safeSetStorage(d.lang);
+
+          // Forward to any nested iframes for consistency
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: d.lang }, "*"); } catch (_) {}
+          });
+        });
+
+        // Sync across tabs/windows (same origin)
+        window.addEventListener("storage", (e) => {
+          if (e.key === STORAGE_KEY && e.newValue) applyLang(e.newValue);
+        });
+
+        // Init from storage (fallback: current html lang)
+        let initial = "en";
+        try { initial = localStorage.getItem(STORAGE_KEY) || html.lang || "en"; } catch (_) { initial = html.lang || "en"; }
+        applyLang(initial);
+
+        // If this page contains iframes, push current language to them on load
+        window.addEventListener("load", () => {
+          const cur = html.lang || initial;
+          document.querySelectorAll("iframe").forEach((fr) => {
+            try { fr.contentWindow.postMessage({ type: CHANNEL, lang: cur }, "*"); } catch (_) {}
+          });
+        });
+      })();
+    </script>
+
   </body>
 </html>
